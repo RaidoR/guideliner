@@ -27,14 +27,18 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 
 public class MainTest2 {
 	public static void main(String[] args) throws OWLOntologyCreationException {
-		OWLOntologyManager dd = OWLManager.createOWLOntologyManager();
-		OWLOntology o = dd.loadOntologyFromOntologyDocument(new File("C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\usability\\src\\main\\java\\usability-guidelines-ontology_v1.1.owl"));
-		OWLClass person = o.getOWLOntologyManager().getOWLDataFactory().getOWLClass(IRI.create("http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#UsabilityGuideline"));
+		Ontology ontology = new Ontology();
+		ontology.initialise();
+//		OWLOntologyManager dd = OWLManager.createOWLOntologyManager();
+//		OWLOntology o = dd.loadOntologyFromOntologyDocument(new File("C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl"));
+		OWLClass person = ontology.loadClass("UsabilityGuideline");
 		
 //		Reasoner hermit=new Reasoner(o);
 //       System.out.println(hermit.isConsistent());
@@ -44,23 +48,7 @@ public class MainTest2 {
 		
 		// prints all classes
 		//o.classesInSignature().forEach(ff -> System.out.println(ff));
-		
-        OWLReasonerFactory reasonerFactory = new JFactFactory();
-//      OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
 
-      // We'll now create an instance of an OWLReasoner (the implementation being provided by HermiT as
-      // we're using the HermiT reasoner factory).  The are two categories of reasoner, Buffering and
-      // NonBuffering.  In our case, we'll create the buffering reasoner, which is the default kind of reasoner.
-      // We'll also attach a progress monitor to the reasoner.  To do this we set up a configuration that
-      // knows about a progress monitor.
-
-      // Create a console progress monitor.  This will print the reasoner progress out to the console.
-      ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-      // Specify the progress monitor via a configuration.  We could also specify other setup parameters in
-      // the configuration, and different reasoners may accept their own defined parameters this way.
-      OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
-      // Create a reasoner that will reason over our ontology and its imports closure.  Pass in the configuration.
-      OWLReasoner reasoner = reasonerFactory.createReasoner(o, config);
 
       // Ask the reasoner to do all the necessary work now
       
@@ -82,27 +70,25 @@ public class MainTest2 {
 
   */    
       // 
-      OWLClass w = o.getOWLOntologyManager().getOWLDataFactory().getOWLClass(IRI.create("http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#10-11_UseAppropriateTextLinkLengths"));
-	  NodeSet<OWLClass> superClasses = reasoner.getSuperClasses(w, true);
+      OWLClass w = ontology.loadClass("0-11_UseAppropriateTextLinkLengths");
+	  NodeSet<OWLClass> superClasses = Ontology.reasoner.getSuperClasses(w, true);
 	  superClasses.entities().forEach(g -> {
 		 // System.out.println(g);
 	  });
 	  
-	  NodeSet<OWLClass> superClasses3 = reasoner.getSubClasses(w, true);
+	  NodeSet<OWLClass> superClasses3 = Ontology.reasoner.getSubClasses(w, true);
 			  superClasses3.entities().forEach(g -> {
 		//  System.out.println(g);
 		  //sys
 	  });
 			  
 		
-	 OWLDataProperty prop = o.getOWLOntologyManager().getOWLDataFactory().getOWLDataProperty(IRI.create("http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#hasGuidelineElement"));
-	  
-	 System.out.println(o.getAxiomCount());	
+	 OWLDataProperty prop = ontology.laodOWLDataProperty("hasGuidelineElement");
 	 
 	 //o.axioms(cls);
 	 
 	 // print guideline
-	 o.axioms(w).forEach(g -> {
+	 Ontology.ontology.axioms(w).forEach(g -> {
 
 		 if (g instanceof OWLSubClassOfAxiomImpl) {
 			 OWLSubClassOfAxiomImpl g2 = (OWLSubClassOfAxiomImpl) g;
@@ -121,22 +107,27 @@ public class MainTest2 {
 	 });
 	 
 	 // Limit LimitHomePageLength 
-	 OWLClass w2 = o.getOWLOntologyManager().getOWLDataFactory().getOWLClass(IRI.create("http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#05-07_LimitHomePageLength"));
+	 OWLClass w2 = Ontology.ontology.getOWLOntologyManager().getOWLDataFactory().getOWLClass(IRI.create("http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#05-07_LimitHomePageLength"));
 	 // print individuals
 	 System.out.println("Individuals");
-	 NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(w2, true);
+	 NodeSet<OWLNamedIndividual> instances = Ontology.reasoner.getInstances(w2, true);
 	 
 	 Guideline guideline = new Guideline();
 	 
 	 instances.forEach(f -> {
 		 f.forEach(individual -> {
-			 o.axioms(individual).forEach(axiom -> {
+			 Ontology.ontology.axioms(individual).forEach(axiom -> {
 				 System.out.println(axiom);
 				 if (axiom instanceof OWLDataPropertyAssertionAxiomImpl) {
 					 OWLDataPropertyAssertionAxiomImpl dataProperty = (OWLDataPropertyAssertionAxiomImpl) axiom;
 					 System.out.println(dataProperty.getProperty().asOWLDataProperty().getIRI());
 					 System.out.println(dataProperty.getObject().getDatatype());
 					 System.out.println(dataProperty.getObject().getLiteral());
+				 }
+				 if (axiom instanceof OWLObjectPropertyAssertionAxiomImpl) {
+					 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;
+					 System.out.println(objectProperty.getProperty().asOWLObjectProperty().getIRI());
+					 System.out.println(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI());
 				 }
 				 System.out.println(axiom.getClass());
 			 });
