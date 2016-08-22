@@ -31,6 +31,9 @@ public class Ontology {
 	public static OWLOntology ontology;
 	public static OWLReasoner reasoner;
 
+	public Ontology() throws OWLOntologyCreationException {
+		this.initialise();
+	}
 	public static void initialise() throws OWLOntologyCreationException {
 		initialiseOntology(null);
 		initialiseReasoner();
@@ -61,6 +64,5 @@ public class Ontology {
 	public static IRI composeIRI(String shortName) {
 		return IRI.create(nameSpace + shortName);
 	}
-	
 
 }

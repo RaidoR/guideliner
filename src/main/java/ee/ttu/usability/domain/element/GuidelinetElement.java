@@ -1,15 +1,14 @@
 package ee.ttu.usability.domain.element;
 
-import lombok.Getter;
-import lombok.Setter;
+import jevg.ee.ttu.dataproperty.Unit;
+import lombok.Data;
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.attribute.Distance;
 import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.ProhibitedWordType;
 import ee.ttu.usability.domain.attribute.Width;
 
-@Setter
-@Getter
+@Data
 public class GuidelinetElement {
 
 	private Contrast contrast;
@@ -21,5 +20,9 @@ public class GuidelinetElement {
 	private Height height;
 	
 	private Width width;
+	
+	private Unit unit;
+	
+	private Integer contentLength;
 
 }
