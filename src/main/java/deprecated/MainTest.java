@@ -23,11 +23,14 @@ public class MainTest {
 //        .usingAnyFreePort()
 //        .build();
 //    service.start();
-		//System.out.println(service.getUrl());
-		WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"),
-		        DesiredCapabilities.chrome());
+//	System.out.println(service.getUrl());
+//		WebDriver driver = new RemoteWebDriver(new URL(service.getUrl().toString()),
+//		        DesiredCapabilities.chrome());
+		
+	    System.setProperty("webdriver.chrome.driver", "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
 		List<String> dd = new ArrayList<String>();
-		dd.add("https://www.etis.ee");
+		dd.add("https://www.etis.ee/Portal/Projects/Index");
 //		dd.add("http://www.envir.ee/et"); // "zone-portal-navigation"
 //		dd.add("https://www.eesti.ee/est"); // nav
 //		dd.add("http://www.rkas.ee");

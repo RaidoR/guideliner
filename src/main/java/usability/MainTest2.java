@@ -5,12 +5,15 @@ import jevg.ee.ttu.Guideline;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 
 public class MainTest2 {
@@ -20,7 +23,7 @@ public class MainTest2 {
 		OntologyService ontologyService = new OntologyService(ontology);
 	
 		// consistent =  Ontology.reasoner.isConsistent();
-     
+      
 		ontologyService.getAllUsabilityGuidelines().forEach(t -> {
     	  System.out.println(t);
     	  NodeSet<OWLClass> superClasses =  Ontology.reasoner.getSuperClasses(t, true);
@@ -32,10 +35,13 @@ public class MainTest2 {
 		
 	  // let's assume that we selected one from the list
       OWLClass selectedGuideline = ontology.loadClass("05-07_LimitHomePageLength");
+      
+ 	 GuidelinetElement guidelineElement = ontology.getGuidelineElement(selectedGuideline);
+ 	 System.out.println(guidelineElement.getClass());
 //      w..forEach(f -> {System.out.println(f);});
 //      System.out.println(w.asOWLClass().individualsInSignature().count());
 //      ;
-      
+      System.out.println("dddddddddddddddddddddddddddddddddddddd");
 	  NodeSet<OWLClass> superClasses = Ontology.reasoner.getSuperClasses(selectedGuideline, true);
 	  superClasses.entities().forEach(g -> {
 		 // System.out.println(g);
@@ -46,27 +52,11 @@ public class MainTest2 {
 		//  System.out.println(g);
 		  //sys
 	  });
-		
+			  
+			  
 	 OWLDataProperty prop = ontology.laodOWLDataProperty("hasGuidelineElement");
-	 
-	 //o.axioms(cls);
-	 
-	 // print guideline
-//	 Ontology.ontology.axioms(selectedGuideline).forEach(g -> {
-//
-//		 if (g instanceof OWLSubClassOfAxiomImpl) {
-//			 OWLSubClassOfAxiomImpl g2 = (OWLSubClassOfAxiomImpl) g;
-//			 if (g2.getSuperClass() instanceof OWLObjectAllValuesFromImpl) {
-//				 OWLObjectAllValuesFromImpl allValuesOf = (OWLObjectAllValuesFromImpl) g2.getSuperClass();
-//				 System.out.println("aaaaaaaaaaa" + allValuesOf.getProperty().asOWLObjectProperty().getIRI().getFragment());
-//				 System.out.println("aaaaaaaaaaa" + allValuesOf.getFiller() + "type of fille" + allValuesOf.getFiller().getClass());
-//			 }
-//			// g2.acc
-//		 }
-//		 System.out.println(g.getClass());
-	//	 System.out.println(g.get);
-//	 });
-	 
+
+
 	 // Limit LimitHomePageLength 
 	 // print individuals
 	 System.out.println("Individuals");
@@ -74,7 +64,6 @@ public class MainTest2 {
 	 NodeSet<OWLNamedIndividual> instances = ontologyService.getIndividuals(selectedGuideline);
 	 
 	 Guideline guideline = new Guideline();
-	 GuidelinetElement element = new GuidelinetElement();
 	 instances.forEach(f -> {
 		 f.forEach(individual -> {
 			 Ontology.ontology.axioms(individual).forEach(axiom -> {
@@ -83,13 +72,14 @@ public class MainTest2 {
 					 printOwlDataProperty(dataProperty);
 				 }
 				 if (axiom instanceof OWLObjectPropertyAssertionAxiomImpl) {
-					 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;
-				     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element);
+					 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;				 
+				     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), guidelineElement);
 				 }
 			 });
 		 });
 	 });
 	
+	 System.out.println(guidelineElement);
 	}
 	
 	public static void transformToObject(OWLNamedIndividual individual, GuidelinetElement element) {
@@ -112,6 +102,6 @@ public class MainTest2 {
 		 System.out.println(dataProperty.getObject().getLiteral());
 	}
 
-	
+
 
 }

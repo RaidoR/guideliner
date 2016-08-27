@@ -1,5 +1,7 @@
 package usability;
 
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
