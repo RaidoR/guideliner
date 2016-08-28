@@ -17,16 +17,16 @@ import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 
 public class MainTest2 {
-	static GuildelineBuilder builder = new GuildelineBuilder();
+	static GuildelineBuilderService builder = new GuildelineBuilderService();
 	public static void main(String[] args) throws OWLOntologyCreationException {
-		Ontology ontology = new Ontology();
+		OntologyRepository ontology = new OntologyRepository();
 		OntologyService ontologyService = new OntologyService(ontology);
-	
+		
 		// consistent =  Ontology.reasoner.isConsistent();
-      
+		
 		ontologyService.getAllUsabilityGuidelines().forEach(t -> {
     	  System.out.println(t);
-    	  NodeSet<OWLClass> superClasses =  Ontology.reasoner.getSuperClasses(t, true);
+    	  NodeSet<OWLClass> superClasses =  OntologyRepository.reasoner.getSuperClasses(t, true);
     	  superClasses.entities().forEach(g -> {
     	  });
 		 }
@@ -36,18 +36,19 @@ public class MainTest2 {
 	  // let's assume that we selected one from the list
       OWLClass selectedGuideline = ontology.loadClass("05-07_LimitHomePageLength");
       
- 	 GuidelinetElement guidelineElement = ontology.getGuidelineElement(selectedGuideline);
+      OntologyEvaluatorService serv = new OntologyEvaluatorService();
+ 	 GuidelinetElement guidelineElement = serv.getGuidelineElement(selectedGuideline);
  	 System.out.println(guidelineElement.getClass());
 //      w..forEach(f -> {System.out.println(f);});
 //      System.out.println(w.asOWLClass().individualsInSignature().count());
 //      ;
       System.out.println("dddddddddddddddddddddddddddddddddddddd");
-	  NodeSet<OWLClass> superClasses = Ontology.reasoner.getSuperClasses(selectedGuideline, true);
+	  NodeSet<OWLClass> superClasses = OntologyRepository.reasoner.getSuperClasses(selectedGuideline, true);
 	  superClasses.entities().forEach(g -> {
 		 // System.out.println(g);
 	  });
 	  
-	  NodeSet<OWLClass> superClasses3 = Ontology.reasoner.getSubClasses(selectedGuideline, true);
+	  NodeSet<OWLClass> superClasses3 = OntologyRepository.reasoner.getSubClasses(selectedGuideline, true);
 			  superClasses3.entities().forEach(g -> {
 		//  System.out.println(g);
 		  //sys
@@ -61,12 +62,12 @@ public class MainTest2 {
 	 // print individuals
 	 System.out.println("Individuals");
 	 
-	 NodeSet<OWLNamedIndividual> instances = ontologyService.getIndividuals(selectedGuideline);
+	 NodeSet<OWLNamedIndividual> instances = ontology.getIndividuals(selectedGuideline);
 	 
 	 Guideline guideline = new Guideline();
 	 instances.forEach(f -> {
 		 f.forEach(individual -> {
-			 Ontology.ontology.axioms(individual).forEach(axiom -> {
+			 OntologyRepository.ontology.axioms(individual).forEach(axiom -> {
 				 if (axiom instanceof OWLDataPropertyAssertionAxiomImpl) {
 					 OWLDataPropertyAssertionAxiomImpl dataProperty = (OWLDataPropertyAssertionAxiomImpl) axiom;
 					 printOwlDataProperty(dataProperty);
@@ -83,7 +84,7 @@ public class MainTest2 {
 	}
 	
 	public static void transformToObject(OWLNamedIndividual individual, GuidelinetElement element) {
-		 Ontology.ontology.axioms(individual).forEach(axiom -> {
+		 OntologyRepository.ontology.axioms(individual).forEach(axiom -> {
 			 System.out.println(axiom);
 			 if (axiom instanceof OWLDataPropertyAssertionAxiomImpl) {
 				 OWLDataPropertyAssertionAxiomImpl dataProperty = (OWLDataPropertyAssertionAxiomImpl) axiom;
