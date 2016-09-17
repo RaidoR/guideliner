@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.page.UIPage;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
@@ -24,20 +25,19 @@ import usability.estimation.result.EvaluationResult;
 @Service
 public class OntologyEvaluatorService {
 
-	@Autowired
 	private OntologyRepository ontologyRepository;
 	
-	@Autowired
 	private GuildelineBuilderService builder;
+	
+	@Autowired
+	public OntologyEvaluatorService(OntologyRepository ontologyRepository, GuildelineBuilderService builder) {
+		this.ontologyRepository = ontologyRepository;
+		this.builder = builder;
+	}
 	
 	public EvaluationResult evaluate(OWLClass guideline) {
 		// get guideline
-		GuidelinetElement guidelineElement = this.getGuidelineElement(guideline);
-		
-		// fill based on instances
-		// TODO should filling support multiple instances
-		NodeSet<OWLNamedIndividual> instances = ontologyRepository.getIndividuals(guideline);
-		builder.fillGuideline(instances, guidelineElement);
+		GuidelinetElement guidelineElement = fillWithGuidelineElement(guideline);
 		
 		WebDriver driver = initialiseDriver();
 		
@@ -59,7 +59,19 @@ public class OntologyEvaluatorService {
 	    return new ChromeDriver();
     }
 	
+    public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {
+		GuidelinetElement guidelineElement = this.getGuidelineElement(guideline);
+		
+		// fill based on instances
+		// TODO should filling support multiple instances
+		NodeSet<OWLNamedIndividual> instances = ontologyRepository.getIndividuals(guideline);
+		builder.fillGuideline(instances, guidelineElement);
+		
+		return guidelineElement;
+    }
+    
 	// TODO refactor
+	@SuppressWarnings("deprecation")
 	public GuidelinetElement getGuidelineElement(OWLClass selectedGuideline) {
 		for (OWLClassAxiom g : OntologyRepository.ontology.getAxioms(selectedGuideline)) {
 			 if (g instanceof OWLSubClassOfAxiomImpl) {
@@ -76,6 +88,8 @@ public class OntologyEvaluatorService {
 					 if ("hasGuidelineElement".equalsIgnoreCase(someValueOf.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 						 if ("UIPage".equalsIgnoreCase(someValueOf.getFiller().asOWLClass().getIRI().getShortForm())) {
 							 return new UIPage();
+						 } else if ("Link".equalsIgnoreCase(someValueOf.getFiller().asOWLClass().getIRI().getShortForm())) {
+							 return new Link();
 						 }
 					 }
 //					 System.out.println("aaaaaaaaaaa" + someValueOf.getProperty().asOWLObjectProperty().getIRI().getShortForm());
@@ -86,5 +100,6 @@ public class OntologyEvaluatorService {
 		 }
 		 return null;
 	}
+	
 
 }

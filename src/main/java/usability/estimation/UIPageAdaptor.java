@@ -38,5 +38,4 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		return result;
 	}
 	
-	
 }
