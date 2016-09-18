@@ -75,12 +75,5 @@ public class MainTest23 {
 		System.out.println(guidelineElement);
 	}
 
-	public static void printOwlDataProperty(
-			OWLDataPropertyAssertionAxiomImpl dataProperty) {
-		System.out.println(dataProperty.getProperty().asOWLDataProperty()
-				.getIRI());
-		System.out.println(dataProperty.getObject().getDatatype());
-		System.out.println(dataProperty.getObject().getLiteral());
-	}
 
 }

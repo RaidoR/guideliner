@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class MainTest {
+public class MainTest2 {
 	
 	public static void main(String[] args) throws Exception{
 		
@@ -27,7 +27,7 @@ public class MainTest {
 //		WebDriver driver = new RemoteWebDriver(new URL(service.getUrl().toString()),
 //		        DesiredCapabilities.chrome());
 		
-	    System.setProperty("webdriver.chrome.driver", "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
+	   // System.setProperty("webdriver.chrome.driver", "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		List<String> dd = new ArrayList<String>();
 		dd.add("https://www.etis.ee/Portal/Projects/Index");
@@ -40,7 +40,7 @@ public class MainTest {
 //		dd.add("http://www.rh.ee/");
 //		dd.add("http://www.narvahaigla.ee/");
 		
-		// Links color
+		// Links color 
 		//LinkHandler linkHandler = new LinkHandler();
 		//linkHandler.checkAllLinks(driver);
 

@@ -1,5 +1,7 @@
 package deprecated;
 
+import java.util.StringTokenizer;
+
 import org.openqa.selenium.support.Color;
 
 public class ContrastUtils {
@@ -101,6 +103,15 @@ public class ContrastUtils {
 
         return colorStr;
     }
+    
+    public static String convertCssColorToHexadecimalFormat(String color) {
+		String s1 = color.substring(5);
+		StringTokenizer st = new StringTokenizer(s1);
+		int r = Integer.parseInt(st.nextToken(",").trim());
+		int g = Integer.parseInt(st.nextToken(",").trim());
+		int b = Integer.parseInt(st.nextToken(",").trim());
+		return String.format("#%02x%02x%02x", r, g, b);
+	}
 
     /**
      * Converts an {@code int} representation of a {@link Color} to a hex string.
