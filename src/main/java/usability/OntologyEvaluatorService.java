@@ -6,12 +6,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.content.Paragraph;
 import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.page.UIPage;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
@@ -20,6 +22,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import usability.estimation.LinkAdaptor;
+import usability.estimation.ParagrapgAdaptor;
 import usability.estimation.UIPageAdaptor;
 import usability.estimation.result.EvaluationReport;
 import usability.estimation.result.EvaluationResult;
@@ -44,7 +47,7 @@ public class OntologyEvaluatorService {
 
 		WebDriver driver = initialiseDriver();
 
-		driver.get("https://www.etis.ee/Portal/Projects/Index");
+		driver.get("https://www.etis.ee");
 
 		EvaluationResult result = new EvaluationResult();
 
@@ -62,14 +65,23 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
+		if (guidelineElement instanceof Paragraph) {
+			try {
+				ParagrapgAdaptor adaptor = new ParagrapgAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Paragraph) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 		driver.close();
 		return null;
 	}
 
 	private WebDriver initialiseDriver() {
-//		System.setProperty("webdriver.chrome.driver",
-//				"C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
-//		return new ChromeDriver();
+		// System.setProperty("webdriver.chrome.driver",
+		// "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
+		// return new ChromeDriver();
 		return new FirefoxDriver();
 	}
 
@@ -117,6 +129,10 @@ public class OntologyEvaluatorService {
 								.getFiller().asOWLClass().getIRI()
 								.getShortForm())) {
 							return new Link();
+						} else if ("Paragraph".equalsIgnoreCase(someValueOf
+								.getFiller().asOWLClass().getIRI()
+								.getShortForm())) {
+							return new Paragraph();
 						}
 					}
 					// System.out.println("aaaaaaaaaaa" +
@@ -125,7 +141,17 @@ public class OntologyEvaluatorService {
 					// someValueOf.getFiller().asOWLClass().getIRI().getShortForm()
 					// + "type of fille" + someValueOf.getFiller().getClass());
 				}
+				if (g2.getSuperClass() instanceof OWLObjectAllValuesFrom) {
+					OWLObjectAllValuesFrom valueOf = (OWLObjectAllValuesFrom) g2
+							.getSuperClass();
+					if ("Link".equalsIgnoreCase(valueOf
+							.getFiller().asOWLClass().getIRI()
+							.getShortForm())) {
+						return new Link();
+					}
+				}
 			}
+
 			// System.out.println(g.getClass());
 		}
 		return null;

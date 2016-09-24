@@ -63,7 +63,7 @@ public class ContrastEstimator {
 				if (contrastRatio < requiredContrast) {
 					amountOfIncorrectLinks++;
 					String message = String.format(
-							"Link with text %s does not have required contrast of "
+							"Element with text %s does not have required contrast of "
 									+ "%f. Actual contrast is %f",
 									ele.getText(), requiredContrast, contrastRatio);
 					System.out.println(message);

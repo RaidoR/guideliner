@@ -17,6 +17,10 @@ public class AbstractAdaptor {
 			 StringTokenizer st = new StringTokenizer(string);
 			 return st.countTokens();
 		}
+		if (Unit.LINE == unit) {
+		   String[] lines = string.split("\r\n|\r|\n");
+		   return  lines.length;
+		}
 		return null;
 	}
 	

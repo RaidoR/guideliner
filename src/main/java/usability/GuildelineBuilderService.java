@@ -72,8 +72,14 @@ public class GuildelineBuilderService {
 			 if ("Word".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.WORD);
 				 printOwlObjectProperty(objectProperty);
+			 } else if ("Line".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 element.setUnit(Unit.LINE);
+				 printOwlObjectProperty(objectProperty);
 			 }
 		 }
+		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+		     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element);
+		 }	 
 	}
 
 	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty) {
