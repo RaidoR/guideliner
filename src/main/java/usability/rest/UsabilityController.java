@@ -32,8 +32,9 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("05-07_LimitHomePageLength");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
-    	OWLClass selectedGuideline = ontologyRepository.loadClass("10-11_UseAppropriateTextLinkLengths");
-    	//10-11_UseAppropriateTextLinkLengths
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("10-11_UseAppropriateTextLinkLengths");
+    	OWLClass selectedGuideline = ontologyRepository.loadClass("08-01_EliminateHorizontalScrolling");
+
     	
         return evaluatorService.evaluate(selectedGuideline);
     }

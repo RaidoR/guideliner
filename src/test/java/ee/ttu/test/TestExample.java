@@ -77,5 +77,18 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getContentLength());
 		Assert.assertEquals(guidelineElement.getUnit(), Unit.WORD);
 	}
+	
+	@Test
+	public void testThatConstructionWorksForRule08_01() {
+		// given
+		OWLClass guideline = ontology
+				.loadClass("08-01_EliminateHorizontalScrolling");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		System.out.println(guidelineElement.getHorizontalScroll().getValue());
+	}
 
 }

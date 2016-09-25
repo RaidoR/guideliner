@@ -1,11 +1,10 @@
 package ee.ttu.usability.domain.pageattributes;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter@Setter
+@Data
 public class Scroll {
 
-	private String value;
+	private Integer value;
 	
 }

@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import lombok.extern.slf4j.Slf4j;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import usability.estimation.result.ElementType;
@@ -20,9 +21,12 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getContentLength() != null) {
 			return evaluateContentLength(page);
 		}
+		if (page.getHorizontalScroll() != null) {
+			return evaluateHorizontalScroll(page);
+		}
 		return null;
 	}
-	
+
 	public EvaluationResult evaluateContentLength(UIPage page) {
 		log.debug("Evaluation evaluateContentLength for UIPage");
 		EvaluationResult result = new EvaluationResult();
@@ -34,6 +38,24 @@ public class UIPageAdaptor extends AbstractAdaptor {
 				 result.setResult(ResultType.FAIL);
 				 result.setDescription("Amount of " + page.getUnit() + " was " + amountOfUnits);
 			 }
+		}
+		return result;
+	}
+	
+	
+	private EvaluationResult evaluateHorizontalScroll(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("scroll(0, 10000);");
+		
+		Long value = (Long) executor.executeScript("return window.scrollY;");
+
+		if (value > page.getHorizontalScroll().getValue()) {
+			 result.setElementType(ElementType.PAGE);
+			 result.setResult(ResultType.FAIL);
+			 result.setDescription("Horizontal scrol value is bigger then defined. Real value is : " + value);
 		}
 		return result;
 	}

@@ -1,5 +1,9 @@
 package usability;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -9,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.page.UIPage;
+import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
@@ -93,6 +100,16 @@ public class GuildelineBuilderService {
 				Contrast contrast = new Contrast();
 				contrast.setContrast(new Integer(dataProperty.getObject().getLiteral()));
 				element.setContrast(contrast);
+				break;		
+			case "hasScroll" :
+				Optional<OWLClassExpression> entityTypeOfIndividual = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
+				if ("HScroll".equals(((OWLClassImpl) entityTypeOfIndividual.get()).getIRI().getShortForm())) {
+					HorizontalScroll scroll = new HorizontalScroll();
+					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setHorizontalScroll(scroll);
+					}
+				}
 				break;		
 		}
 	}

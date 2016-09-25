@@ -1,6 +1,8 @@
 package usability;
 
 import java.io.File;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -10,7 +12,9 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -22,6 +26,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.springframework.stereotype.Repository;
 
 import ee.ttu.usability.domain.element.GuidelinetElement;
@@ -79,6 +84,10 @@ public class OntologyRepository {
 	
 	public NodeSet<OWLNamedIndividual> getIndividuals(OWLClass owlClass) {
 		return reasoner.getInstances(owlClass, true);
+	}
+	
+	public Optional<OWLClassExpression> getEntityTypeOfIndividual(OWLIndividual individual) {
+		return EntitySearcher.getTypes(individual, ontology).findAny();
 	}
 
 
