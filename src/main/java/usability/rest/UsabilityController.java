@@ -1,5 +1,7 @@
 package usability.rest;
 
+import java.util.List;
+
 import org.semanticweb.owlapi.model.OWLClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import usability.OntologyEvaluatorService;
 import usability.OntologyRepository;
+import usability.OntologyService;
 import usability.estimation.result.EvaluationResult;
+import usability.estimation.result.Guideline;
 
 /**
  * @author jevgeni.marenkov
@@ -20,10 +24,13 @@ public class UsabilityController {
     
     private OntologyRepository ontologyRepository;
     
+    private OntologyService ontologyService;
+    
     @Autowired
-    public UsabilityController(OntologyEvaluatorService evaluatorService, OntologyRepository ontologyRepository) {
+    public UsabilityController(OntologyEvaluatorService evaluatorService, OntologyRepository ontologyRepository, OntologyService ontologyService) {
     	this.evaluatorService = evaluatorService;
     	this.ontologyRepository = ontologyRepository;
+    	this.ontologyService = ontologyService;
     }
 
     @RequestMapping("/usability")
@@ -37,6 +44,11 @@ public class UsabilityController {
 
     	
         return evaluatorService.evaluate(selectedGuideline);
+    }
+    
+    @RequestMapping("/retrieve")
+    public List<Guideline> retrieveAllGuidelines() {	
+        return ontologyService.getAllUsabilityGuidelinesHardCoded();
     }
 
 }

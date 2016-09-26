@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Repository;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.page.UIPage;
 import uk.ac.manchester.cs.jfact.JFactFactory;
+import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImplString;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 
@@ -89,6 +91,17 @@ public class OntologyRepository {
 	public Optional<OWLClassExpression> getEntityTypeOfIndividual(OWLIndividual individual) {
 		return EntitySearcher.getTypes(individual, ontology).findAny();
 	}
-
+	
+	public String getAnnotationValueByAnnotationName(OWLClass clazz, String property) {
+		Optional<OWLAnnotationAssertionAxiom> assertionAxiom = EntitySearcher.getAnnotationAssertionAxioms(clazz, ontology).filter(assertion ->
+			property.equals(assertion.getProperty().getIRI().getShortForm())).findFirst();
+		if (assertionAxiom.isPresent()) {
+			OWLAnnotationAssertionAxiom axiom = assertionAxiom.get();
+			if (axiom.getValue() instanceof OWLLiteralImplString) {
+				return ((OWLLiteralImplString) axiom.getValue()).getLiteral(); 
+			}
+		}
+		return null;
+	}
 
 }
