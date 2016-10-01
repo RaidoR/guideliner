@@ -41,15 +41,13 @@ public class OntologyEvaluatorService {
 		this.builder = builder;
 	}
 
-	public EvaluationResult evaluate(OWLClass guideline) {
+	public EvaluationResult evaluate(OWLClass guideline, String url) {
 		// get guideline
 		GuidelinetElement guidelineElement = fillWithGuidelineElement(guideline);
 
 		WebDriver driver = initialiseDriver();
 
-		driver.get("https://www.etis.ee");
-
-		EvaluationResult result = new EvaluationResult();
+		driver.get(url);
 
 		if (guidelineElement instanceof UIPage) {
 			UIPageAdaptor adaptor = new UIPageAdaptor();

@@ -7,9 +7,13 @@ import lombok.Data;
 
 import org.openqa.selenium.WebDriver;
 
+import usability.estimation.result.FailedElement;
+
 @Data
 public class AbstractAdaptor {
 
+	protected static final String NO_IMAGE = "NONE";
+	
 	protected WebDriver driver;
 	
 	protected Integer getAmountOfUnit(String string, Unit unit) {
@@ -22,6 +26,15 @@ public class AbstractAdaptor {
 		   return  lines.length;
 		}
 		return null;
+	}
+	
+	FailedElement prepareFailedElement(String type, String text, String description, String path) {
+		FailedElement element = new FailedElement();
+		element.setType(type);
+		element.setText(text);
+		element.setDescription(description);
+		element.setPathToElement(path);
+		return element;
 	}
 	
 }

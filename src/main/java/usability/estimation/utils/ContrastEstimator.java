@@ -2,6 +2,7 @@ package usability.estimation.utils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebElement;
 
 import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
+import usability.estimation.result.FailedElement;
 import usability.estimation.result.ResultType;
 import deprecated.ContrastUtils;
 
@@ -23,12 +25,14 @@ public class ContrastEstimator {
 
 	// TODO should use data from variable
 	public EvaluationResult estimate(List<WebElement> allLinks, WebDriver driver) throws IOException {
+		Screenshoter screenshoter = new Screenshoter();
+		
 		EvaluationResult result = new EvaluationResult();
 		result.setResult(ResultType.SUCCESS);
 		int amountOfIncorrectLinks = 0;
 		int amountOfProcessesLinks = 0;
 
-		BufferedImage screenshot = Screenshoter.makeScreenshot(driver);
+		BufferedImage screenshot = screenshoter.makeScreenshot(driver);
 
 		for (WebElement ele : allLinks) {
 			try {
@@ -39,6 +43,7 @@ public class ContrastEstimator {
 
 				System.out.println("linktext " + ele.getText());
 				String color = ele.getCssValue("color");
+				System.out.println("color: " + color);
 //				String hexaColor = ContrastUtils
 //						.convertCssColorToHexadecimalFormat(color);
 
@@ -66,7 +71,8 @@ public class ContrastEstimator {
 							"Element with text %s does not have required contrast of "
 									+ "%f. Actual contrast is %f",
 									ele.getText(), requiredContrast, contrastRatio);
-					System.out.println(message);
+					File file = screenshoter.takeScreenshot(screenshot, ele, driver);
+					result.getFailedElements().add(prepareFailedElement("LINK", ele.getText(), message, file.getName()));
 				}
 
 			} catch (Exception e) {
@@ -114,6 +120,15 @@ public class ContrastEstimator {
 			return true;
 		}
 		return false;
+	}
+	
+	FailedElement prepareFailedElement(String type, String text, String description, String path) {
+		FailedElement element = new FailedElement();
+		element.setType(type);
+		element.setText(text);
+		element.setDescription(text);
+		element.setPathToElement(path);
+		return element;
 	}
 
 }

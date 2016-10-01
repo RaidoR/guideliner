@@ -1,7 +1,6 @@
 package usability.estimation;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,9 +33,12 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		for (WebElement el : findElements) {
 			Integer amountOfUnits = getAmountOfUnit(el.getText(), page.getUnit());			
 			 if (amountOfUnits > page.getContentLength()) {
+				 String description = "Amount of " + page.getUnit() + " was " + amountOfUnits;
+				 result.getFailedElements().add(prepareFailedElement("UI Page", "Home page", description, NO_IMAGE));
+					
 				 result.setElementType(ElementType.PAGE);
 				 result.setResult(ResultType.FAIL);
-				 result.setDescription("Amount of " + page.getUnit() + " was " + amountOfUnits);
+				 result.setDescription(description);
 			 }
 		}
 		return result;

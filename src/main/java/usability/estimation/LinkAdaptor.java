@@ -37,6 +37,7 @@ public class LinkAdaptor extends AbstractAdaptor {
 		for (WebElement el : findElements) {
 			Integer amountOfUnits = getAmountOfUnit(el.getText(), page.getUnit());			
 			 if (amountOfUnits > page.getContentLength()) {
+				 System.out.println(el.getText());
 				 result.setResult(ResultType.FAIL);
 				 result.setDescription("Amount of " + page.getUnit() + " was " + amountOfUnits);
 			 }
