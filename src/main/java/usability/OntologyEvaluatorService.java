@@ -34,18 +34,21 @@ public class OntologyEvaluatorService {
 
 	private GuildelineBuilderService builder;
 
+	private WebDriver driver;
+	
 	@Autowired
 	public OntologyEvaluatorService(OntologyRepository ontologyRepository,
 			GuildelineBuilderService builder) {
 		this.ontologyRepository = ontologyRepository;
 		this.builder = builder;
+		driver = initialiseDriver(); 
 	}
 
 	public EvaluationResult evaluate(OWLClass guideline, String url) {
 		// get guideline
 		GuidelinetElement guidelineElement = fillWithGuidelineElement(guideline);
 
-		WebDriver driver = initialiseDriver();
+//		WebDriver driver = initialiseDriver();
 
 		driver.get(url);
 

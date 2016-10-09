@@ -41,9 +41,9 @@ public class ContrastEstimator {
 				}
 				amountOfProcessesLinks++;
 
-				System.out.println("linktext " + ele.getText());
+//				System.out.println("linktext " + ele.getText());
 				String color = ele.getCssValue("color");
-				System.out.println("color: " + color);
+//				System.out.println("color: " + color);
 //				String hexaColor = ContrastUtils
 //						.convertCssColorToHexadecimalFormat(color);
 
@@ -69,7 +69,7 @@ public class ContrastEstimator {
 					amountOfIncorrectLinks++;
 					String message = String.format(
 							"Element with text %s does not have required contrast of "
-									+ "%f. Actual contrast is %f",
+									+ "%.2f. Actual contrast is %.2f",
 									ele.getText(), requiredContrast, contrastRatio);
 					File file = screenshoter.takeScreenshot(screenshot, ele, driver);
 					result.getFailedElements().add(prepareFailedElement("LINK", ele.getText(), message, file.getName()));
@@ -126,7 +126,7 @@ public class ContrastEstimator {
 		FailedElement element = new FailedElement();
 		element.setType(type);
 		element.setText(text);
-		element.setDescription(text);
+		element.setDescription(description);
 		element.setPathToElement(path);
 		return element;
 	}

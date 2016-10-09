@@ -89,14 +89,14 @@ public class OntologyService {
 		    	List<FailedElement> elements = new ArrayList<FailedElement>();
 		    	FailedElement elmnt = new FailedElement();
 		    	elmnt.setPathToElement("screen1474980102547.24.png");
-		    	elmnt.setDescription("Required contrast is 4.500000. Actual contrast is 4.175318");
+		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 4.17");
 		    	elmnt.setText("HERA ühiskonkursil rahastuse saanud projekti on kaasa ...");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
 		    	
 		    	 elmnt = new FailedElement();
 		    	elmnt.setPathToElement("sisene.jpg");
-		    	elmnt.setDescription("Required contrast is 4.500000. Actual contrast is 3.453423");
+		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 3.45");
 		    	elmnt.setText("Sisene");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
@@ -105,7 +105,7 @@ public class OntologyService {
 		    	
 		    	elmnt = new FailedElement();
 		    	elmnt.setPathToElement("screen1474980098985.1.png");
-		    	elmnt.setDescription("Required contrast is 4.500000. Actual contrast is 4.453423");
+		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 4.45");
 		    	elmnt.setText("Vanemad uudised");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
@@ -162,7 +162,6 @@ public class OntologyService {
 		    	result.setGuideline(guide);
 			}
 			
-
 		}
 		return results;
 	}
