@@ -1,7 +1,6 @@
 package usability;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
@@ -12,20 +11,22 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ee.ttu.usability.domain.element.GuidelinetElement;
-import ee.ttu.usability.domain.element.content.Paragraph;
-import ee.ttu.usability.domain.element.link.Link;
-import ee.ttu.usability.domain.page.UIPage;
-import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
+import usability.estimation.FormAdaptor;
+import usability.estimation.GraphicAdaptor;
 import usability.estimation.LinkAdaptor;
+import usability.estimation.NavigationAdaptor;
 import usability.estimation.ParagrapgAdaptor;
 import usability.estimation.UIPageAdaptor;
-import usability.estimation.result.EvaluationReport;
 import usability.estimation.result.EvaluationResult;
+import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.content.Paragraph;
+import ee.ttu.usability.domain.element.link.Form;
+import ee.ttu.usability.domain.element.link.Graphic;
+import ee.ttu.usability.domain.element.link.Link;
+import ee.ttu.usability.domain.element.navigation.Navigation;
+import ee.ttu.usability.domain.page.UIPage;
 
 @Service
 public class OntologyEvaluatorService {
@@ -75,7 +76,34 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
-		driver.close();
+		if (guidelineElement instanceof Form) {
+			try {
+				FormAdaptor adaptor = new FormAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Form) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (guidelineElement instanceof Graphic) {
+			try {
+				GraphicAdaptor adaptor = new GraphicAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Graphic) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (guidelineElement instanceof Navigation) {
+			try {
+				NavigationAdaptor adaptor = new NavigationAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Navigation) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	//	driver.close();
 		return null;
 	}
 
@@ -87,13 +115,9 @@ public class OntologyEvaluatorService {
 	}
 
 	public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {
-		GuidelinetElement guidelineElement = this
-				.getGuidelineElement(guideline);
+		GuidelinetElement guidelineElement = this.getGuidelineElement(guideline);
 
-		// fill based on instances
-		// TODO should filling support multiple instances
-		NodeSet<OWLNamedIndividual> instances = ontologyRepository
-				.getIndividuals(guideline);
+		NodeSet<OWLNamedIndividual> instances = ontologyRepository.getIndividuals(guideline);
 		builder.fillGuideline(instances, guidelineElement);
 
 		return guidelineElement;
@@ -106,35 +130,13 @@ public class OntologyEvaluatorService {
 				.getAxioms(selectedGuideline)) {
 			if (g instanceof OWLSubClassOfAxiomImpl) {
 				OWLSubClassOfAxiomImpl g2 = (OWLSubClassOfAxiomImpl) g;
-				// System.out.println("eeeeeeeeeeeeeee");
-				// System.out.println(g2.getSuperClass());
-				if (g2.getSuperClass() instanceof OWLObjectAllValuesFromImpl) {
-					OWLObjectAllValuesFromImpl allValuesOf = (OWLObjectAllValuesFromImpl) g2
-							.getSuperClass();
-					// System.out.println("aaaaaaaaaaa" +
-					// allValuesOf.getProperty().asOWLObjectProperty().getIRI().getFragment());
-					// System.out.println("aaaaaaaaaaa" +
-					// allValuesOf.getFiller() + "type of fille" +
-					// allValuesOf.getFiller().getClass());
-				}
 				if (g2.getSuperClass() instanceof OWLObjectSomeValuesFrom) {
 					OWLObjectSomeValuesFrom someValueOf = (OWLObjectSomeValuesFrom) g2
 							.getSuperClass();
 					if ("hasGuidelineElement".equalsIgnoreCase(someValueOf
 							.getProperty().asOWLObjectProperty().getIRI()
 							.getShortForm())) {
-						if ("UIPage".equalsIgnoreCase(someValueOf.getFiller()
-								.asOWLClass().getIRI().getShortForm())) {
-							return new UIPage();
-						} else if ("Link".equalsIgnoreCase(someValueOf
-								.getFiller().asOWLClass().getIRI()
-								.getShortForm())) {
-							return new Link();
-						} else if ("Paragraph".equalsIgnoreCase(someValueOf
-								.getFiller().asOWLClass().getIRI()
-								.getShortForm())) {
-							return new Paragraph();
-						}
+						return transform(someValueOf.getFiller().asOWLClass().getIRI().getShortForm());
 					}
 					// System.out.println("aaaaaaaaaaa" +
 					// someValueOf.getProperty().asOWLObjectProperty().getIRI().getShortForm());
@@ -145,17 +147,30 @@ public class OntologyEvaluatorService {
 				if (g2.getSuperClass() instanceof OWLObjectAllValuesFrom) {
 					OWLObjectAllValuesFrom valueOf = (OWLObjectAllValuesFrom) g2
 							.getSuperClass();
-					if ("Link".equalsIgnoreCase(valueOf
-							.getFiller().asOWLClass().getIRI()
-							.getShortForm())) {
-						return new Link();
-					}
+					return transform(valueOf.getFiller().asOWLClass().getIRI().getShortForm());
 				}
 			}
-
-			// System.out.println(g.getClass());
 		}
 		return null;
+	}
+	
+	private GuidelinetElement transform(String ontologyElement) {
+		switch (ontologyElement) {
+		case "UIPage":
+			return new UIPage();
+		case "Link":
+			return new Link();
+		case "Paragraph":
+			return new Paragraph();
+		case "Form":
+			return new Form();
+		case "Graphic":
+			return new Graphic();
+		case "Nav":
+			return new Navigation();
+		default:
+			return null;
+		}
 	}
 
 }

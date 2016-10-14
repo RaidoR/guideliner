@@ -1,6 +1,7 @@
 package core;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import usability.GuildelineBuilderService;
@@ -10,13 +11,12 @@ import usability.OntologyService;
 
 public class AbstractTest {
 
-	protected OntologyRepository ontology;
-	protected GuildelineBuilderService builder;
-	protected OntologyService ontologyService;
-	protected OntologyEvaluatorService evaluatorService;
+	protected static OntologyRepository ontology;
+	protected static GuildelineBuilderService builder;
+	protected static OntologyService ontologyService;
+	protected static OntologyEvaluatorService evaluatorService;
 	
-	@Before
-	public void setUp() throws OWLOntologyCreationException {
+	public static void setUpClasses() throws OWLOntologyCreationException {
 		ontology = new OntologyRepository();
 		builder = new GuildelineBuilderService(
 				ontology);

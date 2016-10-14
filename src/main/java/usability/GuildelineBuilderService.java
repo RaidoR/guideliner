@@ -3,6 +3,7 @@ package usability;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -11,8 +12,13 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Contrast;
+import ee.ttu.usability.domain.attribute.Label;
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.link.Form;
+import ee.ttu.usability.domain.element.navigation.ID;
+import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
@@ -82,6 +88,12 @@ public class GuildelineBuilderService {
 			 } else if ("Line".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.LINE);
 				 printOwlObjectProperty(objectProperty);
+			 } else if ("KByte".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 element.setUnit(Unit.KBYTE);
+				 printOwlObjectProperty(objectProperty);
+			 } else if ("WordInSentence".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 element.setUnit(Unit.WORDS_IN_SENTENCE);
+				 printOwlObjectProperty(objectProperty);
 			 }
 		 }
 		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
@@ -108,15 +120,45 @@ public class GuildelineBuilderService {
 					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
 					if (element instanceof UIPage) {
 						((UIPage) element).setHorizontalScroll(scroll);
+					} else if (element instanceof Navigation) {
+						((Navigation) element).setHorizontalScroll(scroll);
+					}
+					
+				}
+				break;
+			case "hasValue" :
+				Optional<OWLClassExpression> entityTypeOfIndividual12 = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
+				if ("Id".equalsIgnoreCase(((OWLClassImpl) entityTypeOfIndividual12.get()).getIRI().getShortForm())) {
+					ID id = new ID();
+					id.setValue(dataProperty.getObject().getLiteral());
+					if (element instanceof Navigation) {
+						((Navigation) element).setId(id);
 					}
 				}
-				break;		
+				break;
+			case "isValued" :
+				Optional<OWLClassExpression> entityTypeOfIndividual2 = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
+				if ("AlternativeText".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {
+					AlternativeText text = new AlternativeText();
+					text.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof Form) {
+						((Form) element).setAlternativeText(text);
+					}
+				}
+				if ("Label".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {
+					Label label = new Label();
+					label.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof Form) {
+						((Form) element).setLabel(label);
+					}
+				}
+				break;
 		}
 	}
 	
-	public void getTest() {
-		
-	}
+	
+	
+
 	
 	public static void printOwlObjectProperty(OWLObjectPropertyAssertionAxiomImpl objectProperty) {
 		 System.out.println(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm());

@@ -56,18 +56,25 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("10-11_UseAppropriateTextLinkLengths");
-//    	OWLClass selectedGuideline = ontologyRepository.loadClass("08-01_EliminateHorizontalScrolling");
-    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
-    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
-    	Guideline guideline = ontologyService.fillWithGuidelineInformation(selectedGuideline, "03-03_DoNotUseColorAloneToConveyInformation");
-    	result.setGuideline(guideline);
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("08-01_EliminateHorizontalScrolling");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("14-09_LimitTheUseOfImages");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("15-07_LimitTheNumberOfWordsAndSentences");
+
+//    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
+//    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
+//    	Guideline guideline = ontologyService.fillWithGuidelineInformation(selectedGuideline, "03-03_DoNotUseColorAloneToConveyInformation");
+//    	result.setGuideline(guideline);
+//    	
+//    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("05-07_LimitHomePageLength");
+//    	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
+//    	Guideline guideline2 = ontologyService.fillWithGuidelineInformation(selectedGuideline2, "05-07_LimitHomePageLength");
+//    	result2.setGuideline(guideline2); 
     	
-    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("05-07_LimitHomePageLength");
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
     	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
-    	Guideline guideline2 = ontologyService.fillWithGuidelineInformation(selectedGuideline2, "05-07_LimitHomePageLength");
-    	result2.setGuideline(guideline2);
     	
-        return Arrays.asList(result, result2);
+        return Arrays.asList(result2);
     }
     
     @RequestMapping("/retrieve")
@@ -80,6 +87,7 @@ public class UsabilityController {
         return ontologyService.getAllUsabilityGuidelinesHardCodedWithResults();
     }
 
+    // TODO move to setting contoller
     @RequestMapping(value = "/downloadImage", method = RequestMethod.GET)
     public void downloadImage(HttpServletRequest request,
             HttpServletResponse response, @RequestParam String name) throws IOException {

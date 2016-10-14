@@ -2,5 +2,16 @@ package usability.estimation.result;
 
 public enum ElementType {
 
-	PAGE, LINK;
+	// main element types
+	PAGE, 
+	LINK, 
+	FORM,
+	GRAPHIC,
+	PARAGRAPH,
+	NAVIGATION,
+	// sub elemetn types
+	TEXT_INPUT,
+	SELECT_INPUT
+	
+	;
 }

@@ -6,4 +6,6 @@ import lombok.Setter;
 @Getter@Setter
 public class AlternativeText extends AbstractAttribute {
 
+	private boolean isValued = false;
+	
 }
