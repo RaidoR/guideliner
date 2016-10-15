@@ -16,6 +16,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import usability.estimation.FormAdaptor;
 import usability.estimation.GraphicAdaptor;
 import usability.estimation.LinkAdaptor;
+import usability.estimation.MultimediaAdaptor;
 import usability.estimation.NavigationAdaptor;
 import usability.estimation.ParagrapgAdaptor;
 import usability.estimation.UIPageAdaptor;
@@ -25,6 +26,7 @@ import ee.ttu.usability.domain.element.content.Paragraph;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Link;
+import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 
@@ -54,9 +56,13 @@ public class OntologyEvaluatorService {
 		driver.get(url);
 
 		if (guidelineElement instanceof UIPage) {
-			UIPageAdaptor adaptor = new UIPageAdaptor();
-			adaptor.setDriver(driver);
-			return adaptor.execute((UIPage) guidelineElement);
+			try {
+				UIPageAdaptor adaptor = new UIPageAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((UIPage) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		if (guidelineElement instanceof Link) {
 			try {
@@ -99,6 +105,15 @@ public class OntologyEvaluatorService {
 				NavigationAdaptor adaptor = new NavigationAdaptor();
 				adaptor.setDriver(driver);
 				return adaptor.execute((Navigation) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (guidelineElement instanceof Multimedia) {
+			try {
+				MultimediaAdaptor adaptor = new MultimediaAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Multimedia) guidelineElement);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -168,6 +183,8 @@ public class OntologyEvaluatorService {
 			return new Graphic();
 		case "Nav":
 			return new Navigation();
+		case "MultimediaContent":
+			return new Multimedia();
 		default:
 			return null;
 		}

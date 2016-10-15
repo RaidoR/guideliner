@@ -15,6 +15,7 @@ import ee.ttu.usability.domain.element.content.Paragraph;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Link;
+import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 
@@ -171,5 +172,36 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getHorizontalScroll().getValue());
 		Assert.assertNotNull(guidelineElement.getId().getValue());
 	}
+	
+	@Test
+	public void testThatConstructionWorksForRule03_05() {
+		// given
+		OWLClass guideline = ontology
+				.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
+		
+		// when
+		Multimedia guidelineElement = (Multimedia) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+	}
+	
+	@Test
+	public void testThatConstructionWorksForRule06_10() {
+		// given
+		OWLClass guideline = ontology.loadClass("06-10_SetAppropriatePageLengths");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHeight());
+		Assert.assertNotNull(guidelineElement.getHeight().getContentLength());
+		Assert.assertNotNull(guidelineElement.getHeight().getUnit());
+
+	}
+
 
 }

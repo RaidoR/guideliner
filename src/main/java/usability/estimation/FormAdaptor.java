@@ -21,8 +21,6 @@ import ee.ttu.usability.domain.element.link.Form;
 @Slf4j
 public class FormAdaptor extends AbstractAdaptor {
 	
-
-	
 	public EvaluationResult execute(Form form) throws IOException {
 		if (form.getLabel() != null) {
 			return evaluateExistanceOfLabal(form);

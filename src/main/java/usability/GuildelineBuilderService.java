@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Contrast;
+import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.Label;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.link.Form;
+import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
@@ -81,6 +83,7 @@ public class GuildelineBuilderService {
 	}
 	
 	public void fillWithObjectProperty(GuidelinetElement element, OWLObjectPropertyAssertionAxiomImpl objectProperty) {
+		Optional<OWLClassExpression> ent = null;
 		 if ("hasUnit".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 			 if ("Word".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.WORD);
@@ -94,6 +97,15 @@ public class GuildelineBuilderService {
 			 } else if ("WordInSentence".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.WORDS_IN_SENTENCE);
 				 printOwlObjectProperty(objectProperty);
+			 } else if ("Pixel".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof UIPage) {
+							if (((UIPage) element).getHeight() == null)
+								((UIPage) element).setHeight(new ee.ttu.usability.domain.pageattributes.Height());
+							((UIPage) element).getHeight().setUnit(Unit.PIXCEL);
+					 }
+				 }
 			 }
 		 }
 		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
@@ -102,8 +114,19 @@ public class GuildelineBuilderService {
 	}
 
 	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty) {
+		Optional<OWLClassExpression> ent = null;
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 			case "hasContentLength" : 
+				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());	  
+				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					if (element instanceof UIPage) {
+						if (((UIPage) element).getHeight() == null)
+							((UIPage) element).setHeight(new ee.ttu.usability.domain.pageattributes.Height());
+						((UIPage) element).getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+					}
+					
+				 }		 
+		
 				 if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
 					 element.setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 				 }
@@ -143,6 +166,9 @@ public class GuildelineBuilderService {
 					text.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					if (element instanceof Form) {
 						((Form) element).setAlternativeText(text);
+					}
+					if (element instanceof Multimedia) {
+						((Multimedia) element).setAlternativeText(text);
 					}
 				}
 				if ("Label".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {

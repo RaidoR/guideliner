@@ -4,9 +4,9 @@ import jevg.ee.ttu.dataproperty.Unit;
 import lombok.Data;
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.attribute.Distance;
-import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.ProhibitedWordType;
 import ee.ttu.usability.domain.attribute.Width;
+import ee.ttu.usability.domain.pageattributes.Height;
 
 @Data
 public class GuidelinetElement {

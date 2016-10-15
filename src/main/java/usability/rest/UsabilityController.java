@@ -60,6 +60,8 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("14-09_LimitTheUseOfImages");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("15-07_LimitTheNumberOfWordsAndSentences");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
 
 //    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 //    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
@@ -71,7 +73,7 @@ public class UsabilityController {
 //    	Guideline guideline2 = ontologyService.fillWithGuidelineInformation(selectedGuideline2, "05-07_LimitHomePageLength");
 //    	result2.setGuideline(guideline2); 
     	
-    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("06-10_SetAppropriatePageLengths");
     	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
     	
         return Arrays.asList(result2);

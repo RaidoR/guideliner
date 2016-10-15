@@ -8,10 +8,12 @@ public enum ElementType {
 	FORM,
 	GRAPHIC,
 	PARAGRAPH,
+	MULTIMEDIA,
 	NAVIGATION,
 	// sub elemetn types
 	TEXT_INPUT,
-	SELECT_INPUT
+	SELECT_INPUT,
+	IMAGE
 	
 	;
 }

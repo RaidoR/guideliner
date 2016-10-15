@@ -1,6 +1,8 @@
 package usability.estimation;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import jevg.ee.ttu.dataproperty.Unit;
@@ -21,6 +23,8 @@ public class AbstractAdaptor {
 	protected Screenshoter screenshoter = new Screenshoter();
 	
 	protected BufferedImage screenshot = null;
+	
+	protected List<FailedElement> failedElements = new ArrayList<FailedElement>();
 	
 	protected Integer getAmountOfUnit(String string, Unit unit) {
 		if (Unit.WORD == unit) {

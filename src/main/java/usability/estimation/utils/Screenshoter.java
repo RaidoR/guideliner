@@ -47,6 +47,20 @@ public class Screenshoter {
 			return null;
 		}
 	}
+	
+	public File save2(WebElement element) {
+		try {
+			BufferedImage dest = ImageIO.read(element.getScreenshotAs(OutputType.FILE));
+			File screenshotOfElement = new File(Configuration.reportsFolder,
+					generateScreenshotFileName() + ".png");
+			ensureFolderExists(screenshotOfElement);
+			ImageIO.write(dest, "png", screenshotOfElement);
+			return screenshotOfElement;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public BufferedImage takeScreenshotAsImage(BufferedImage screenshot, WebElement element,
 			WebDriver driver) {
