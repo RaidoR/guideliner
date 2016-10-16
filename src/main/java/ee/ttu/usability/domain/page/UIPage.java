@@ -13,5 +13,7 @@ public class UIPage extends GuidelinetElement {
 	private HorizontalScroll horizontalScroll;
 
 	private VerticalScroll verticalScroll;
+	
+    private Layout layout;
 
 }

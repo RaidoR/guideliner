@@ -200,8 +200,34 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getHeight());
 		Assert.assertNotNull(guidelineElement.getHeight().getContentLength());
 		Assert.assertNotNull(guidelineElement.getHeight().getUnit());
-
 	}
 
+	@Test
+	public void testThatConstructionWorksForRule06_08() {
+		// given
+		OWLClass guideline = ontology.loadClass("06-08_UseFluidLayouts");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getLayout());
+		Assert.assertNotNull(guidelineElement.getLayout().getLayoutType());
+	}
+	
+	@Test
+	public void testThatConstructionWorksForRule07_08() {
+		// given
+		OWLClass guideline = ontology.loadClass("07-08_KeepNavigationOnlyPagesShort");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getVerticalScroll());
+		Assert.assertNotNull(guidelineElement.getVerticalScroll().getValue());
+	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
@@ -25,8 +26,14 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getHorizontalScroll() != null) {
 			return evaluateHorizontalScroll(page);
 		}
+		if (page.getVerticalScroll() != null) {
+			return evaluateVerticalScrolling(page);
+		}
 		if (page.getHeight() != null) {
 			return evaluateHeight(page);
+		}
+		if (page.getLayout() != null) {
+			return evaluateLayout(page);
 		}
 		return null;
 	}
@@ -90,5 +97,57 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			result.setResult(ResultType.FAIL);
 		return result;
 	}
-	
+
+	private EvaluationResult evaluateVerticalScrolling(UIPage page) {
+		System.out.println("vertical scrolling");
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("scroll(10000, 0);");
+		
+		Long value = (Long) executor.executeScript("return window.scrollX;");
+
+		if (value > page.getVerticalScroll().getValue()) {
+			FailedElement failed = new FailedElement();
+			failed.setType(ElementType.PAGE.name());
+			failed.setText("Page");
+			failed.setDescription("Horizontal scrol value is bigger then defined. Real value is : " + value);		
+			failed.setPathToElement(NO_IMAGE);
+			result.getFailedElements().add(failed);
+		}
+		
+		if (result.getFailedElements().size() == 0)
+			result.setResult(ResultType.SUCCESS);
+		else 
+			result.setResult(ResultType.FAIL);
+		return result;
+	}
+
+	private EvaluationResult evaluateLayout(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		
+		driver.manage().window().setSize(new Dimension(1100, 768));
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("scroll(1000, 0);");
+		Long value = (Long) executor.executeScript("return window.scrollX;");
+		System.out.println(value);
+		if (value != 0) {
+			FailedElement failed = new FailedElement();
+			failed.setType(ElementType.PAGE.name());
+			failed.setText("Page");
+			failed.setDescription("Layout is not compatible with changing the size of brawser.");		
+			failed.setPathToElement(NO_IMAGE);
+			result.getFailedElements().add(failed);
+		}
+		
+		if (result.getFailedElements().size() == 0)
+			result.setResult(ResultType.SUCCESS);
+		else 
+			result.setResult(ResultType.FAIL);
+		
+		return result;
+	}
+
 }

@@ -21,8 +21,11 @@ import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
+import ee.ttu.usability.domain.page.Layout;
+import ee.ttu.usability.domain.page.LayoutType;
 import ee.ttu.usability.domain.page.UIPage;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
+import ee.ttu.usability.domain.pageattributes.VerticalScroll;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
@@ -108,6 +111,19 @@ public class GuildelineBuilderService {
 				 }
 			 }
 		 }
+		 
+		 if ("hasLayoutType".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+			 if ("Layout".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Layout layout = new Layout();
+					layout.setLayoutType(LayoutType.convertToLayoutType(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setLayout(layout);
+					}
+					
+			 }
+		 }
+		 
 		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 		     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element);
 		 }	 
@@ -147,6 +163,13 @@ public class GuildelineBuilderService {
 						((Navigation) element).setHorizontalScroll(scroll);
 					}
 					
+				}
+				if ("VScroll".equals(((OWLClassImpl) entityTypeOfIndividual.get()).getIRI().getShortForm())) {
+					VerticalScroll scroll = new VerticalScroll();
+					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setVerticalScroll(scroll);
+					}
 				}
 				break;
 			case "hasValue" :
