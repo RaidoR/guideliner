@@ -10,6 +10,8 @@ public enum ElementType {
 	PARAGRAPH,
 	MULTIMEDIA,
 	NAVIGATION,
+	BUTTON,
+	NUMBERED_LIST,
 	// sub elemetn types
 	TEXT_INPUT,
 	SELECT_INPUT,

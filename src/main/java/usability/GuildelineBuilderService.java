@@ -17,12 +17,15 @@ import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.Label;
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
+import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
 import ee.ttu.usability.domain.page.Layout;
 import ee.ttu.usability.domain.page.LayoutType;
+import ee.ttu.usability.domain.page.LoadTime;
 import ee.ttu.usability.domain.page.UIPage;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
 import ee.ttu.usability.domain.pageattributes.VerticalScroll;
@@ -109,6 +112,18 @@ public class GuildelineBuilderService {
 							((UIPage) element).getHeight().setUnit(Unit.PIXCEL);
 					 }
 				 }
+			 } else if ("MiliSecond".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+				 if ("LoadTime".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof UIPage) {
+							if (((UIPage) element).getLoadTime() == null)
+								((UIPage) element).setLoadTime(new LoadTime());
+							((UIPage) element).getLoadTime().setUnit(Unit.MILI_SECOND);
+					 }
+				 }
+			 } else if ("Element".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 element.setUnit(Unit.ELEMENT);
+				 printOwlObjectProperty(objectProperty);
 			 }
 		 }
 		 
@@ -141,11 +156,13 @@ public class GuildelineBuilderService {
 						((UIPage) element).getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 					}
 					
-				 }		 
-		
-				 if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
+				 } else if ("LoadTime".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						if (((UIPage) element).getLoadTime() == null)
+							((UIPage) element).setLoadTime(new LoadTime());
+						((UIPage) element).getLoadTime().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+				 } else if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
 					 element.setContentLength(new Integer(dataProperty.getObject().getLiteral()));
-				 }
+				 } 
 				 break;
 			case "hasContrast" :
 				Contrast contrast = new Contrast();
@@ -180,6 +197,12 @@ public class GuildelineBuilderService {
 					if (element instanceof Navigation) {
 						((Navigation) element).setId(id);
 					}
+				} else if ("ProhibitedWords".equalsIgnoreCase(((OWLClassImpl) entityTypeOfIndividual12.get()).getIRI().getShortForm())) {
+					ProhibitedWords words = new ProhibitedWords();
+					words.setValue(dataProperty.getObject().getLiteral());
+					if (element instanceof UIPage) {
+						((UIPage) element).setProhibitedWords(words);
+					}
 				}
 				break;
 			case "isValued" :
@@ -192,6 +215,9 @@ public class GuildelineBuilderService {
 					}
 					if (element instanceof Multimedia) {
 						((Multimedia) element).setAlternativeText(text);
+					}
+					if (element instanceof Button) {
+						((Button) element).setAlternativeText(text);
 					}
 				}
 				if ("Label".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {

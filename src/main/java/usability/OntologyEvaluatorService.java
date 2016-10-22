@@ -13,20 +13,24 @@ import org.springframework.stereotype.Service;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
+import usability.estimation.ButtonAdaptor;
 import usability.estimation.FormAdaptor;
 import usability.estimation.GraphicAdaptor;
 import usability.estimation.LinkAdaptor;
 import usability.estimation.MultimediaAdaptor;
 import usability.estimation.NavigationAdaptor;
+import usability.estimation.NumberedListAdaptor;
 import usability.estimation.ParagrapgAdaptor;
 import usability.estimation.UIPageAdaptor;
 import usability.estimation.result.EvaluationResult;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.content.Paragraph;
+import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.element.link.Multimedia;
+import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 
@@ -54,7 +58,8 @@ public class OntologyEvaluatorService {
 //		WebDriver driver = initialiseDriver();
 
 		driver.get(url);
-
+		guidelineElement.setUrl(url);
+		
 		if (guidelineElement instanceof UIPage) {
 			try {
 				UIPageAdaptor adaptor = new UIPageAdaptor();
@@ -114,6 +119,24 @@ public class OntologyEvaluatorService {
 				MultimediaAdaptor adaptor = new MultimediaAdaptor();
 				adaptor.setDriver(driver);
 				return adaptor.execute((Multimedia) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (guidelineElement instanceof Button) {
+			try {
+				ButtonAdaptor adaptor = new ButtonAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Button) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (guidelineElement instanceof  NumberedList) {
+			try {
+				NumberedListAdaptor adaptor = new NumberedListAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((NumberedList) guidelineElement);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -185,6 +208,10 @@ public class OntologyEvaluatorService {
 			return new Navigation();
 		case "MultimediaContent":
 			return new Multimedia();
+		case "Button":
+			return new Button();
+		case "NumberedList":
+			return new NumberedList();
 		default:
 			return null;
 		}

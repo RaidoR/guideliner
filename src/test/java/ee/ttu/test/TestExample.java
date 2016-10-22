@@ -12,10 +12,12 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import core.AbstractTest;
 import ee.ttu.usability.domain.element.content.Paragraph;
+import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.element.link.Multimedia;
+import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 
@@ -229,5 +231,62 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getVerticalScroll());
 		Assert.assertNotNull(guidelineElement.getVerticalScroll().getValue());
 	}
+
+	@Test
+	public void testThatConstructionWorksForRule03_09() {
+		// given
+		OWLClass guideline = ontology.loadClass("03-09_ProvideClientSideImageMaps");
+		
+		// when
+		Button guidelineElement = (Button) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+	}
+	
+	@Test
+	public void testThatConstructionWorksForRule04_04() {
+		// given
+		OWLClass guideline = ontology.loadClass("04-04_DesignForUserTypicalConnectionSpeed");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getLoadTime());
+		Assert.assertNotNull(guidelineElement.getLoadTime().getContentLength());
+		Assert.assertNotNull(guidelineElement.getLoadTime().getUnit());
+	}
+
+	@Test
+	public void testThatConstructionWorksForRule05_03() {
+		// given
+		OWLClass guideline = ontology.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getProhibitedWords());
+		Assert.assertNotNull(guidelineElement.getProhibitedWords().getValue());
+	}
+	
+	@Test
+	public void testThatConstructionWorksForRule05_06() {
+		// given
+		OWLClass guideline = ontology.loadClass("05-06_EnsureTheHomepageLooksLikeHomepage");
+		
+		// when
+		NumberedList guidelineElement = (NumberedList) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getContentLength());
+		Assert.assertNotNull(guidelineElement.getUnit());
+	}
+
 
 }

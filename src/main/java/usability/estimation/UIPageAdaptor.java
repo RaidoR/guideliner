@@ -35,7 +35,34 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getLayout() != null) {
 			return evaluateLayout(page);
 		}
+		if (page.getLoadTime() != null) {
+			return evaluateLoadTime(page);
+		}
+		if (page.getProhibitedWords() != null) {
+			return evaluateProhibitedWords(page);
+		}
 		return null;
+	}
+
+	private EvaluationResult evaluateLoadTime(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+		
+		long start = System.currentTimeMillis();
+	
+		driver.get(page.getUrl());
+	
+		WebElement ele = driver.findElement(By.tagName("body"));
+		long finish = System.currentTimeMillis();
+		long totalTime = finish - start; 
+		System.out.println("Total Time for page load - "+totalTime); 
+		 
+		if (totalTime > page.getLoadTime().getContentLength()) {
+			 result.setResult(ResultType.FAIL);
+			 result.setDescription("Load time exceeded the expected. Load time : " + totalTime);
+		}
+		return result;
 	}
 
 	public EvaluationResult evaluateContentLength(UIPage page) {
@@ -55,8 +82,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		}
 		return result;
 	}
-	
-	
+
 	private EvaluationResult evaluateHorizontalScroll(UIPage page) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
@@ -148,6 +174,22 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			result.setResult(ResultType.FAIL);
 		
 		return result;
+	}
+	
+	private EvaluationResult evaluateProhibitedWords(UIPage page) {
+		log.debug("Evaluation evaluateProhibitedWords for UIPage");
+		EvaluationResult result = new EvaluationResult();
+		List<WebElement> findElements = driver.findElements(By.tagName("body"));
+		for (WebElement el : findElements) {
+			String entireText = el.getText();
+			for (String element : page.getProhibitedWords().getValue().split(",")) {
+				if (entireText.contains(element)) {
+					 result.getFailedElements().add(prepareFailedElement("UI Page", "Whole page", "The word " + element + "is not allowed" , NO_IMAGE));
+					 result.setElementType(ElementType.PAGE);
+				}
+			}
+		}
+		return setSuccessFlag(result);
 	}
 
 }

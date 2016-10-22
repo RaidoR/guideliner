@@ -26,6 +26,7 @@ import usability.OntologyService;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
 import usability.estimation.result.Guideline;
+import usability.estimation.result.ResultType;
 import usability.estimation.utils.Configuration;
 
 /**
@@ -64,7 +65,69 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("06-10_SetAppropriatePageLengths");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("06-08_UseFluidLayouts");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-09_ProvideClientSideImageMaps");
 
+    	List<EvaluationResult> results = new ArrayList<EvaluationResult>();
+    	
+    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
+    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
+    	Guideline guideline = ontologyService.fillWithGuidelineInformation(selectedGuideline, "03-03_DoNotUseColorAloneToConveyInformation");
+    	result.setGuideline(guideline);
+    	results.add(result);
+    	
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("05-07_LimitHomePageLength");
+    	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
+    	Guideline guideline2 = ontologyService.fillWithGuidelineInformation(selectedGuideline2, "05-07_LimitHomePageLength");
+    	result2.setGuideline(guideline2); 
+    	results.add(result2);
+		
+    	EvaluationResult result3 = new EvaluationResult();
+    	result3.setResult(ResultType.SUCCESS);
+    	selectedGuideline = ontologyRepository.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
+    	Guideline guideline3 = ontologyService.fillWithGuidelineInformation(selectedGuideline, "11-01_UseBlackTextonPlainHighContrastBackgrounds");
+    	result3.setGuideline(guideline3);
+    	results.add(result3);
+    	
+    	
+    	EvaluationResult result4 = new EvaluationResult();
+    	result4.setResult(ResultType.SUCCESS);
+    	selectedGuideline = ontologyRepository.loadClass("10-11_UseAppropriateTextLinkLengths");
+    	Guideline guideline4 = ontologyService.fillWithGuidelineInformation(selectedGuideline, "10-11_UseAppropriateTextLinkLengths");
+    	result4.setGuideline(guideline4);
+    	results.add(result4);
+    	
+    	EvaluationResult result5 = new EvaluationResult();
+    	result5.setResult(ResultType.SUCCESS);
+    	selectedGuideline = ontologyRepository.loadClass("08-01_EliminateHorizontalScrolling");
+    	Guideline guideline5 = ontologyService.fillWithGuidelineInformation(selectedGuideline, "08-01_EliminateHorizontalScrolling");
+    	result5.setGuideline(guideline5);
+    	results.add(result5);
+    	
+        return results;
+    }
+    
+    @RequestMapping("/usability2")
+    public List<EvaluationResult> sampleExample2(@RequestParam(value="guideline", defaultValue="05-07_LimitHomePageLength") String name, 
+    		@RequestParam(value="url", defaultValue="http://www.etis.ee") String webURL) {
+    	// http://localhost:8080/usability
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("05-07_LimitHomePageLength");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("10-11_UseAppropriateTextLinkLengths");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("08-01_EliminateHorizontalScrolling");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("14-09_LimitTheUseOfImages");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("15-07_LimitTheNumberOfWordsAndSentences");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("06-10_SetAppropriatePageLengths");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("06-08_UseFluidLayouts");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("03-09_ProvideClientSideImageMaps");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
+
+    	
 //    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 //    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
 //    	Guideline guideline = ontologyService.fillWithGuidelineInformation(selectedGuideline, "03-03_DoNotUseColorAloneToConveyInformation");
@@ -74,9 +137,11 @@ public class UsabilityController {
 //    	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
 //    	Guideline guideline2 = ontologyService.fillWithGuidelineInformation(selectedGuideline2, "05-07_LimitHomePageLength");
 //    	result2.setGuideline(guideline2); 
-    	
+//    	
+//    	return Arrays.asList(result, result2);
 
-    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("05-06_EnsureTheHomepageLooksLikeHomepage");
+    	
     	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
     	
         return Arrays.asList(result2);

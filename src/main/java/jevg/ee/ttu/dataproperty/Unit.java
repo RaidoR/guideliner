@@ -1,5 +1,5 @@
 package jevg.ee.ttu.dataproperty;
 
 public enum Unit {
-	WORD, LINE, KBYTE, PIXCEL, WORDS_IN_SENTENCE;
+	WORD, LINE, KBYTE, PIXCEL, ELEMENT, MILI_SECOND, WORDS_IN_SENTENCE;
 }

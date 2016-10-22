@@ -10,7 +10,9 @@ import lombok.Data;
 
 import org.openqa.selenium.WebDriver;
 
+import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
+import usability.estimation.result.ResultType;
 import usability.estimation.utils.Screenshoter;
 
 @Data
@@ -38,9 +40,6 @@ public class AbstractAdaptor {
 		return null;
 	}
 
-	
-	
-	
 	FailedElement prepareFailedElement(String type, String text, String description, String path) {
 		FailedElement element = new FailedElement();
 		element.setType(type);
@@ -48,6 +47,15 @@ public class AbstractAdaptor {
 		element.setDescription(description);
 		element.setPathToElement(path);
 		return element;
+	}
+	
+	protected EvaluationResult setSuccessFlag(EvaluationResult result) {
+		if (result.getFailedElements().size() == 0)
+			result.setResult(ResultType.SUCCESS);
+		else 
+			result.setResult(ResultType.FAIL);
+		
+		return result;
 	}
 	
 }

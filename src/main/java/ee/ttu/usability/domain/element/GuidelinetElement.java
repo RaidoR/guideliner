@@ -24,5 +24,7 @@ public class GuidelinetElement {
 	private Unit unit;
 	
 	private Integer contentLength;
+	
+	private String url;
 
 }
