@@ -275,12 +275,12 @@ public class TestExample extends AbstractTest {
 	}
 	
 	@Test
-	public void testThatConstructionWorksForRule05_06() {
+	public void testThatConstructionWorksForRule08_04() {
 		// given
-		OWLClass guideline = ontology.loadClass("05-06_EnsureTheHomepageLooksLikeHomepage");
+		OWLClass guideline = ontology.loadClass("08-04_UsePagingRatherThanScrolling");
 		
 		// when
-		NumberedList guidelineElement = (NumberedList) evaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) evaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);

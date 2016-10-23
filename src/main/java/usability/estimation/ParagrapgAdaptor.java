@@ -35,6 +35,45 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 	}
 
 	public EvaluationResult evaluateContentLength(Paragraph page) throws IOException {
+		if (Unit.WORDS_IN_SENTENCE == page.getUnit()) {
+			return evaluateWordsInSentence(page);
+		}
+		return evaluateWordsInParagraph(page);
+	}
+	
+	private EvaluationResult evaluateWordsInParagraph(Paragraph page) throws IOException {
+		log.debug("Evaluating evaluateWordsInParagraph");
+		screenshot = screenshoter.makeScreenshot(driver);
+		log.debug("Evaluation evaluateWordsInParagraph for Link");
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PARAGRAPH);
+		result.setResult(ResultType.SUCCESS);
+		List<WebElement> allLinks = getAllElelements(driver);
+		for (WebElement el : allLinks) {
+			try {
+				if (el.getText().trim().length() > 100) {
+					List<WebElement> subElements = el.findElements(By.cssSelector("*"));
+					if (subElements.size() > 0) {
+						continue;
+					}
+					String text = el.getText().trim();
+					Integer amountOfUnit = getAmountOfUnit(text, page.getUnit());
+					if (amountOfUnit > page.getContentLength()) {
+						File file = screenshoter.takeScreenshot(screenshot, el, driver);
+						 result.getFailedElements().add(prepareFailedElement(ElementType.PARAGRAPH.name(), ElementType.PARAGRAPH.name()
+								 , "Paragraph contains more words then exepcted: " + amountOfUnit , file.getName()));
+						 result.setElementType(ElementType.NUMBERED_LIST);
+					}
+				}
+			} catch (Exception ex) {
+				log.error(ex.getMessage(), ex);
+			}
+		}
+		
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateWordsInSentence(Paragraph page) throws IOException {
 		BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
 		
 		screenshot = screenshoter.makeScreenshot(driver);
@@ -75,14 +114,9 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 		}
 		
 		result.setFailedElements(failedElements);
-		if (failedElements.size() == 0)
-			result.setResult(ResultType.SUCCESS);
-		else 
-			result.setResult(ResultType.FAIL);
-		
-		return result;
+		return setSuccessFlag(result);
 	}
-	
+
 	private EvaluationResult evaluateContrast(Paragraph paragraph) throws IOException {
 		ContrastEstimator estimator = new ContrastEstimator();
 		List<WebElement> allLinks = getAllElelements(driver);
