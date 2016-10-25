@@ -1,13 +1,16 @@
 package usability.estimation;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import usability.estimation.result.ElementType;
@@ -41,9 +44,19 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getProhibitedWords() != null) {
 			return evaluateProhibitedWords(page);
 		}
+		if (page.getText() != null) {
+			return evaluateText(page);
+		}
 		return null;
 	}
 
+	public List<WebElement> getBoldText(WebDriver driver) {
+		List<WebElement> bolds = driver.findElements(By.tagName("b"));
+		List<WebElement> strongs = driver.findElements(By.tagName("strong"));
+		bolds.addAll(strongs);
+		return bolds;
+	}
+	
 	private EvaluationResult evaluateLoadTime(UIPage page) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
@@ -188,6 +201,31 @@ public class UIPageAdaptor extends AbstractAdaptor {
 					 result.setElementType(ElementType.PAGE);
 				}
 			}
+		}
+		return setSuccessFlag(result);
+	}
+	
+	private EvaluationResult evaluateText(UIPage page) throws IOException {
+		log.debug("Evaluating evaluateText");
+		screenshot = screenshoter.makeScreenshot(driver);
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+		
+		List<WebElement> texts = getBoldText(driver);
+		
+		for(WebElement ele : texts)
+		{
+			if (StringUtils.isEmpty(ele.getText())) {
+				continue;
+			}
+			if (ele.getText().length() > page.getText().getContentLength()) {
+				 File file = screenshoter.takeScreenshot(screenshot, ele, driver);
+				 String description = "Amount of Bold text was " + ele.getText().length();
+				 result.getFailedElements().add(prepareFailedElement("UI Page", "UI Page", description, file.getName()));
+			}
+			
+
 		}
 		return setSuccessFlag(result);
 	}

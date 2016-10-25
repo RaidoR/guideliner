@@ -287,6 +287,20 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getContentLength());
 		Assert.assertNotNull(guidelineElement.getUnit());
 	}
-
+	
+	@Test
+	public void testThatConstructionWorksForRule11_05() {
+		// given
+		OWLClass guideline = ontology.loadClass("11-05_UseBoldTextSparingly");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getText());
+		Assert.assertNotNull(guidelineElement.getText().getCaseType());
+		Assert.assertNotNull(guidelineElement.getText().getContentLength());
+	}
 
 }

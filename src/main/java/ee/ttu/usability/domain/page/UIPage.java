@@ -1,12 +1,10 @@
 package ee.ttu.usability.domain.page;
 
+import lombok.Data;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
 import ee.ttu.usability.domain.pageattributes.VerticalScroll;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class UIPage extends GuidelinetElement {
@@ -20,5 +18,7 @@ public class UIPage extends GuidelinetElement {
     private Layout layout;
     
     private LoadTime loadTime;
+    
+    private Text text;
 
 }

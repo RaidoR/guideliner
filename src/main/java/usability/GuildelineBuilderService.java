@@ -26,6 +26,7 @@ import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
 import ee.ttu.usability.domain.page.Layout;
 import ee.ttu.usability.domain.page.LayoutType;
 import ee.ttu.usability.domain.page.LoadTime;
+import ee.ttu.usability.domain.page.Text;
 import ee.ttu.usability.domain.page.UIPage;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
 import ee.ttu.usability.domain.pageattributes.VerticalScroll;
@@ -34,6 +35,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
 import jevg.ee.ttu.Guideline;
+import jevg.ee.ttu.dataproperty.Case;
 import jevg.ee.ttu.dataproperty.Unit;
 
 @Service
@@ -125,7 +127,7 @@ public class GuildelineBuilderService {
 				 element.setUnit(Unit.ELEMENT);
 				 printOwlObjectProperty(objectProperty);
 			 }
-		 }
+		 } 
 		 
 		 if ("hasLayoutType".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
@@ -136,6 +138,19 @@ public class GuildelineBuilderService {
 						((UIPage) element).setLayout(layout);
 					}
 					
+			 }
+		 }
+		 
+		 if ("hasCase".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			 if ("Bold".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+				 if ("Text".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof UIPage) {
+							if (((UIPage) element).getText() == null)
+								((UIPage) element).setText(new Text());
+							((UIPage) element).getText().setCaseType(Case.BOLD);
+					 }
+				 }
 			 }
 		 }
 		 
@@ -160,6 +175,10 @@ public class GuildelineBuilderService {
 						if (((UIPage) element).getLoadTime() == null)
 							((UIPage) element).setLoadTime(new LoadTime());
 						((UIPage) element).getLoadTime().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+				 } else if ("Text".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						if (((UIPage) element).getText() == null)
+							((UIPage) element).setText(new Text());
+						((UIPage) element).getText().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 				 } else if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
 					 element.setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 				 } 
