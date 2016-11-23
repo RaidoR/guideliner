@@ -67,8 +67,8 @@ public class TestExample extends AbstractTest {
 		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
-		Assert.assertNotNull(guidelineElement.getUnit());
 		Assert.assertNotNull(guidelineElement.getContentLength());
+		Assert.assertNotNull(guidelineElement.getUnit());
 	}
 	
 	@Test

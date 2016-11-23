@@ -146,6 +146,7 @@ public class OntologyEvaluatorService {
 	}
 
 	private WebDriver initialiseDriver() {
+		
 		// System.setProperty("webdriver.chrome.driver",
 		// "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
 		// return new ChromeDriver();
