@@ -303,4 +303,62 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getText().getContentLength());
 	}
 
+	// TODO implement
+	@Test
+	public void test1wcag_8_01_CheckHtmlStyle() {
+		// given
+		OWLClass guideline = ontology.loadClass("1wcag-8-01_CheckHtmlStyle");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHtml());
+		Assert.assertNotNull(guidelineElement.getHtml().isValid());
+	}
+
+	@Test
+	public void test1wcag_8_10_CheckOnClickIsUsedWithOnKeyDown() {
+		// given
+		OWLClass guideline = ontology.loadClass("1wcag-8-10_CheckOnClickIsUsedWithOnKeyDown");
+		
+		// when
+		Button guidelineElement = (Button) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getOnKeyPress());
+		Assert.assertNotNull(guidelineElement.getOnClick());
+	}
+	
+	@Test
+	public void test3wcag_8_15_CheckThatPageHasLinkToFrontPage() {
+		// given
+		OWLClass guideline = ontology.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHref());
+		Assert.assertNotNull(guidelineElement.getHref().getValue());
+	}
+	
+	@Test
+	public void test4wcag_8_16_CheckThatEveryPageHasTitle() {
+		// given
+		OWLClass guideline = ontology.loadClass("4wcag-8-16_CheckThatEveryPageHasTitle");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHref());
+		Assert.assertNotNull(guidelineElement.getHref().getValue());
+	}
+
+
 }

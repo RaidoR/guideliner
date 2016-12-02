@@ -13,6 +13,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import deprecated.HtmlValidator;
 import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
@@ -46,6 +47,12 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		}
 		if (page.getText() != null) {
 			return evaluateText(page);
+		}
+		if (page.getHtml() != null) {
+			return evaluateHtml(page);
+		}
+		if (page.getHref() != null) {
+			return evaluateHref(page);
 		}
 		return null;
 	}
@@ -227,6 +234,32 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			
 
 		}
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateHtml(UIPage page) {
+		HtmlValidator validator = new HtmlValidator();
+		return validator.test(driver.getPageSource());
+	}
+	
+	private EvaluationResult evaluateHref(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+		
+		List<WebElement> list=driver.findElements(By.xpath("//*[@href or @src]"));
+
+		for (WebElement e : list) {
+			String link = e.getAttribute("href");
+			if (null == link)
+				link = e.getAttribute("src");
+			if (link.equals(page.getHref().getValue())) {
+				return result;
+			}
+		}
+	    
+		result.getFailedElements().add(prepareFailedElement("UI Page", "", "Link is not found: " + page.getHref().getValue(), NO_IMAGE));
+	       
 		return setSuccessFlag(result);
 	}
 

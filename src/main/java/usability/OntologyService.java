@@ -88,25 +88,25 @@ public class OntologyService {
 		    	
 		    	List<FailedElement> elements = new ArrayList<FailedElement>();
 		    	FailedElement elmnt = new FailedElement();
-		    	elmnt.setPathToElement("screen1474980102547.24.png");
+		    	elmnt.setPathToElement("old_news.jpg");
 		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 4.17");
-		    	elmnt.setText("HERA ühiskonkursil rahastuse saanud projekti on kaasa ...");
+		    	elmnt.setText("News Achieve");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
 		    	
 		    	 elmnt = new FailedElement();
-		    	elmnt.setPathToElement("sisene.jpg");
+		    	elmnt.setPathToElement("ligin_to_etis.JPG");
 		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 3.45");
-		    	elmnt.setText("Sisene");
+		    	elmnt.setText("LOG IN");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
 
 		    	
 		    	
 		    	elmnt = new FailedElement();
-		    	elmnt.setPathToElement("screen1474980098985.1.png");
+		    	elmnt.setPathToElement("aaa.jpg");
 		    	elmnt.setDescription("Required contrast is 4.50. Actual contrast is 4.45");
-		    	elmnt.setText("Vanemad uudised");
+		    	elmnt.setText("A+");
 		    	elmnt.setType("Link");
 		    	elements.add(elmnt);
 		    	

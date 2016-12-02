@@ -15,7 +15,11 @@ import org.springframework.stereotype.Service;
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.attribute.Height;
+import ee.ttu.usability.domain.attribute.Href;
+import ee.ttu.usability.domain.attribute.Html;
 import ee.ttu.usability.domain.attribute.Label;
+import ee.ttu.usability.domain.attribute.OnClick;
+import ee.ttu.usability.domain.attribute.OnKeyPress;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
@@ -160,7 +164,7 @@ public class GuildelineBuilderService {
 	}
 
 	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty) {
-		Optional<OWLClassExpression> ent = null;
+		Optional<OWLClassExpression> ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 			case "hasContentLength" : 
 				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());	  
@@ -189,8 +193,7 @@ public class GuildelineBuilderService {
 				element.setContrast(contrast);
 				break;		
 			case "hasScroll" :
-				Optional<OWLClassExpression> entityTypeOfIndividual = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
-				if ("HScroll".equals(((OWLClassImpl) entityTypeOfIndividual.get()).getIRI().getShortForm())) {
+				if ("HScroll".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					HorizontalScroll scroll = new HorizontalScroll();
 					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
 					if (element instanceof UIPage) {
@@ -200,7 +203,7 @@ public class GuildelineBuilderService {
 					}
 					
 				}
-				if ("VScroll".equals(((OWLClassImpl) entityTypeOfIndividual.get()).getIRI().getShortForm())) {
+				if ("VScroll".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					VerticalScroll scroll = new VerticalScroll();
 					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
 					if (element instanceof UIPage) {
@@ -209,24 +212,28 @@ public class GuildelineBuilderService {
 				}
 				break;
 			case "hasValue" :
-				Optional<OWLClassExpression> entityTypeOfIndividual12 = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
-				if ("Id".equalsIgnoreCase(((OWLClassImpl) entityTypeOfIndividual12.get()).getIRI().getShortForm())) {
+				if ("Id".equalsIgnoreCase(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					ID id = new ID();
 					id.setValue(dataProperty.getObject().getLiteral());
 					if (element instanceof Navigation) {
 						((Navigation) element).setId(id);
 					}
-				} else if ("ProhibitedWords".equalsIgnoreCase(((OWLClassImpl) entityTypeOfIndividual12.get()).getIRI().getShortForm())) {
+				} else if ("ProhibitedWords".equalsIgnoreCase(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					ProhibitedWords words = new ProhibitedWords();
 					words.setValue(dataProperty.getObject().getLiteral());
 					if (element instanceof UIPage) {
 						((UIPage) element).setProhibitedWords(words);
 					}
+				} else if ("Href".equalsIgnoreCase(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Href href = new Href();
+					href.setValue(dataProperty.getObject().getLiteral());
+					if (element instanceof UIPage) {
+						((UIPage) element).setHref(href);
+					}
 				}
 				break;
 			case "isValued" :
-				Optional<OWLClassExpression> entityTypeOfIndividual2 = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
-				if ("AlternativeText".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {
+				if ("AlternativeText".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					AlternativeText text = new AlternativeText();
 					text.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					if (element instanceof Form) {
@@ -239,11 +246,34 @@ public class GuildelineBuilderService {
 						((Button) element).setAlternativeText(text);
 					}
 				}
-				if ("Label".equals(((OWLClassImpl) entityTypeOfIndividual2.get()).getIRI().getShortForm())) {
+				if ("Label".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					Label label = new Label();
 					label.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					if (element instanceof Form) {
 						((Form) element).setLabel(label);
+					}
+				}
+				if ("OnKeyPress".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					OnKeyPress onKey = new OnKeyPress();
+					onKey.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof Button) {
+						((Button) element).setOnKeyPress(onKey);
+					}
+				}
+				if ("OnClick".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					OnClick onClick = new OnClick();
+					onClick.setValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof Button) {
+						((Button) element).setOnClick(onClick);
+					}
+				}
+				break;
+			case "isValid" :
+				if ("Html".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Html html = new Html();
+					html.setValid(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setHtml(html);
 					}
 				}
 				break;

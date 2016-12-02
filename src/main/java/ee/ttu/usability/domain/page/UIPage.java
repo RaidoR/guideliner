@@ -1,6 +1,8 @@
 package ee.ttu.usability.domain.page;
 
 import lombok.Data;
+import ee.ttu.usability.domain.attribute.Href;
+import ee.ttu.usability.domain.attribute.Html;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
 import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
@@ -20,5 +22,9 @@ public class UIPage extends GuidelinetElement {
     private LoadTime loadTime;
     
     private Text text;
-
+    
+    private Html html;
+    
+    private Href href;
+    
 }

@@ -20,6 +20,9 @@ public class ButtonAdaptor extends AbstractAdaptor {
 		if (el.getAlternativeText() != null) {
 			return evaluateAlternativeText(el);
 		} 
+		if (el.getOnClick() != null && el.getOnKeyPress() != null) {
+			return evaluateOnClickAndOnKeyPressActionst(el);
+		}
 		return null;
 	}
 
@@ -55,6 +58,24 @@ public class ButtonAdaptor extends AbstractAdaptor {
 		
 		return result;
 	}
-
+	
+	private EvaluationResult evaluateOnClickAndOnKeyPressActionst(Button button) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.BUTTON);
+		
+		if (button.getOnClick().isValued() && button.getOnKeyPress().isValued()) {
+			List<WebElement> elements = driver.findElements(By.tagName("button"));
+			elements.forEach(el -> {
+				if (StringUtils.isNotBlank(el.getAttribute("onclick")) && StringUtils.isBlank(el.getAttribute("onkeypress"))) {
+					String text = el.getAttribute("innerHTML");
+					FailedElement prepareFailedElement = prepareFailedElement(ElementType.BUTTON.name(), text, "OnClick should be used with onKeyPress ", screenshoter.takeScreenshot(screenshot, el, driver));
+					failedElements.add(prepareFailedElement);
+				}
+			});
+		}
+		result.setFailedElements(failedElements);
+		return setSuccessFlag(result);
+	}
 	
 }

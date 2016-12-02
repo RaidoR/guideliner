@@ -42,7 +42,7 @@ public class Screenshoter {
 			ensureFolderExists(screenshotOfElement);
 			ImageIO.write(dest, "png", screenshotOfElement);
 			return screenshotOfElement;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}

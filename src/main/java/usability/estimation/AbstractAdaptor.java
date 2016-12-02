@@ -1,6 +1,7 @@
 package usability.estimation;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -46,6 +47,17 @@ public class AbstractAdaptor {
 		element.setText(text);
 		element.setDescription(description);
 		element.setPathToElement(path);
+		return element;
+	}
+	
+	FailedElement prepareFailedElement(String type, String text, String description, File file) {
+		FailedElement element = new FailedElement();
+		element.setType(type);
+		element.setText(text);
+		element.setDescription(description);
+		if (file != null) {
+			element.setPathToElement(file.getPath());			
+		}
 		return element;
 	}
 	

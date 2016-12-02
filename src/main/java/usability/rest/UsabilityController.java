@@ -128,7 +128,9 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("05-06_EnsureTheHomepageLooksLikeHomepage");
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("08-04_UsePagingRatherThanScrolling");
-
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("11-05_UseBoldTextSparingly");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("1wcag-8-01_CheckHtmlStyle");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("1wcag-8-10_CheckOnClickIsUsedWithOnKeyDown");
     	
 //    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 //    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
@@ -142,7 +144,7 @@ public class UsabilityController {
 //    	
 //    	return Arrays.asList(result, result2);
     	
-    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("11-05_UseBoldTextSparingly");
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
     	
     	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
     	
