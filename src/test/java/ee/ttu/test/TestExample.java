@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import core.AbstractTest;
 import ee.ttu.usability.domain.element.content.Paragraph;
+import ee.ttu.usability.domain.element.link.Area;
 import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
@@ -356,9 +357,52 @@ public class TestExample extends AbstractTest {
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
-		Assert.assertNotNull(guidelineElement.getHref());
-		Assert.assertNotNull(guidelineElement.getHref().getValue());
+		Assert.assertNotNull(guidelineElement.getTitle());
+		Assert.assertNotNull(guidelineElement.getTitle().getIsValued());
+	}
+	
+	@Test
+	public void test5wcag_8_19_CheckThatLanguageIsIncludedToHtmlTag() {
+		// given
+		OWLClass guideline = ontology.loadClass("5wcag-8-19_CheckThatLanguageIsIncludedToHtmlTag");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHtml());
+		Assert.assertNotNull(guidelineElement.getHtml().getLang());
+		Assert.assertNotNull(guidelineElement.getHtml().getLang().getIsValued());
 	}
 
+	@Test
+	public void test6wcag_1_1_AreaShouldHaveAltAttribute() {
+		// given
+		OWLClass guideline = ontology.loadClass("6wcag-1-1_AreaShouldHaveAltAttribute");
+		
+		// when
+		Area guidelineElement = (Area) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().isValued());
+	}
+	
+	@Test
+	public void test7wcag_1_1_ImageShouldHaveAltAttribute() {
+		// given
+		OWLClass guideline = ontology.loadClass("7wcag-1-1_ImageShouldHaveAltAttribute");
+		
+		// when
+		Graphic guidelineElement = (Graphic) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().isValued());
+	}
 
+	
 }

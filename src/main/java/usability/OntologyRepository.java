@@ -45,7 +45,8 @@ import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 public class OntologyRepository {
 
 	//TODO move to file 
-	private static String ontologyFile = "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+	//private static String ontologyFile = "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+	private static String ontologyFile = "C:\\Users\\jevge\\university\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
 	//private static String ontologyFile2 = "C:\\Users\\jevge\\university\\ontology\\files\\conference\\usability-guidelines-ontology_v1.1.owl";
 	private static String nameSpace = "http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#";
 	public static OWLOntology ontology;

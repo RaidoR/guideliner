@@ -3,6 +3,7 @@ package usability.estimation.result;
 public enum ElementType {
 
 	// main element types
+	AREA,
 	PAGE, 
 	LINK, 
 	FORM,

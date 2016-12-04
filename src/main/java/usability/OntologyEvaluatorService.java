@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
+import usability.estimation.AreaAdaptor;
 import usability.estimation.ButtonAdaptor;
 import usability.estimation.FormAdaptor;
 import usability.estimation.GraphicAdaptor;
@@ -25,6 +26,7 @@ import usability.estimation.UIPageAdaptor;
 import usability.estimation.result.EvaluationResult;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.content.Paragraph;
+import ee.ttu.usability.domain.element.link.Area;
 import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
@@ -141,6 +143,15 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
+		if (guidelineElement instanceof  Area) {
+			try {
+				AreaAdaptor adaptor = new AreaAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Area) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	//	driver.close();
 		return null;
 	}
@@ -213,6 +224,8 @@ public class OntologyEvaluatorService {
 			return new Button();
 		case "NumberedList":
 			return new NumberedList();
+		case "Area":
+			return new Area();
 		default:
 			return null;
 		}

@@ -8,6 +8,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -16,6 +17,7 @@ import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
 import usability.estimation.result.ResultType;
 import usability.estimation.utils.Screenshoter;
+import ee.ttu.usability.domain.element.link.Area;
 import ee.ttu.usability.domain.element.link.Graphic;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +31,9 @@ public class GraphicAdaptor extends AbstractAdaptor {
 	public EvaluationResult execute(Graphic graphic) throws IOException {
 		if (graphic.getContentLength() != null) {
 			return evaluateContentLength(graphic);
+		}
+		if (graphic.getAlternativeText() != null) {
+			return evaluateAlternativeText(graphic);
 		}
 		return null;
 	}
@@ -72,6 +77,25 @@ public class GraphicAdaptor extends AbstractAdaptor {
 			result.setResult(ResultType.FAIL);
 
 		return result;
+	}
+	
+	
+	private EvaluationResult evaluateAlternativeText(Graphic area) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
+		
+		List<WebElement> areas = driver.findElements(By.tagName("img"));
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.AREA);
+		
+		areas.forEach(a -> {
+			String attribute = a.getAttribute("alt");
+			if (StringUtils.isBlank(attribute)) {
+				File file = screenshoter.takeScreenshot(screenshot, a, driver);
+				result.getFailedElements().add(prepareFailedElement(ElementType.GRAPHIC.name(), "Image", "Image does not have alternative text", file));
+			}
+		});
+				
+		return setSuccessFlag(result);
 	}
 	
 }

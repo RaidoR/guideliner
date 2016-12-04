@@ -56,7 +56,7 @@ public class AbstractAdaptor {
 		element.setText(text);
 		element.setDescription(description);
 		if (file != null) {
-			element.setPathToElement(file.getPath());			
+			element.setPathToElement(file.getName());			
 		}
 		return element;
 	}

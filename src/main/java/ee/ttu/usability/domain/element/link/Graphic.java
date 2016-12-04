@@ -8,4 +8,6 @@ import ee.ttu.usability.domain.element.GuidelinetElement;
 @Data
 public class Graphic extends GuidelinetElement {
 
+	private AlternativeText alternativeText;
+	
 }

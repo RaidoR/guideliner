@@ -8,4 +8,6 @@ public class Html extends AbstractAttribute {
 
 	private boolean isValid;
 	
+	private Lang lang;
+	
 }

@@ -6,4 +6,6 @@ import lombok.Setter;
 @Getter@Setter
 public class Title extends AbstractAttribute {
 
+	private Boolean isValued;
+	
 }

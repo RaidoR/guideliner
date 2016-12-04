@@ -3,6 +3,7 @@ package usability.estimation;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +19,7 @@ import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
 import usability.estimation.result.ResultType;
+import ee.ttu.usability.domain.attribute.Lang;
 import ee.ttu.usability.domain.page.UIPage;
 
 @Slf4j
@@ -53,6 +55,9 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		}
 		if (page.getHref() != null) {
 			return evaluateHref(page);
+		}
+		if (page.getTitle() != null) {
+			return evaluateTitle(page);
 		}
 		return null;
 	}
@@ -238,10 +243,41 @@ public class UIPageAdaptor extends AbstractAdaptor {
 	}
 
 	private EvaluationResult evaluateHtml(UIPage page) {
+		if (page.getHtml().getLang() != null) {
+			return evaluateLang(page.getHtml().getLang());
+		}
 		HtmlValidator validator = new HtmlValidator();
 		return validator.test(driver.getPageSource());
 	}
 	
+	private EvaluationResult evaluateLang(Lang lang) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+
+		if (lang.getIsValued()) {
+			List<WebElement> findElements = driver.findElements(By.tagName("html"));
+
+			if (findElements.size() == 0) {
+				result.getFailedElements()
+						.add(prepareFailedElement("Html tag", "", "Html tag does not exist.", NO_IMAGE));
+				return setSuccessFlag(result);
+			}
+
+			Optional<WebElement> langElement = findElements.stream()
+					.filter(el -> StringUtils.isNotBlank(el.getAttribute("lang"))).findFirst();
+
+			if (!langElement.isPresent()) {
+				result.getFailedElements()
+						.add(prepareFailedElement("Lang attribute of HTML tag", "", "Lang is not defined", NO_IMAGE));
+			}
+			return setSuccessFlag(result);
+
+		}
+
+		return null;
+	}
+
 	private EvaluationResult evaluateHref(UIPage page) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
@@ -260,6 +296,31 @@ public class UIPageAdaptor extends AbstractAdaptor {
 	    
 		result.getFailedElements().add(prepareFailedElement("UI Page", "", "Link is not found: " + page.getHref().getValue(), NO_IMAGE));
 	       
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateTitle(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+		
+		List<WebElement> findElements = driver.findElements(By.tagName("title"));
+		
+		if (findElements.size() == 0) {
+			result.getFailedElements().add(prepareFailedElement("Title tag", "", "Title tag does not exist.", NO_IMAGE));
+			return setSuccessFlag(result);
+		}
+		
+		Optional<WebElement> definedText = findElements
+			.stream()
+			.filter(el -> StringUtils.isNotBlank(el.getAttribute("innerHTML")))
+			.findFirst();
+		
+		if (!definedText.isPresent()) {
+			result.getFailedElements().add(prepareFailedElement("Title tag", "", "Title tag does not have value.", NO_IMAGE));
+			return setSuccessFlag(result);
+		}
+		
 		return setSuccessFlag(result);
 	}
 

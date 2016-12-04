@@ -12,17 +12,22 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ee.ttu.usability.domain.attribute.AbstractAttribute;
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.Href;
 import ee.ttu.usability.domain.attribute.Html;
 import ee.ttu.usability.domain.attribute.Label;
+import ee.ttu.usability.domain.attribute.Lang;
 import ee.ttu.usability.domain.attribute.OnClick;
 import ee.ttu.usability.domain.attribute.OnKeyPress;
+import ee.ttu.usability.domain.attribute.Title;
 import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.link.Area;
 import ee.ttu.usability.domain.element.link.Button;
 import ee.ttu.usability.domain.element.link.Form;
+import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
@@ -64,16 +69,16 @@ public class GuildelineBuilderService {
 					 }
 					 if (axiom instanceof OWLObjectPropertyAssertionAxiomImpl) {
 						 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;				 
-					     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), guidelineElement);
+					     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), guidelineElement, null);
 					 }
 				 });
 			 });
 		 });
 	}
 	
-	public void transformToObject(OWLNamedIndividual individual, GuidelinetElement element) {
+	public void transformToObject(OWLNamedIndividual individual, GuidelinetElement element, AbstractAttribute attribute) {
 		ontologyRepository.ontology.axioms(individual).forEach(axiom -> {
-			 this.fillWithProperties(axiom, element);
+			 this.fillWithProperties(axiom, element, attribute);
 		 });
 	}
 	
@@ -83,10 +88,10 @@ public class GuildelineBuilderService {
 		 System.out.println(dataProperty.getObject().getLiteral());
 	}
 	
-	public void fillWithProperties(OWLIndividualAxiom axiom, GuidelinetElement element) {
+	public void fillWithProperties(OWLIndividualAxiom axiom, GuidelinetElement element, AbstractAttribute attribute) {
 		 if (axiom instanceof OWLDataPropertyAssertionAxiomImpl) {
 			 OWLDataPropertyAssertionAxiomImpl dataProperty = (OWLDataPropertyAssertionAxiomImpl) axiom;
-			 this.fillWithDataProperty(element, dataProperty);
+			 this.fillWithDataProperty(element, dataProperty, attribute);
 		 }
 		 if (axiom instanceof OWLObjectPropertyAssertionAxiomImpl) {
 			 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;
@@ -159,12 +164,41 @@ public class GuildelineBuilderService {
 		 }
 		 
 		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
-		     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element);
-		 }	 
+		     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, null);
+		 }
+
+
+		 if ("hasTagAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+			 if ("Html".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+				 if (element instanceof UIPage) {
+					 Html html = new Html();
+					 ((UIPage) element).setHtml(html); 
+				     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, html);
+				 }
+			 }
+
+		 }
 	}
 
-	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty) {
+	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
+
+		if (attribute != null) {
+			switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
+				case "isValued" :
+					if ("Lang".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						Lang lang = new Lang();
+						lang.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+						if (attribute instanceof Html) {
+							((Html) attribute).setLang(lang);
+						}
+					}
+					break;
+				}
+			return;
+		}
+		
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 			case "hasContentLength" : 
 				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());	  
@@ -245,6 +279,12 @@ public class GuildelineBuilderService {
 					if (element instanceof Button) {
 						((Button) element).setAlternativeText(text);
 					}
+					if (element instanceof Area) {
+						((Area) element).setAlternativeText(text);
+					}
+					if (element instanceof Graphic) {
+						((Graphic) element).setAlternativeText(text);
+					}
 				}
 				if ("Label".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					Label label = new Label();
@@ -266,6 +306,19 @@ public class GuildelineBuilderService {
 					if (element instanceof Button) {
 						((Button) element).setOnClick(onClick);
 					}
+				}
+				if ("Title".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Title title = new Title();
+					title.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setTitle(title);
+					}
+				}
+				if ("Lang".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Lang title = new Lang();
+					title.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					System.out.println("ddddddddddddddddddddddddddddddddddddddd");
+					System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 				}
 				break;
 			case "isValid" :
