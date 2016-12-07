@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import com.ctc.wstx.util.StringUtil;
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import jevg.ee.ttu.dataproperty.Unit;
 import jevg.ee.ttu.dataproperty.UnitAction;

@@ -436,22 +436,19 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnitAction());
 	}
 
-
-
 	@Test
-	public void test10wcag_1_1_ImageAltTextShouldNotBeAsFileName() {
+	public void test9wcag_1_1_TextShouldNotContainMultipleSpace() {
 		// given
-		OWLClass guideline = ontology.loadClass("10wcag-1-1_ImageAltTextShouldNotBeAsFileName");
+		OWLClass guideline = ontology.loadClass("9wcag-1-1_TextShouldNotContainMultipleSpace");
 
 		// when
-		Graphic guidelineElement = (Graphic) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
 
 		// then
 		Assert.assertNotNull(guidelineElement);
-		Assert.assertNotNull(guidelineElement.getAlternativeText());
-		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords());
-		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnit());
-		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnitAction());
+		Assert.assertNotNull(guidelineElement.getText());
+		Assert.assertNotNull(guidelineElement.getText().getUnit());
+		Assert.assertNotNull(guidelineElement.getText().getContentLength());
 	}
 
 }

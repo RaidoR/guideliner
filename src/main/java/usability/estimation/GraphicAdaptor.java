@@ -86,19 +86,19 @@ public class GraphicAdaptor extends AbstractAdaptor {
 	private EvaluationResult evaluateAlternativeText(Graphic area) throws IOException {
 		screenshot = screenshoter.makeScreenshot(driver);
 		
-		List<WebElement> areas = driver.findElements(By.tagName("img"));
+		List<WebElement> imgs = driver.findElements(By.tagName("img"));
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.GRAPHIC);
 
 		if (area.getAlternativeText().getProhibitedWords() != null && area.getAlternativeText().getProhibitedWords().getUnit() != null) {
-			areas.forEach(l -> {
+			imgs.forEach(img -> {
 				String prohibitedWord = null;
 				Unit unit = area.getAlternativeText().getProhibitedWords().getUnit();
 				UnitAction action = area.getAlternativeText().getProhibitedWords().getUnitAction();
 				if (unit == Unit.FILE_NAME) {
-					prohibitedWord =  getFileName(l.getAttribute("src"));
-					if (action.DO_NOT_FOLLOW == action && StringUtils.isNotEmpty(prohibitedWord) && prohibitedWord.equals(l.getAttribute("alt"))) {
-						File file = screenshoter.takeScreenshot(screenshot, l, driver);
+					prohibitedWord =  getFileName(img.getAttribute("src"));
+					if (UnitAction.DO_NOT_FOLLOW == action && StringUtils.isNotEmpty(prohibitedWord) && prohibitedWord.equals(img.getAttribute("alt"))) {
+						File file = screenshoter.takeScreenshot(screenshot, img, driver);
 						result.getFailedElements().add(prepareFailedElement("UI Page", "Elements with alt attribute", "The word " + prohibitedWord + "  for alternative text is not allowed as it duplicates the file name" , file));
 					}
 				}
@@ -106,7 +106,7 @@ public class GraphicAdaptor extends AbstractAdaptor {
 			return setSuccessFlag(result);
 		}
 
-		areas.forEach(a -> {
+		imgs.forEach(a -> {
 			String attribute = a.getAttribute("alt");
 			if (StringUtils.isBlank(attribute)) {
 				File file = screenshoter.takeScreenshot(screenshot, a, driver);

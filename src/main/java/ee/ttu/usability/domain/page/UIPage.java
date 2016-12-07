@@ -30,4 +30,5 @@ public class UIPage extends GuidelinetElement {
     
     private Title title;
     
+    
 }

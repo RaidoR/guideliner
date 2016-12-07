@@ -155,7 +155,16 @@ public class GuildelineBuilderService {
 			 } else if ("Element".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.ELEMENT);
 				 printOwlObjectProperty(objectProperty);
-			 }
+			 } else if ("Space".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+				 if ("Text".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof UIPage) {
+							if (((UIPage) element).getText() == null)
+								((UIPage) element).setText(new Text());
+							((UIPage) element).getText().setUnit(Unit.SPACE);
+					 }
+				 }
+			 } 
 		 } 
 		 
 		 if ("hasLayoutType".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {

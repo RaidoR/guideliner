@@ -138,6 +138,7 @@ public class UsabilityController {
     	// OWLClass selectedGuideline = ontologyRepository.loadClass("7wcag-1-1_ImageShouldHaveAltAttribute");
         // OWLClass selectedGuideline = ontologyRepository.loadClass("8wcag-1-1_AlternativeTextShouldNotHaveProhibitedWords");
         // OWLClass selectedGuideline = ontologyRepository.loadClass("11wcag-1-1_LinkAltTextShouldBeDifferentFromText");
+    	// OWLClass selectedGuideline = ontologyRepository.loadClass("10wcag-1-1_ImageAltTextShouldNotBeAsFileName");
 
 //    	OWLClass selectedGuideline = ontologyRepository.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 //    	EvaluationResult result = evaluatorService.evaluate(selectedGuideline, webURL);
@@ -151,8 +152,7 @@ public class UsabilityController {
 //    	
 //    	return Arrays.asList(result, result2);
     	
-    	// 
-    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("10wcag-1-1_ImageAltTextShouldNotBeAsFileName");
+    	OWLClass selectedGuideline2 = ontologyRepository.loadClass("9wcag-1-1_TextShouldNotContainMultipleSpace");
     	
     	EvaluationResult result2 = evaluatorService.evaluate(selectedGuideline2, webURL);
     	

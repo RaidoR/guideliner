@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,7 @@ import usability.estimation.result.ResultType;
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Lang;
 import ee.ttu.usability.domain.page.UIPage;
+import jevg.ee.ttu.dataproperty.Unit;
 
 @Slf4j
 public class UIPageAdaptor extends AbstractAdaptor {
@@ -226,22 +229,38 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		result.setElementType(ElementType.PAGE);
 		result.setResult(ResultType.SUCCESS);
 		
-		List<WebElement> texts = getBoldText(driver);
-		
-		for(WebElement ele : texts)
-		{
-			if (StringUtils.isEmpty(ele.getText())) {
-				continue;
-			}
-			if (ele.getText().length() > page.getText().getContentLength()) {
-				 File file = screenshoter.takeScreenshot(screenshot, ele, driver);
-				 String description = "Amount of Bold text was " + ele.getText().length();
-				 result.getFailedElements().add(prepareFailedElement("UI Page", "UI Page", description, file.getName()));
-			}
-			
+		if (page.getText().getCaseType() != null) {
+			List<WebElement> texts = getBoldText(driver);
+			for(WebElement ele : texts)
+			{
+				if (StringUtils.isEmpty(ele.getText())) {
+					continue;
+				}
+				if (ele.getText().length() > page.getText().getContentLength()) {
+					 File file = screenshoter.takeScreenshot(screenshot, ele, driver);
+					 String description = "Amount of Bold text was " + ele.getText().length();
+					 result.getFailedElements().add(prepareFailedElement("UI Page", "UI Page", description, file.getName()));
+				}
+				
 
+			}
+			return setSuccessFlag(result);
 		}
-		return setSuccessFlag(result);
+		
+		if (page.getText().getUnit() == Unit.SPACE) {
+			List<WebElement> texts = driver.findElements(By.tagName("body"));
+			texts.forEach(c -> {
+				String text = c.getText();
+				Pattern compile = Pattern.compile("\\s{" + page.getText().getContentLength() + ",}");
+				Matcher matcher = compile.matcher(text);				
+				if (matcher.find()) {
+					result.getFailedElements().add(prepareFailedElement("UI Page text", "Text", "Text contains multiple spaces" , NO_IMAGE));
+				}
+			});
+			return setSuccessFlag(result);
+		}
+		
+		throw new IllegalArgumentException();
 	}
 
 	private EvaluationResult evaluateHtml(UIPage page) {
