@@ -50,10 +50,15 @@ public class OntologyEvaluatorService {
 			GuildelineBuilderService builder) {
 		this.ontologyRepository = ontologyRepository;
 		this.builder = builder;
-		driver = initialiseDriver(); 
+//		if (Boolean.FALSE != initDriver) {
+		//driver = initialiseDriver();
+//		}
 	}
 
 	public EvaluationResult evaluate(OWLClass guideline, String url) {
+		if (driver == null) {
+			driver = initialiseDriver();
+		}
 		// get guideline
 		GuidelinetElement guidelineElement = fillWithGuidelineElement(guideline);
 

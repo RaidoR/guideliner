@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import jevg.ee.ttu.dataproperty.Unit;
+import jevg.ee.ttu.dataproperty.UnitAction;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -85,8 +88,24 @@ public class GraphicAdaptor extends AbstractAdaptor {
 		
 		List<WebElement> areas = driver.findElements(By.tagName("img"));
 		EvaluationResult result = new EvaluationResult();
-		result.setElementType(ElementType.AREA);
-		
+		result.setElementType(ElementType.GRAPHIC);
+
+		if (area.getAlternativeText().getProhibitedWords() != null && area.getAlternativeText().getProhibitedWords().getUnit() != null) {
+			areas.forEach(l -> {
+				String prohibitedWord = null;
+				Unit unit = area.getAlternativeText().getProhibitedWords().getUnit();
+				UnitAction action = area.getAlternativeText().getProhibitedWords().getUnitAction();
+				if (unit == Unit.FILE_NAME) {
+					prohibitedWord =  getFileName(l.getAttribute("src"));
+					if (action.DO_NOT_FOLLOW == action && StringUtils.isNotEmpty(prohibitedWord) && prohibitedWord.equals(l.getAttribute("alt"))) {
+						File file = screenshoter.takeScreenshot(screenshot, l, driver);
+						result.getFailedElements().add(prepareFailedElement("UI Page", "Elements with alt attribute", "The word " + prohibitedWord + "  for alternative text is not allowed as it duplicates the file name" , file));
+					}
+				}
+			});
+			return setSuccessFlag(result);
+		}
+
 		areas.forEach(a -> {
 			String attribute = a.getAttribute("alt");
 			if (StringUtils.isBlank(attribute)) {
@@ -97,5 +116,10 @@ public class GraphicAdaptor extends AbstractAdaptor {
 				
 		return setSuccessFlag(result);
 	}
-	
+
+	private String getFileName(String paht) {
+		List<String> parts = Arrays.asList(paht.split("/"));
+		return parts.get(parts.size() - 1);
+	}
+
 }

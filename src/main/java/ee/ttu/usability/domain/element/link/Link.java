@@ -1,5 +1,6 @@
 package ee.ttu.usability.domain.element.link;
 
+import ee.ttu.usability.domain.attribute.AlternativeText;
 import lombok.Getter;
 import lombok.Setter;
 import ee.ttu.usability.domain.attribute.Href;
@@ -16,5 +17,7 @@ public class Link extends GuidelinetElement {
 	private Title title;
 
 	private LinkType linkType;
+
+	private AlternativeText alternativeText;
 
 }

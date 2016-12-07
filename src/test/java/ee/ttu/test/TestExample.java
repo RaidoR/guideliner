@@ -404,5 +404,54 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getAlternativeText().isValued());
 	}
 
-	
+	@Test
+	public void test8wcag_1_1_AlternativeTextShouldNotHaveProhibitedWords() {
+		// given
+		OWLClass guideline = ontology.loadClass("8wcag-1-1_AlternativeTextShouldNotHaveProhibitedWords");
+		
+		// when
+		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHtml());
+		Assert.assertNotNull(guidelineElement.getHtml().getAlternativeText());
+		Assert.assertNotNull(guidelineElement.getHtml().getAlternativeText().getProhibitedWords());
+		Assert.assertNotNull(guidelineElement.getHtml().getAlternativeText().getProhibitedWords().getValue());
+	}
+
+	@Test
+	public void test11wcag_1_1_LinkAltTextShouldBeDifferentFromText() {
+		// given
+		OWLClass guideline = ontology.loadClass("11wcag-1-1_LinkAltTextShouldBeDifferentFromText");
+		
+		// when
+		Link guidelineElement = (Link) evaluatorService.fillWithGuidelineElement(guideline);
+		
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnit());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnitAction());
+	}
+
+
+
+	@Test
+	public void test10wcag_1_1_ImageAltTextShouldNotBeAsFileName() {
+		// given
+		OWLClass guideline = ontology.loadClass("10wcag-1-1_ImageAltTextShouldNotBeAsFileName");
+
+		// when
+		Graphic guidelineElement = (Graphic) evaluatorService.fillWithGuidelineElement(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getAlternativeText());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnit());
+		Assert.assertNotNull(guidelineElement.getAlternativeText().getProhibitedWords().getUnitAction());
+	}
+
 }

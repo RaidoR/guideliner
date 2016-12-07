@@ -3,6 +3,8 @@ package usability;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import ee.ttu.usability.domain.element.link.*;
+import jevg.ee.ttu.dataproperty.UnitAction;
 import org.apache.commons.lang3.BooleanUtils;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
@@ -24,11 +26,6 @@ import ee.ttu.usability.domain.attribute.OnClick;
 import ee.ttu.usability.domain.attribute.OnKeyPress;
 import ee.ttu.usability.domain.attribute.Title;
 import ee.ttu.usability.domain.element.GuidelinetElement;
-import ee.ttu.usability.domain.element.link.Area;
-import ee.ttu.usability.domain.element.link.Button;
-import ee.ttu.usability.domain.element.link.Form;
-import ee.ttu.usability.domain.element.link.Graphic;
-import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
@@ -95,12 +92,35 @@ public class GuildelineBuilderService {
 		 }
 		 if (axiom instanceof OWLObjectPropertyAssertionAxiomImpl) {
 			 OWLObjectPropertyAssertionAxiomImpl objectProperty = (OWLObjectPropertyAssertionAxiomImpl) axiom;
-			 this.fillWithObjectProperty(element, objectProperty);
+			 this.fillWithObjectProperty(element, objectProperty, attribute);
 		 }
 	}
 	
-	public void fillWithObjectProperty(GuidelinetElement element, OWLObjectPropertyAssertionAxiomImpl objectProperty) {
+	public void fillWithObjectProperty(GuidelinetElement element, OWLObjectPropertyAssertionAxiomImpl objectProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = null;
+
+		 if (attribute != null) {
+			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
+			 if ("hasUnit".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			 	 Unit unit = getUnit(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm());
+				 if ("ProhibitedWords".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+				 	if (attribute instanceof AlternativeText) {
+						if (((AlternativeText) attribute).getProhibitedWords() == null)
+							((AlternativeText) attribute).setProhibitedWords(new ProhibitedWords());
+						((AlternativeText) attribute).getProhibitedWords().setUnit(unit);
+					}
+				 }
+			 } else if ("hasUnitAction".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+				 UnitAction unitAction = getUnitAction(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm());
+				 if ("ProhibitedWords".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (attribute instanceof AlternativeText) {
+						 if (((AlternativeText) attribute).getProhibitedWords() == null)
+							 ((AlternativeText) attribute).setProhibitedWords(new ProhibitedWords());
+						 ((AlternativeText) attribute).getProhibitedWords().setUnitAction(unitAction);
+					 }
+				 }
+			 }
+		 }
 		 if ("hasUnit".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 			 if ("Word".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 element.setUnit(Unit.WORD);
@@ -170,15 +190,53 @@ public class GuildelineBuilderService {
 
 		 if ("hasTagAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+			 System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 			 if ("Html".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 				 if (element instanceof UIPage) {
 					 Html html = new Html();
 					 ((UIPage) element).setHtml(html); 
 				     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, html);
 				 }
+			 } else if ("AlternativeText".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+				 if (attribute != null) {
+					 if (attribute instanceof Html) {
+						 AlternativeText alText = new AlternativeText();
+						 ((Html) attribute).setAlternativeText(alText);
+					     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, alText);
+					 }
+				 } else {
+				 	if (element instanceof Link) {
+						AlternativeText alText = new AlternativeText();
+						((Link) element).setAlternativeText(alText);
+						transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, alText);
+					} else if (element instanceof Graphic) {
+						AlternativeText alText = new AlternativeText();
+						((Graphic) element).setAlternativeText(alText);
+						transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, alText);
+					}
+				 }
+			 } else {
+				 throw new IllegalArgumentException(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 			 }
-
 		 }
+	}
+
+	private Unit getUnit(String unit) {
+		switch (unit) {
+			case "Text" :
+				return Unit.TEXT;
+			case "FileName" :
+				return Unit.FILE_NAME;
+			default : throw new IllegalArgumentException();
+		}
+	}
+
+	private UnitAction getUnitAction(String unit) {
+		switch (unit) {
+			case "DoNotFollow" :
+				return UnitAction.DO_NOT_FOLLOW;
+			default : throw new IllegalArgumentException();
+		}
 	}
 
 	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty, AbstractAttribute attribute) {
@@ -195,6 +253,14 @@ public class GuildelineBuilderService {
 						}
 					}
 					break;
+				case "hasValue" :
+					if ("ProhibitedWords".equalsIgnoreCase(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						ProhibitedWords words = new ProhibitedWords();
+						words.setValue(dataProperty.getObject().getLiteral());
+						if (attribute instanceof AlternativeText) {
+							((AlternativeText) attribute).setProhibitedWords(words);
+						}
+					}
 				}
 			return;
 		}

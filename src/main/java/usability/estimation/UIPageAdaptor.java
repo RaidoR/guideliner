@@ -2,6 +2,7 @@ package usability.estimation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
 import usability.estimation.result.ResultType;
+import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Lang;
 import ee.ttu.usability.domain.page.UIPage;
 
@@ -246,10 +248,32 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getHtml().getLang() != null) {
 			return evaluateLang(page.getHtml().getLang());
 		}
+		if (page.getHtml().getAlternativeText() != null) {
+			return evaluateAtlernativeText(page.getHtml().getAlternativeText());
+		}
 		HtmlValidator validator = new HtmlValidator();
 		return validator.test(driver.getPageSource());
 	}
 	
+	private EvaluationResult evaluateAtlernativeText(AlternativeText alternativeText) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+				
+		if (alternativeText.getProhibitedWords() != null) {
+			List<WebElement> imgs = driver.findElements(By.tagName("img"));
+			imgs.addAll(driver.findElements(By.xpath("//input[@type='image']")));
+			List<String> prohibitedWords = Arrays.asList(alternativeText.getProhibitedWords().getValue().split(","));
+			imgs.forEach(e -> {
+				String alt = e.getAttribute("alt");
+				if (StringUtils.isNotBlank(alt) && prohibitedWords.contains(alt.trim())) {
+					 File file = screenshoter.takeScreenshot(screenshot, e, driver);			 
+					 result.getFailedElements().add(prepareFailedElement("UI Page", "Elements with alt attribute", "The word " + alt.trim() + " for alternative text is not allowed" , file));
+				}
+			});
+		}
+		return setSuccessFlag(result);
+	}
+
 	private EvaluationResult evaluateLang(Lang lang) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
