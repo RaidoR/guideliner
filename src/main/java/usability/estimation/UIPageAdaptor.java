@@ -251,10 +251,23 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			List<WebElement> texts = driver.findElements(By.tagName("body"));
 			texts.forEach(c -> {
 				String text = c.getText();
-				Pattern compile = Pattern.compile("\\s{" + page.getText().getContentLength() + ",}");
+				String space = "";
+				for (int i = 0; i < page.getText().getContentLength(); i++) {
+					space += " ";
+				}
+				Pattern compile = Pattern.compile(space + "+");
 				Matcher matcher = compile.matcher(text);				
-				if (matcher.find()) {
-					result.getFailedElements().add(prepareFailedElement("UI Page text", "Text", "Text contains multiple spaces" , NO_IMAGE));
+				while (matcher.find()) {
+					int start = matcher.start();
+					int finish = matcher.end();
+					if (matcher.start() - 15 > 0) {
+						start = matcher.start() - 15;
+					}
+					if (matcher.end() + 15 < text.length()) {
+						finish = matcher.end() + 15;
+					}
+					String textWithMultipleSpaces = text.substring(start, finish);
+					result.getFailedElements().add(prepareFailedElement("UI Page text", textWithMultipleSpaces, "Text contains multiple spaces" , NO_IMAGE));
 				}
 			});
 			return setSuccessFlag(result);
