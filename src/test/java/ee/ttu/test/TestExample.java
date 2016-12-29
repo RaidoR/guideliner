@@ -21,6 +21,8 @@ import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import usability.OntologyRepository;
 
 public class TestExample extends AbstractTest {
 
@@ -450,5 +452,26 @@ public class TestExample extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getText().getUnit());
 		Assert.assertNotNull(guidelineElement.getText().getContentLength());
 	}
+	
+	@Test
+	public void testSmth() {
+
+		System.out.println("eeeeee");
+		ontologyService.getAllWcagUsabilityGuidelines();
+
+		ontologyService
+				.getAllWcagUsabilityGuidelines()
+				.forEach(
+						t -> {
+							System.out.println("1.1" + t);
+							NodeSet<OWLClass> superClasses = OntologyRepository.reasoner
+									.getSuperClasses(t, true);
+							superClasses.entities().forEach(g -> {
+//								System.out.println("1.2" +g);
+							});
+						});
+
+	}
+
 
 }

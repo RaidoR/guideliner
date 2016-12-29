@@ -35,6 +35,13 @@ import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
+import usability.estimation.result.Guideline;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OntologyEvaluatorService {
@@ -43,19 +50,56 @@ public class OntologyEvaluatorService {
 
 	private GuildelineBuilderService builder;
 
+	private OntologyService ontologyService;
+
 	private WebDriver driver;
 	
 	@Autowired
 	public OntologyEvaluatorService(OntologyRepository ontologyRepository,
-			GuildelineBuilderService builder) {
+			GuildelineBuilderService builder, OntologyService ontologyService) {
 		this.ontologyRepository = ontologyRepository;
 		this.builder = builder;
+		this.ontologyService = ontologyService;
 //		if (Boolean.FALSE != initDriver) {
 		//driver = initialiseDriver();
 //		}
 	}
 
+	public List<EvaluationResult>  evaluate(String category, String url) {
+		if (driver == null) {
+			driver = initialiseDriver();
+		}
+
+		driver.get(url);
+
+		try {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
+			//Handle exception
+		}
+
+		List<EvaluationResult> results = new ArrayList<>();
+
+		OntologyRepository.reasoner.getSubClasses(ontologyRepository.loadClass(category))
+				.entities()
+				.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
+				.forEach(c -> {
+					System.out.println(c);
+					EvaluationResult result = evaluate(c, url);
+					result.setGuideline(ontologyService.createGuideline(c));
+					results.add(result);
+				});
+
+		Collections.sort(results, Comparator.comparing(o -> o.getResult().name()));
+
+		return results;
+	}
+
 	public EvaluationResult evaluate(OWLClass guideline, String url) {
+		return evaluate(guideline, url, false);
+	}
+
+	public EvaluationResult evaluate(OWLClass guideline, String url, boolean openUrl) {
 		if (driver == null) {
 			driver = initialiseDriver();
 		}
@@ -64,7 +108,10 @@ public class OntologyEvaluatorService {
 
 //		WebDriver driver = initialiseDriver();
 
-		driver.get(url);
+		if (openUrl) {
+			driver.get(url);
+		}
+
 		guidelineElement.setUrl(url);
 		
 		if (guidelineElement instanceof UIPage) {

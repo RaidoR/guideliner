@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 public class SearchHandler {
 
-	String SEARCH_FIELD_TITLE = "Sisesta m‰rksınad, mida soovid otsida.";
+	String SEARCH_FIELD_TITLE = "Sisesta m√§rks√µnad, mida soovid otsida.";
 	
 	public void checkSearch(WebDriver driver) throws Exception{
 		 driver.findElement(By.name("search_block_form")).sendKeys("aaaaaaa");

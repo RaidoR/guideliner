@@ -3,6 +3,7 @@ package usability;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLClass;
@@ -36,6 +37,33 @@ public class OntologyService {
 		OWLClass guidelines = ontology.loadClass(USABILITY_GUIDELINES);
 		return OntologyRepository.reasoner.getSubClasses(guidelines).entities();
 	}
+
+	public Stream<OWLClass> getAllWcagUsabilityGuidelines() {
+		OWLClass guidelines = ontology.loadClass("WcagGuideline");
+		return OntologyRepository.reasoner.getSubClasses(guidelines).entities();
+	}
+
+	public List<Guideline> findByCategory(String category) {
+		List<Guideline> guidelines = new ArrayList<>();
+
+		OntologyRepository.reasoner.getSubClasses(ontology.loadClass(category))
+				.entities()
+				.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
+				.forEach(c -> {
+					guidelines.add(createGuideline(c));
+				});
+
+		return guidelines;
+	}
+
+	public Guideline createGuideline(OWLClass clazz) {
+		String shortIri = clazz.getIRI().getIRIString().substring(clazz.getIRI().getIRIString().lastIndexOf("#") + 1);
+		Guideline guideline = new Guideline();
+		guideline.setCode(shortIri);
+		guideline.setName(ontology.getAnnotationValueByAnnotationName(clazz, "guideline"));
+		guideline.setDescription(ontology.getAnnotationValueByAnnotationName(clazz, "comment"));
+		return guideline;
+	}
 	
 	public List<Guideline> getAllUsabilityGuidelinesHardCoded() {
 		List<Guideline> guidelines = new ArrayList<Guideline>();
@@ -56,13 +84,7 @@ public class OntologyService {
 		return guidelines;
 	}
 	
-	public Guideline fillWithGuidelineInformation(OWLClass clazz, String code) {
-		Guideline guide = new Guideline();
-		guide.setCode(code);
-		guide.setName(ontology.getAnnotationValueByAnnotationName(clazz, "guideline"));
-		guide.setDescription(ontology.getAnnotationValueByAnnotationName(clazz, "comment"));
-		return guide;
-	}
+
 	
 	public List<EvaluationResult> getAllUsabilityGuidelinesHardCodedWithResults() {
 		List<EvaluationResult> results = new ArrayList<EvaluationResult>();
