@@ -18,7 +18,7 @@ public class AbstractTest {
 		builder = new GuildelineBuilderService(
 				ontology);
 		ontologyService = new OntologyService(ontology);
-		evaluatorService = new OntologyEvaluatorService(ontology, builder);
+		evaluatorService = new OntologyEvaluatorService(ontology, builder, ontologyService);
 	}
 	
 }

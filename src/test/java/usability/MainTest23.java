@@ -42,7 +42,7 @@ public class MainTest23 {
 				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 
 		OntologyEvaluatorService serv = new OntologyEvaluatorService(ontology,
-				builder);
+				builder, ontologyService);
 
 		GuidelinetElement guidelineElement = serv.fillWithGuidelineElement(selectedGuideline);
 		System.out.println(guidelineElement);
