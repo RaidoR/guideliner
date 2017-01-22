@@ -1,6 +1,7 @@
 package usability;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
@@ -13,16 +14,7 @@ import org.springframework.stereotype.Service;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
-import usability.estimation.AreaAdaptor;
-import usability.estimation.ButtonAdaptor;
-import usability.estimation.FormAdaptor;
-import usability.estimation.GraphicAdaptor;
-import usability.estimation.LinkAdaptor;
-import usability.estimation.MultimediaAdaptor;
-import usability.estimation.NavigationAdaptor;
-import usability.estimation.NumberedListAdaptor;
-import usability.estimation.ParagrapgAdaptor;
-import usability.estimation.UIPageAdaptor;
+import usability.estimation.*;
 import usability.estimation.result.EvaluationResult;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.content.Paragraph;
@@ -53,6 +45,8 @@ public class OntologyEvaluatorService {
 	private OntologyService ontologyService;
 
 	private WebDriver driver;
+
+	private List<AbstractAdaptor> adaptors;
 	
 	@Autowired
 	public OntologyEvaluatorService(OntologyRepository ontologyRepository,
@@ -60,9 +54,6 @@ public class OntologyEvaluatorService {
 		this.ontologyRepository = ontologyRepository;
 		this.builder = builder;
 		this.ontologyService = ontologyService;
-//		if (Boolean.FALSE != initDriver) {
-		//driver = initialiseDriver();
-//		}
 	}
 
 	public List<EvaluationResult>  evaluate(String category, String url) {
@@ -86,13 +77,20 @@ public class OntologyEvaluatorService {
 				.forEach(c -> {
 					System.out.println(c);
 					EvaluationResult result = evaluate(c, url);
-					result.setGuideline(ontologyService.createGuideline(c));
-					results.add(result);
+					if (result != null) {
+						System.out.println(result.getResult().name());
+						result.setGuideline(ontologyService.createGuideline(c));
+						results.add(result);
+					}
 				});
 
 		Collections.sort(results, Comparator.comparing(o -> o.getResult().name()));
 
 		return results;
+	}
+
+	public EvaluationResult evaluateByName(String guideline, String url) {
+		return evaluate(ontologyRepository.loadClass(guideline), url, true);
 	}
 
 	public EvaluationResult evaluate(OWLClass guideline, String url) {
@@ -210,10 +208,10 @@ public class OntologyEvaluatorService {
 
 	private WebDriver initialiseDriver() {
 		
-		// System.setProperty("webdriver.chrome.driver",
-		// "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
-		// return new ChromeDriver();
-		return new FirefoxDriver();
+		 System.setProperty("webdriver.chrome.driver",
+		 "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
+		 return new ChromeDriver();
+	//	return new FirefoxDriver();
 	}
 
 	public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {

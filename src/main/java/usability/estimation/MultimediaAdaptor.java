@@ -34,26 +34,13 @@ public class MultimediaAdaptor extends AbstractAdaptor {
 			try {
 				String attribute = elem.getAttribute("alt");
 				if (StringUtils.isBlank(attribute)) {
-					FailedElement failed = new FailedElement();
-					failed.setType(ElementType.IMAGE.name());
-					failed.setText("Image");
-					failed.setDescription("Image does not have alternative text");		
-					File file = screenshoter.takeScreenshot(screenshot, elem, driver);
-					failed.setPathToElement(file.getName());
-					failedElements.add(failed);
+					result.getFailedElements().add(prepareFailedElement(ElementType.IMAGE.name(), "Image", "Image does not have alternative text" , screenshoter.takeScreenshot(screenshot, elem, driver)));
 			}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		
-		result.setFailedElements(failedElements);
-		if (failedElements.size() == 0)
-			result.setResult(ResultType.SUCCESS);
-		else 
-			result.setResult(ResultType.FAIL);
-		
-		return result;
+		return setSuccessFlag(result);
 	}
 
 }

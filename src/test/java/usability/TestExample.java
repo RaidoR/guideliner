@@ -1,4 +1,4 @@
-package ee.ttu.test;
+package usability;
 
 import jevg.ee.ttu.dataproperty.Unit;
 

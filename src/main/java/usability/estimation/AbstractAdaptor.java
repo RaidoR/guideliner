@@ -11,6 +11,8 @@ import lombok.Data;
 
 import org.openqa.selenium.WebDriver;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
 import usability.estimation.result.ResultType;
@@ -19,16 +21,15 @@ import usability.estimation.utils.Screenshoter;
 @Data
 public class AbstractAdaptor {
 
+	protected Screenshoter screenshoter = new Screenshoter();
+
 	protected static final String NO_IMAGE = "NONE";
 	
 	protected WebDriver driver;
 	
-	protected Screenshoter screenshoter = new Screenshoter();
-	
 	protected BufferedImage screenshot = null;
-	
-	protected List<FailedElement> failedElements = new ArrayList<FailedElement>();
-	
+
+
 	protected Integer getAmountOfUnit(String string, Unit unit) {
 		if (Unit.WORD == unit) {
 			 StringTokenizer st = new StringTokenizer(string);

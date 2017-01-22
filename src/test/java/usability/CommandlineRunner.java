@@ -1,4 +1,4 @@
-package ee.ttu.test;
+package usability;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;

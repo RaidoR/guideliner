@@ -14,14 +14,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.ResultType;
 import usability.estimation.utils.ContrastEstimator;
 import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.page.UIPage;
+import usability.estimation.utils.Screenshoter;
 
 @Slf4j
+@Service("LinkAdaptor")
 public class LinkAdaptor extends AbstractAdaptor {
 
 	public EvaluationResult execute(Link link) throws IOException {
@@ -60,7 +64,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
-	public EvaluationResult evaluateContentLength(Link page) {
+	public EvaluationResult evaluateContentLength(Link page) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
 		log.debug("Evaluation evaluateContentLength for Link");
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
@@ -69,12 +74,13 @@ public class LinkAdaptor extends AbstractAdaptor {
 		for (WebElement el : findElements) {
 			Integer amountOfUnits = getAmountOfUnit(el.getText(), page.getUnit());			
 			 if (amountOfUnits > page.getContentLength()) {
-				 System.out.println(el.getText());
+				 File file = screenshoter.takeScreenshot(screenshot, el, driver);
+				 result.getFailedElements().add(prepareFailedElement(
+				 		ElementType.LINK.name(), el.getText(),"Amount of " + page.getUnit() + " was " + amountOfUnits , file));
 				 result.setResult(ResultType.FAIL);
-				 result.setDescription("Amount of " + page.getUnit() + " was " + amountOfUnits);
 			 }
 		}
-		return result;
+		return setSuccessFlag(result);
 	}
 	
 	private EvaluationResult evaluateContrast(Link link) throws IOException {

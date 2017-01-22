@@ -1,18 +1,14 @@
 package usability.estimation;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
+import ee.ttu.usability.domain.element.link.Button;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
 import usability.estimation.result.ElementType;
 import usability.estimation.result.EvaluationResult;
-import usability.estimation.result.FailedElement;
-import usability.estimation.result.ResultType;
-import ee.ttu.usability.domain.element.link.Button;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ButtonAdaptor extends AbstractAdaptor {
 
@@ -37,26 +33,14 @@ public class ButtonAdaptor extends AbstractAdaptor {
 			try {
 				String attribute = elem.getAttribute("alt");
 				if (StringUtils.isBlank(attribute)) {
-					FailedElement failed = new FailedElement();
-					failed.setType(ElementType.IMAGE.name());
-					failed.setText("Button");
-					failed.setDescription("Button does not have alternative text");		
-					File file = screenshoter.takeScreenshot(screenshot, elem, driver);
-					failed.setPathToElement(file.getName());
-					failedElements.add(failed);
-			}
+					result.getFailedElements().add(prepareFailedElement(ElementType.IMAGE.name(), "Button", "Button does not have alternative text" , screenshoter.takeScreenshot(screenshot, elem, driver)));
+
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		
-		result.setFailedElements(failedElements);
-		if (failedElements.size() == 0)
-			result.setResult(ResultType.SUCCESS);
-		else 
-			result.setResult(ResultType.FAIL);
-		
-		return result;
+		return setSuccessFlag(result);
 	}
 	
 	private EvaluationResult evaluateOnClickAndOnKeyPressActionst(Button button) throws IOException {
@@ -69,13 +53,11 @@ public class ButtonAdaptor extends AbstractAdaptor {
 			elements.forEach(el -> {
 				if (StringUtils.isNotBlank(el.getAttribute("onclick")) && StringUtils.isBlank(el.getAttribute("onkeypress"))) {
 					String text = el.getAttribute("innerHTML");
-					FailedElement prepareFailedElement = prepareFailedElement(ElementType.BUTTON.name(), text, "OnClick should be used with onKeyPress ", screenshoter.takeScreenshot(screenshot, el, driver));
-					failedElements.add(prepareFailedElement);
+					result.getFailedElements().add(prepareFailedElement(ElementType.BUTTON.name(), text, "OnClick should be used with onKeyPress ", screenshoter.takeScreenshot(screenshot, el, driver)));
 				}
 			});
 		}
-		result.setFailedElements(failedElements);
 		return setSuccessFlag(result);
 	}
-	
+
 }

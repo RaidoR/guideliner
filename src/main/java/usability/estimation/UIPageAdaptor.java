@@ -92,7 +92,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			 result.setResult(ResultType.FAIL);
 			 result.setDescription("Load time exceeded the expected. Load time : " + totalTime);
 		}
-		return result;
+		return setSuccessFlag(result);
 	}
 
 	public EvaluationResult evaluateContentLength(UIPage page) {
@@ -110,7 +110,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 				 result.setDescription(description);
 			 }
 		}
-		return result;
+		return setSuccessFlag(result);
 	}
 
 	private EvaluationResult evaluateHorizontalScroll(UIPage page) {
@@ -127,7 +127,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			 result.setResult(ResultType.FAIL);
 			 result.setDescription("Horizontal scrol value is bigger then defined. Real value is : " + value);
 		}
-		return result;
+		return setSuccessFlag(result);
 	}
 	
 
@@ -151,7 +151,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			result.setResult(ResultType.SUCCESS);
 		else 
 			result.setResult(ResultType.FAIL);
-		return result;
+		return setSuccessFlag(result);
 	}
 
 	private EvaluationResult evaluateVerticalScrolling(UIPage page) {
@@ -177,7 +177,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			result.setResult(ResultType.SUCCESS);
 		else 
 			result.setResult(ResultType.FAIL);
-		return result;
+		return setSuccessFlag(result);
 	}
 
 	private EvaluationResult evaluateLayout(UIPage page) {
