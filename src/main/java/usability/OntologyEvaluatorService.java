@@ -1,5 +1,6 @@
 package usability;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Slf4j
 public class OntologyEvaluatorService {
 
 	private OntologyRepository ontologyRepository;
@@ -71,21 +73,20 @@ public class OntologyEvaluatorService {
 
 		List<EvaluationResult> results = new ArrayList<>();
 
+
 		OntologyRepository.reasoner.getSubClasses(ontologyRepository.loadClass(category))
 				.entities()
 				.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
 				.forEach(c -> {
-					System.out.println(c);
+					log.info("Starting evaluating guideline: " + c.getIRI().getIRIString());
 					EvaluationResult result = evaluate(c, url);
 					if (result != null) {
-						System.out.println(result.getResult().name());
 						result.setGuideline(ontologyService.createGuideline(c));
 						results.add(result);
 					}
+					log.info("Finishing evaluating guideline: " + c.getIRI().getIRIString());
 				});
-
 		Collections.sort(results, Comparator.comparing(o -> o.getResult().name()));
-
 		return results;
 	}
 
@@ -207,11 +208,11 @@ public class OntologyEvaluatorService {
 	}
 
 	private WebDriver initialiseDriver() {
-		
-		 System.setProperty("webdriver.chrome.driver",
-		 "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
-		 return new ChromeDriver();
-	//	return new FirefoxDriver();
+//
+//		 System.setProperty("webdriver.chrome.driver",
+//		 "..\\chrome\\chromedriver.exe");
+//		 return new ChromeDriver();
+	  return new FirefoxDriver();
 	}
 
 	public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {

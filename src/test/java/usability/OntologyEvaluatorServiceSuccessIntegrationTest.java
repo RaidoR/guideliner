@@ -26,4 +26,17 @@ public class OntologyEvaluatorServiceSuccessIntegrationTest extends OntologyEval
         Assert.assertEquals(0, evaluationResult.getFailedElements().size());
     }
 
+    @Test
+    public void test() {
+        // given
+        String guideline = "03-03_DoNotUseColorAloneToConveyInformation";
+
+        // when
+        EvaluationResult evaluationResult = ontologyEvaluatorService.evaluateByName(guideline, "https://www.etis.ee/");
+
+        // then
+        System.out.println(evaluationResult.toString());
+        System.out.println(evaluationResult.getFailedElements().size());
+    }
+
 }

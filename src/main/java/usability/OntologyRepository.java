@@ -45,7 +45,9 @@ import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 public class OntologyRepository {
 
 	//TODO move to file 
-	private static String ontologyFile = "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+	//private static String ontologyFile = "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+	private static String ontologyFile = "..\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+
 	//private static String ontologyFile = "C:\\Users\\jevge\\university\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
 	//private static String ontologyFile2 = "C:\\Users\\jevge\\university\\ontology\\files\\conference\\usability-guidelines-ontology_v1.1.owl";
 	private static String nameSpace = "http://www.semanticweb.org/tarmo/ontologies/2016/3/wug-ont#";
@@ -93,7 +95,7 @@ public class OntologyRepository {
 	public Optional<OWLClassExpression> getEntityTypeOfIndividual(OWLIndividual individual) {
 		return EntitySearcher.getTypes(individual, ontology).findAny();
 	}
-	
+
 	public String getAnnotationValueByAnnotationName(OWLClass clazz, String property) {
 		Optional<OWLAnnotationAssertionAxiom> assertionAxiom = EntitySearcher.getAnnotationAssertionAxioms(clazz, ontology).filter(assertion ->
 			property.equals(assertion.getProperty().getIRI().getShortForm())).findFirst();
@@ -105,6 +107,5 @@ public class OntologyRepository {
 		}
 		return null;
 	}
-
 
 }
