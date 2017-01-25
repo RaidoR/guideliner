@@ -2,7 +2,6 @@ package usability;
 
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
@@ -13,7 +12,6 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import usability.estimation.*;
 import usability.estimation.result.EvaluationResult;
@@ -28,7 +26,6 @@ import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
-import usability.estimation.result.Guideline;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -133,7 +130,7 @@ public class OntologyEvaluatorService {
 		}
 		if (guidelineElement instanceof Paragraph) {
 			try {
-				ParagrapgAdaptor adaptor = new ParagrapgAdaptor();
+				ParagraphAdaptor adaptor = new ParagraphAdaptor();
 				adaptor.setDriver(driver);
 				return adaptor.execute((Paragraph) guidelineElement);
 			} catch (Exception ex) {

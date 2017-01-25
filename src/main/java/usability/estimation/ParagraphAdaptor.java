@@ -23,7 +23,7 @@ import usability.estimation.utils.ContrastEstimator;
 import ee.ttu.usability.domain.element.content.Paragraph;
 
 @Slf4j
-public class ParagrapgAdaptor extends AbstractAdaptor {
+public class ParagraphAdaptor extends AbstractAdaptor {
 	
 	public EvaluationResult execute(Paragraph paragraph) throws IOException {
 		if (paragraph.getContrast() != null && paragraph.getContrast().getContrast() != null) {
@@ -83,7 +83,7 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PARAGRAPH);
 		result.setResult(ResultType.SUCCESS);
-		List<WebElement> allLinks = getAllElelements(driver);
+		List<WebElement> allLinks = getAllElelementsByTag(driver);
 		for (WebElement el : allLinks) {
 			try {
 				if (el.getText().trim().length() > 100) {
@@ -100,9 +100,8 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 							FailedElement failed = new FailedElement();
 							failed.setType(ElementType.PARAGRAPH.name());
 							failed.setText(sentence);
-							failed.setDescription("Expected sentence size is " + page.getContentLength() + " words. Actual image has size is : " + amountOfUnits);			
-							File file = screenshoter.takeScreenshot(screenshot, el, driver);
-							failed.setPathToElement(file.getName());
+							failed.setDescription("Expected sentence size is " + page.getContentLength() + " words. Actual image has size is : " + amountOfUnits);
+							failed.setPathToElement(NO_IMAGE);
 							failedElements.add(failed);
 						 }
 
@@ -123,7 +122,7 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 		List<WebElement> filteredElement = new ArrayList<WebElement>();
 		for (WebElement element : allLinks) {
 			if (element.getText().trim().length() > 100) {
-				System.out.println(element.getText());		
+				System.out.println(element.getText());
 				filteredElement.add(element);
 			}
 		}
@@ -133,5 +132,9 @@ public class ParagrapgAdaptor extends AbstractAdaptor {
 
 	public List<WebElement> getAllElelements(WebDriver driver) {
 		return driver.findElements(By.cssSelector("*"));
+	}
+
+	public List<WebElement> getAllElelementsByTag(WebDriver driver) {
+		return driver.findElements(By.cssSelector("body"));
 	}
 }

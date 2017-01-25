@@ -3,14 +3,11 @@ package usability.estimation;
 import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import jevg.ee.ttu.dataproperty.Unit;
 import ee.ttu.usability.domain.attribute.Contrast;
 import ee.ttu.usability.domain.element.GuidelinetElement;
 import ee.ttu.usability.domain.element.content.Paragraph;
-import ee.ttu.usability.domain.page.UIPage;
 
 public class UsabilityEstimator2 {
 
@@ -18,7 +15,7 @@ public class UsabilityEstimator2 {
 	
 	public static void main(String[] args) throws IOException {
 		
-		ParagrapgAdaptor estimator = new ParagrapgAdaptor();
+		ParagraphAdaptor estimator = new ParagraphAdaptor();
 	    System.setProperty("webdriver.chrome.driver", "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\chrome\\chromedriver.exe");
 		WebDriver driver = new FirefoxDriver();
 		

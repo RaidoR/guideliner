@@ -251,6 +251,10 @@ public class UIPageAdaptor extends AbstractAdaptor {
 			List<WebElement> texts = driver.findElements(By.tagName("body"));
 			texts.forEach(c -> {
 				String text = c.getText();
+				if (StringUtils.length(text) < 100) {
+					return;
+				}
+
 				String space = "";
 				for (int i = 0; i < page.getText().getContentLength(); i++) {
 					space += " ";

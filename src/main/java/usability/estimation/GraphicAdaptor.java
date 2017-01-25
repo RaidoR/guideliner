@@ -56,6 +56,7 @@ public class GraphicAdaptor extends AbstractAdaptor {
 		for (WebElement element : inputs) {
 			URLConnection urlConnection;
 			try {
+				System.out.println(element.getAttribute("src"));
 				urlConnection = new URL(element.getAttribute("src")).openConnection();
 				long bytes = urlConnection. getContentLengthLong(); // in bytes	
 				long kBytes =  bytes / 1024;
@@ -110,7 +111,7 @@ public class GraphicAdaptor extends AbstractAdaptor {
 			String attribute = a.getAttribute("alt");
 			if (StringUtils.isBlank(attribute)) {
 				File file = screenshoter.takeScreenshot(screenshot, a, driver);
-				result.getFailedElements().add(prepareFailedElement(ElementType.GRAPHIC.name(), "Image", "Image does not have alternative text", file));
+				result.getFailedElements().add(prepareFailedElement(ElementType.GRAPHIC.name(), a.getText(), "Image does not have alternative text", file));
 			}
 		});
 				

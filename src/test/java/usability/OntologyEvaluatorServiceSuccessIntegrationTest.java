@@ -29,7 +29,7 @@ public class OntologyEvaluatorServiceSuccessIntegrationTest extends OntologyEval
     @Test
     public void test() {
         // given
-        String guideline = "03-03_DoNotUseColorAloneToConveyInformation";
+        String guideline = "14-09_LimitTheUseOfImages";
 
         // when
         EvaluationResult evaluationResult = ontologyEvaluatorService.evaluateByName(guideline, "https://www.etis.ee/");
