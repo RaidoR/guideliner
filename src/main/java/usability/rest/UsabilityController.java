@@ -57,7 +57,7 @@ public class UsabilityController {
 
     @RequestMapping("/usability/categories")
     public List<String> getAllCategories() {
-        return Arrays.asList("WcagGuideline", "UsabilityGuideline");
+        return Arrays.asList("WcagGuideline", "UsabilityGuideline", "AllGuidelines");
     }
 
     @RequestMapping("/usability/categories/{category}")
