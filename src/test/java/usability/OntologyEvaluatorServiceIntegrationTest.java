@@ -2,7 +2,6 @@ package usability;
 
 import jevg.ee.ttu.dataproperty.Unit;
 
-import org.apache.http.util.Asserts;
 import org.junit.*;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -15,14 +14,12 @@ import ee.ttu.usability.domain.element.link.Form;
 import ee.ttu.usability.domain.element.link.Graphic;
 import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.element.link.Multimedia;
-import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 import org.semanticweb.owlapi.reasoner.NodeSet;
-import usability.OntologyRepository;
 
 @Ignore
-public class TestExample extends AbstractTest {
+public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 
 	@BeforeClass
 	public static void setUp() throws OWLOntologyCreationException {
@@ -32,12 +29,12 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatAnnotationsAreExtractedSuccessfullyFromGuidelines() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 
 		// when
-		String comment = ontology.getAnnotationValueByAnnotationName(guideline, "comment");
-		String guide = ontology.getAnnotationValueByAnnotationName(guideline, "guideline");
+		String comment = ontologyRepository.getAnnotationValueByAnnotationName(guideline, "comment");
+		String guide = ontologyRepository.getAnnotationValueByAnnotationName(guideline, "guideline");
 	
 		// then
 		Assert.assertNotNull(comment);
@@ -47,11 +44,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule03_03() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 		
 		// when
-		Link guidelineElement = (Link) evaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContrast());
@@ -61,11 +58,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule05_07() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("05-07_LimitHomePageLength");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContentLength());
@@ -75,11 +72,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule11_01() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) evaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContrast());
@@ -89,11 +86,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule10_11() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("10-11_UseAppropriateTextLinkLengths");
 		
 		// when
-		Link guidelineElement = (Link) evaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getUnit());
@@ -104,11 +101,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule08_01() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("08-01_EliminateHorizontalScrolling");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		System.out.println(guidelineElement.getHorizontalScroll().getValue());
@@ -117,11 +114,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule03_02() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
 		
 		// when
-		Form guidelineElement = (Form) evaluatorService.fillWithGuidelineElement(guideline);
+		Form guidelineElement = (Form) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -132,11 +129,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule14_09() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("14-09_LimitTheUseOfImages");
 		
 		// when
-		Graphic guidelineElement = (Graphic) evaluatorService.fillWithGuidelineElement(guideline);
+		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -147,11 +144,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule15_07() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("15-07_LimitTheNumberOfWordsAndSentences");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) evaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -162,11 +159,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule16_05() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
 		
 		// when
-		Navigation guidelineElement = (Navigation) evaluatorService.fillWithGuidelineElement(guideline);
+		Navigation guidelineElement = (Navigation) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -179,11 +176,11 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule03_05() {
 		// given
-		OWLClass guideline = ontology
+		OWLClass guideline = ontologyRepository
 				.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
 		
 		// when
-		Multimedia guidelineElement = (Multimedia) evaluatorService.fillWithGuidelineElement(guideline);
+		Multimedia guidelineElement = (Multimedia) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -193,10 +190,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule06_10() {
 		// given
-		OWLClass guideline = ontology.loadClass("06-10_SetAppropriatePageLengths");
+		OWLClass guideline = ontologyRepository.loadClass("06-10_SetAppropriatePageLengths");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -208,10 +205,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule06_08() {
 		// given
-		OWLClass guideline = ontology.loadClass("06-08_UseFluidLayouts");
+		OWLClass guideline = ontologyRepository.loadClass("06-08_UseFluidLayouts");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -222,10 +219,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule07_08() {
 		// given
-		OWLClass guideline = ontology.loadClass("07-08_KeepNavigationOnlyPagesShort");
+		OWLClass guideline = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -236,10 +233,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule03_09() {
 		// given
-		OWLClass guideline = ontology.loadClass("03-09_ProvideClientSideImageMaps");
+		OWLClass guideline = ontologyRepository.loadClass("03-09_ProvideClientSideImageMaps");
 		
 		// when
-		Button guidelineElement = (Button) evaluatorService.fillWithGuidelineElement(guideline);
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -249,10 +246,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule04_04() {
 		// given
-		OWLClass guideline = ontology.loadClass("04-04_DesignForUserTypicalConnectionSpeed");
+		OWLClass guideline = ontologyRepository.loadClass("04-04_DesignForUserTypicalConnectionSpeed");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -264,10 +261,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule05_03() {
 		// given
-		OWLClass guideline = ontology.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
+		OWLClass guideline = ontologyRepository.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -278,10 +275,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule08_04() {
 		// given
-		OWLClass guideline = ontology.loadClass("08-04_UsePagingRatherThanScrolling");
+		OWLClass guideline = ontologyRepository.loadClass("08-04_UsePagingRatherThanScrolling");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) evaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -292,10 +289,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule11_05() {
 		// given
-		OWLClass guideline = ontology.loadClass("11-05_UseBoldTextSparingly");
+		OWLClass guideline = ontologyRepository.loadClass("11-05_UseBoldTextSparingly");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -308,10 +305,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test1wcag_8_01_CheckHtmlStyle() {
 		// given
-		OWLClass guideline = ontology.loadClass("1wcag-8-01_CheckHtmlStyle");
+		OWLClass guideline = ontologyRepository.loadClass("1wcag-8-01_CheckHtmlStyle");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -322,10 +319,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test1wcag_8_10_CheckOnClickIsUsedWithOnKeyDown() {
 		// given
-		OWLClass guideline = ontology.loadClass("1wcag-8-10_CheckOnClickIsUsedWithOnKeyDown");
+		OWLClass guideline = ontologyRepository.loadClass("1wcag-8-10_CheckOnClickIsUsedWithOnKeyDown");
 		
 		// when
-		Button guidelineElement = (Button) evaluatorService.fillWithGuidelineElement(guideline);
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -336,10 +333,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test3wcag_8_15_CheckThatPageHasLinkToFrontPage() {
 		// given
-		OWLClass guideline = ontology.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
+		OWLClass guideline = ontologyRepository.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -350,10 +347,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test4wcag_8_16_CheckThatEveryPageHasTitle() {
 		// given
-		OWLClass guideline = ontology.loadClass("4wcag-8-16_CheckThatEveryPageHasTitle");
+		OWLClass guideline = ontologyRepository.loadClass("4wcag-8-16_CheckThatEveryPageHasTitle");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -364,10 +361,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test5wcag_8_19_CheckThatLanguageIsIncludedToHtmlTag() {
 		// given
-		OWLClass guideline = ontology.loadClass("5wcag-8-19_CheckThatLanguageIsIncludedToHtmlTag");
+		OWLClass guideline = ontologyRepository.loadClass("5wcag-8-19_CheckThatLanguageIsIncludedToHtmlTag");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -379,10 +376,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test6wcag_1_1_AreaShouldHaveAltAttribute() {
 		// given
-		OWLClass guideline = ontology.loadClass("6wcag-1-1_AreaShouldHaveAltAttribute");
+		OWLClass guideline = ontologyRepository.loadClass("6wcag-1-1_AreaShouldHaveAltAttribute");
 		
 		// when
-		Area guidelineElement = (Area) evaluatorService.fillWithGuidelineElement(guideline);
+		Area guidelineElement = (Area) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -393,10 +390,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test7wcag_1_1_ImageShouldHaveAltAttribute() {
 		// given
-		OWLClass guideline = ontology.loadClass("7wcag-1-1_ImageShouldHaveAltAttribute");
+		OWLClass guideline = ontologyRepository.loadClass("7wcag-1-1_ImageShouldHaveAltAttribute");
 		
 		// when
-		Graphic guidelineElement = (Graphic) evaluatorService.fillWithGuidelineElement(guideline);
+		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -407,10 +404,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test8wcag_1_1_AlternativeTextShouldNotHaveProhibitedWords() {
 		// given
-		OWLClass guideline = ontology.loadClass("8wcag-1-1_AlternativeTextShouldNotHaveProhibitedWords");
+		OWLClass guideline = ontologyRepository.loadClass("8wcag-1-1_AlternativeTextShouldNotHaveProhibitedWords");
 		
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -423,10 +420,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test11wcag_1_1_LinkAltTextShouldBeDifferentFromText() {
 		// given
-		OWLClass guideline = ontology.loadClass("11wcag-1-1_LinkAltTextShouldBeDifferentFromText");
+		OWLClass guideline = ontologyRepository.loadClass("11wcag-1-1_LinkAltTextShouldBeDifferentFromText");
 		
 		// when
-		Link guidelineElement = (Link) evaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -439,10 +436,10 @@ public class TestExample extends AbstractTest {
 	@Test
 	public void test9wcag_1_1_TextShouldNotContainMultipleSpace() {
 		// given
-		OWLClass guideline = ontology.loadClass("9wcag-1-1_TextShouldNotContainMultipleSpace");
+		OWLClass guideline = ontologyRepository.loadClass("9wcag-1-1_TextShouldNotContainMultipleSpace");
 
 		// when
-		UIPage guidelineElement = (UIPage) evaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
 
 		// then
 		Assert.assertNotNull(guidelineElement);

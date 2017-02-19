@@ -10,7 +10,7 @@ import usability.estimation.result.ResultType;
 @Ignore
 public class OntologyEvaluatorServiceSuccessIntegrationTest extends OntologyEvaluatorServiceAbstractIntegrationTest {
 
-    private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontology/project/ontology-test-client/correct/index.html";
+    private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontologyRepository/project/ontologyRepository-test-client/correct/index.html";
 
     @Autowired
     private OntologyEvaluatorService ontologyEvaluatorService;

@@ -20,7 +20,7 @@ import java.io.IOException;
 @Ignore
 public class OntologyEvaluatorServiceFailedIntegrationTest extends OntologyEvaluatorServiceAbstractIntegrationTest {
 
-    private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontology/project/ontology-test-client/incorrect/index.html";
+    private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontologyRepository/project/ontologyRepository-test-client/incorrect/index.html";
 
     @Autowired
     private OntologyEvaluatorService ontologyEvaluatorService;
