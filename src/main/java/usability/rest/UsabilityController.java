@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +64,11 @@ public class UsabilityController {
     @RequestMapping("/usability/categories/{category}")
     public List<Guideline> getByCategory(@PathVariable("category") String category) {
         return ontologyService.findByCategory(category);
+    }
+
+    @RequestMapping("/usability/categories2/{category}")
+    public List<String> getListByCategory(@PathVariable("category") String category) {
+        return ontologyService.findByCategory(category).stream().map(e -> e.getCode()).collect(Collectors.toList());
     }
 
 }
