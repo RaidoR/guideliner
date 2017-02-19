@@ -9,7 +9,7 @@ import usability.configuration.Application;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Rollback
-public class OntologyEvaluatorServiceAbstractIntegrationTest {
+public abstract class OntologyEvaluatorServiceAbstractIntegrationTest {
 
 
 }
