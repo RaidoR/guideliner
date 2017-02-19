@@ -37,7 +37,7 @@ public class UsabilityController {
     private OntologyRepository ontologyRepository;
     
     private OntologyService ontologyService;
-    
+
     @Autowired
     public UsabilityController(OntologyEvaluatorService evaluatorService, OntologyRepository ontologyRepository, OntologyService ontologyService) {
     	this.evaluatorService = evaluatorService;

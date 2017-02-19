@@ -1,11 +1,13 @@
 package usability;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.ResultType;
 
+@Ignore
 public class OntologyEvaluatorServiceSuccessIntegrationTest extends OntologyEvaluatorServiceAbstractIntegrationTest {
 
     private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontology/project/ontology-test-client/correct/index.html";

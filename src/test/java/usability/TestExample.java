@@ -3,10 +3,7 @@ package usability;
 import jevg.ee.ttu.dataproperty.Unit;
 
 import org.apache.http.util.Asserts;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
@@ -24,6 +21,7 @@ import ee.ttu.usability.domain.page.UIPage;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import usability.OntologyRepository;
 
+@Ignore
 public class TestExample extends AbstractTest {
 
 	@BeforeClass

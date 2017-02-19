@@ -3,6 +3,7 @@ package usability;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -16,6 +17,7 @@ import usability.estimation.utils.Screenshoter;
 import java.io.File;
 import java.io.IOException;
 
+@Ignore
 public class OntologyEvaluatorServiceFailedIntegrationTest extends OntologyEvaluatorServiceAbstractIntegrationTest {
 
     private static final String URL = "file:///C:/Users/jevgeni.marenkov/Desktop/yli/ontology/project/ontology-test-client/incorrect/index.html";
@@ -31,6 +33,7 @@ public class OntologyEvaluatorServiceFailedIntegrationTest extends OntologyEvalu
         Mockito.doReturn(null).when(screenshoter).makeScreenshot(Mockito.<WebDriver>any());
         Mockito.doReturn(new File("test")).when(screenshoter).takeScreenshot(Mockito.any(), Mockito.any(), Mockito.any());
     }
+
 
     @Test
     public void test10_11_UseAppropriateTextLinkLengths() {

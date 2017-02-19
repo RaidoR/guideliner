@@ -212,6 +212,16 @@ public class OntologyEvaluatorService {
 	  return new FirefoxDriver();
 	}
 
+	public WebDriver initialiseDriver(String url) {
+//
+//		 System.setProperty("webdriver.chrome.driver",
+//		 "..\\chrome\\chromedriver.exe");
+//		 return new ChromeDriver();
+		this.driver =  new FirefoxDriver();
+		driver.get(url);
+		return driver;
+	}
+
 	public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {
 		GuidelinetElement guidelineElement = this.getGuidelineElement(guideline);
 
