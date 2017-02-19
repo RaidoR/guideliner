@@ -1,44 +1,15 @@
 package jenkins;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestContextManager;
-import usability.OntologyEvaluatorService;
-import usability.OntologyRepository;
-import usability.configuration.Application;
 import usability.estimation.result.EvaluationResult;
 
-@RunWith(DataProviderRunner.class)
-@SpringBootTest(classes = Application.class)
-public class JenkinsTest extends AbstractJenkinsTest {
 
-    private static final String URL = "http://www.etis.ee";
-
-    @Autowired
-    private OntologyEvaluatorService ontologyEvaluatorService;
-
-    @Autowired
-    private OntologyRepository ontologyRepository;
-
-    // Manually config for spring to use Parameterised
-    private TestContextManager testContextManager;
-
-
-    @Before
-    public void configureDriver() throws Exception {
-        if (this.testContextManager == null) {
-            this.testContextManager = new TestContextManager(getClass());
-            this.testContextManager.prepareTestInstance(this);
-        }
-        ontologyEvaluatorService.initialiseDriverIfNotInitialised(URL);
-    }
+public class JenkinsWcagTest extends AbstractJenkinsTest {
 
     @DataProvider
     public static Object[][] wcagGuidelines() {
@@ -62,7 +33,6 @@ public class JenkinsTest extends AbstractJenkinsTest {
     @UseDataProvider("wcagGuidelines")
     public void testWcagGuidelines(String guidelines) {
         // given
-        System.out.println("lll" + guidelines);
         OWLClass guideline = ontologyRepository
                 .loadClass(guidelines);
 
