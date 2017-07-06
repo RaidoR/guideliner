@@ -1,15 +1,12 @@
 package usability;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import ee.ttu.usability.domain.element.link.*;
 import jevg.ee.ttu.dataproperty.UnitAction;
-import org.apache.commons.lang3.BooleanUtils;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Service;
 import ee.ttu.usability.domain.attribute.AbstractAttribute;
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import ee.ttu.usability.domain.attribute.Contrast;
-import ee.ttu.usability.domain.attribute.Height;
 import ee.ttu.usability.domain.attribute.Href;
 import ee.ttu.usability.domain.attribute.Html;
 import ee.ttu.usability.domain.attribute.Label;
@@ -25,7 +21,7 @@ import ee.ttu.usability.domain.attribute.Lang;
 import ee.ttu.usability.domain.attribute.OnClick;
 import ee.ttu.usability.domain.attribute.OnKeyPress;
 import ee.ttu.usability.domain.attribute.Title;
-import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.UsabilityGuideline;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.element.navigation.ProhibitedWords;
@@ -40,7 +36,6 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
-import jevg.ee.ttu.Guideline;
 import jevg.ee.ttu.dataproperty.Case;
 import jevg.ee.ttu.dataproperty.Unit;
 
@@ -56,7 +51,7 @@ public class GuildelineBuilderService {
 	
 	// TODO somehow combine fillGuideline and transformToObject together
 	@SuppressWarnings("static-access")
-	public void fillGuideline(NodeSet<OWLNamedIndividual> instances, GuidelinetElement guidelineElement) {
+	public void fillGuideline(NodeSet<OWLNamedIndividual> instances, UsabilityGuideline guidelineElement) {
 		 instances.forEach(f -> {
 			 f.forEach(individual -> {
 				 ontologyRepository.ontology.axioms(individual).forEach(axiom -> {
@@ -73,7 +68,7 @@ public class GuildelineBuilderService {
 		 });
 	}
 	
-	public void transformToObject(OWLNamedIndividual individual, GuidelinetElement element, AbstractAttribute attribute) {
+	public void transformToObject(OWLNamedIndividual individual, UsabilityGuideline element, AbstractAttribute attribute) {
 		ontologyRepository.ontology.axioms(individual).forEach(axiom -> {
 			 this.fillWithProperties(axiom, element, attribute);
 		 });
@@ -85,7 +80,7 @@ public class GuildelineBuilderService {
 		 System.out.println(dataProperty.getObject().getLiteral());
 	}
 	
-	public void fillWithProperties(OWLIndividualAxiom axiom, GuidelinetElement element, AbstractAttribute attribute) {
+	public void fillWithProperties(OWLIndividualAxiom axiom, UsabilityGuideline element, AbstractAttribute attribute) {
 		 if (axiom instanceof OWLDataPropertyAssertionAxiomImpl) {
 			 OWLDataPropertyAssertionAxiomImpl dataProperty = (OWLDataPropertyAssertionAxiomImpl) axiom;
 			 this.fillWithDataProperty(element, dataProperty, attribute);
@@ -96,7 +91,7 @@ public class GuildelineBuilderService {
 		 }
 	}
 	
-	public void fillWithObjectProperty(GuidelinetElement element, OWLObjectPropertyAssertionAxiomImpl objectProperty, AbstractAttribute attribute) {
+	public void fillWithObjectProperty(UsabilityGuideline element, OWLObjectPropertyAssertionAxiomImpl objectProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = null;
 
 		 if (attribute != null) {
@@ -248,7 +243,7 @@ public class GuildelineBuilderService {
 		}
 	}
 
-	public void fillWithDataProperty(GuidelinetElement element, OWLDataPropertyAssertionAxiomImpl dataProperty, AbstractAttribute attribute) {
+	public void fillWithDataProperty(UsabilityGuideline element, OWLDataPropertyAssertionAxiomImpl dataProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
 
 		if (attribute != null) {

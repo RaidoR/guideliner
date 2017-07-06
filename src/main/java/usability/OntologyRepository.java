@@ -2,9 +2,6 @@ package usability;
 
 import java.io.File;
 import java.util.Optional;
-import java.util.stream.Stream;
-
-import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,12 +9,10 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -30,12 +25,8 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.springframework.stereotype.Repository;
 
-import ee.ttu.usability.domain.element.GuidelinetElement;
-import ee.ttu.usability.domain.page.UIPage;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImplString;
-import uk.ac.manchester.cs.owl.owlapi.OWLObjectAllValuesFromImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 
 /**
  * @author jevgeni.marenkov
@@ -58,11 +49,11 @@ public class OntologyRepository {
 		this.initialise();
 	}
 	public static void initialise() throws OWLOntologyCreationException {
-		initialiseOntology(null);
+		reloadOntology();
 		initialiseReasoner();
 	}
 	
-	public static void initialiseOntology(String o) throws OWLOntologyCreationException {
+	public static void reloadOntology() throws OWLOntologyCreationException {
 		OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
 		ontology = ontologyManager.loadOntologyFromOntologyDocument(new File(ontologyFile));
 	}

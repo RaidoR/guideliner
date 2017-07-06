@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubClassOfAxiomImpl;
 import usability.estimation.*;
 import usability.estimation.result.EvaluationResult;
-import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.UsabilityGuideline;
 import ee.ttu.usability.domain.element.content.Paragraph;
 import ee.ttu.usability.domain.element.link.Area;
 import ee.ttu.usability.domain.element.link.Button;
@@ -100,7 +100,7 @@ public class OntologyEvaluatorService {
 			driver = initialiseDriver();
 		}
 		// get guideline
-		GuidelinetElement guidelineElement = fillWithGuidelineElement(guideline);
+		UsabilityGuideline guidelineElement = fillGuidelines(guideline);
 
 //		WebDriver driver = initialiseDriver();
 
@@ -225,18 +225,22 @@ public class OntologyEvaluatorService {
 		return driver;
 	}
 
-	public GuidelinetElement fillWithGuidelineElement(OWLClass guideline) {
-		GuidelinetElement guidelineElement = this.getGuidelineElement(guideline);
+	public void initialiseDriverIfNotInitialised(String url, String url2, String url3) {
 
+	}
+
+
+
+	public UsabilityGuideline fillGuidelines(OWLClass guideline) {
+		UsabilityGuideline guidelineElement = this.getGuidelineElement(guideline);
 		NodeSet<OWLNamedIndividual> instances = ontologyRepository.getIndividuals(guideline);
 		builder.fillGuideline(instances, guidelineElement);
-
 		return guidelineElement;
 	}
 
 	// TODO refactor
 	@SuppressWarnings("deprecation")
-	public GuidelinetElement getGuidelineElement(OWLClass selectedGuideline) {
+	public UsabilityGuideline getGuidelineElement(OWLClass selectedGuideline) {
 		for (OWLClassAxiom g : OntologyRepository.ontology
 				.getAxioms(selectedGuideline)) {
 			if (g instanceof OWLSubClassOfAxiomImpl) {
@@ -265,7 +269,7 @@ public class OntologyEvaluatorService {
 		return null;
 	}
 	
-	private GuidelinetElement transform(String ontologyElement) {
+	private UsabilityGuideline transform(String ontologyElement) {
 		switch (ontologyElement) {
 		case "UIPage":
 			return new UIPage();

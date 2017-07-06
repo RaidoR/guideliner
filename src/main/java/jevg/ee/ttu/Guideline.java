@@ -2,13 +2,12 @@ package jevg.ee.ttu;
 
 import lombok.Getter;
 import lombok.Setter;
-import ee.ttu.usability.domain.element.GuidelinetElement;
-import ee.ttu.usability.domain.partition.ValuePartition;
+import ee.ttu.usability.domain.element.UsabilityGuideline;
 
 @Getter
 @Setter
 public class Guideline {
 
-	private GuidelinetElement element;
+	private UsabilityGuideline element;
 	
 }

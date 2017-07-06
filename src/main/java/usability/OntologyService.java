@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ee.ttu.usability.domain.element.UsabilityGuideline;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.reasoner.NodeSet;
@@ -43,7 +44,7 @@ public class OntologyService {
 		return OntologyRepository.reasoner.getSubClasses(guidelines).entities();
 	}
 
-	public List<Guideline> findByCategory(String category) {
+	public List<Guideline> findUsabilityGuidelinesByCategory(String category) {
 		List<Guideline> guidelines = new ArrayList<>();
 
 		OntologyRepository.reasoner.getSubClasses(ontology.loadClass(category))
@@ -55,6 +56,12 @@ public class OntologyService {
 
 		return guidelines;
 	}
+
+	public UsabilityGuideline retrieveUsabilityGuidelineByName(String nameOfGuideline) {
+		OWLClass clazz = ontology.loadClass(nameOfGuideline);
+		return null;
+	}
+
 
 	public Guideline createGuideline(OWLClass clazz) {
 		String shortIri = clazz.getIRI().getIRIString().substring(clazz.getIRI().getIRIString().lastIndexOf("#") + 1);

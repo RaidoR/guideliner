@@ -48,7 +48,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
 		
 		// when
-		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContrast());
@@ -62,7 +62,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("05-07_LimitHomePageLength");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContentLength());
@@ -76,7 +76,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("11-01_UseBlackTextonPlainHighContrastBackgrounds");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getContrast());
@@ -90,7 +90,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("10-11_UseAppropriateTextLinkLengths");
 		
 		// when
-		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement.getUnit());
@@ -105,7 +105,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("08-01_EliminateHorizontalScrolling");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		System.out.println(guidelineElement.getHorizontalScroll().getValue());
@@ -118,7 +118,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
 		
 		// when
-		Form guidelineElement = (Form) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Form guidelineElement = (Form) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -133,7 +133,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("14-09_LimitTheUseOfImages");
 		
 		// when
-		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -148,7 +148,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("15-07_LimitTheNumberOfWordsAndSentences");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -163,7 +163,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
 		
 		// when
-		Navigation guidelineElement = (Navigation) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Navigation guidelineElement = (Navigation) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -180,7 +180,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 				.loadClass("03-05_ProvideTextEquivalentsForNonTextElements");
 		
 		// when
-		Multimedia guidelineElement = (Multimedia) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Multimedia guidelineElement = (Multimedia) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -193,7 +193,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("06-10_SetAppropriatePageLengths");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -208,7 +208,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("06-08_UseFluidLayouts");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -222,7 +222,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -236,7 +236,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("03-09_ProvideClientSideImageMaps");
 		
 		// when
-		Button guidelineElement = (Button) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -249,7 +249,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("04-04_DesignForUserTypicalConnectionSpeed");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -264,7 +264,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -278,7 +278,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("08-04_UsePagingRatherThanScrolling");
 		
 		// when
-		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -292,7 +292,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("11-05_UseBoldTextSparingly");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -308,7 +308,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("1wcag-8-01_CheckHtmlStyle");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -322,7 +322,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("1wcag-8-10_CheckOnClickIsUsedWithOnKeyDown");
 		
 		// when
-		Button guidelineElement = (Button) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -336,7 +336,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -350,7 +350,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("4wcag-8-16_CheckThatEveryPageHasTitle");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -364,7 +364,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("5wcag-8-19_CheckThatLanguageIsIncludedToHtmlTag");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -379,7 +379,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("6wcag-1-1_AreaShouldHaveAltAttribute");
 		
 		// when
-		Area guidelineElement = (Area) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Area guidelineElement = (Area) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -393,7 +393,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("7wcag-1-1_ImageShouldHaveAltAttribute");
 		
 		// when
-		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Graphic guidelineElement = (Graphic) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -407,7 +407,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("8wcag-1-1_AlternativeTextShouldNotHaveProhibitedWords");
 		
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -423,7 +423,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("11wcag-1-1_LinkAltTextShouldBeDifferentFromText");
 		
 		// when
-		Link guidelineElement = (Link) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
 		
 		// then
 		Assert.assertNotNull(guidelineElement);
@@ -439,7 +439,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		OWLClass guideline = ontologyRepository.loadClass("9wcag-1-1_TextShouldNotContainMultipleSpace");
 
 		// when
-		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillWithGuidelineElement(guideline);
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
 
 		// then
 		Assert.assertNotNull(guidelineElement);

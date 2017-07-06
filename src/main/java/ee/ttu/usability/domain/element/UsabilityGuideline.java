@@ -9,7 +9,7 @@ import ee.ttu.usability.domain.attribute.Width;
 import ee.ttu.usability.domain.pageattributes.Height;
 
 @Data
-public class GuidelinetElement {
+public class UsabilityGuideline {
 
 	private Contrast contrast;
 	

@@ -6,11 +6,11 @@ import lombok.Setter;
 import ee.ttu.usability.domain.attribute.Href;
 import ee.ttu.usability.domain.attribute.LinkType;
 import ee.ttu.usability.domain.attribute.Title;
-import ee.ttu.usability.domain.element.GuidelinetElement;
+import ee.ttu.usability.domain.element.UsabilityGuideline;
 
 @Getter
 @Setter
-public class Link extends GuidelinetElement {
+public class Link extends UsabilityGuideline {
 
 	private Href href;
 
