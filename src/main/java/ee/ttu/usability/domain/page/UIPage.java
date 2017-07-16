@@ -1,5 +1,6 @@
 package ee.ttu.usability.domain.page;
 
+import ee.ttu.usability.domain.pageattributes.Scroll;
 import lombok.Data;
 import ee.ttu.usability.domain.attribute.Href;
 import ee.ttu.usability.domain.attribute.Html;
@@ -15,6 +16,8 @@ public class UIPage extends UsabilityGuideline {
 	private HorizontalScroll horizontalScroll;
 
 	private VerticalScroll verticalScroll;
+
+	private Scroll scroll;
 	
 	private ProhibitedWords prohibitedWords;
 	

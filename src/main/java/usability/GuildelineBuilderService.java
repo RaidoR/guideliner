@@ -2,7 +2,11 @@ package usability;
 
 import java.util.Optional;
 
+import ee.ttu.usability.domain.attribute.*;
+import ee.ttu.usability.domain.element.form.FormElementLabel;
+import ee.ttu.usability.domain.element.form.PositionType;
 import ee.ttu.usability.domain.element.link.*;
+import ee.ttu.usability.domain.pageattributes.Scroll;
 import jevg.ee.ttu.dataproperty.UnitAction;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
@@ -11,16 +15,6 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ee.ttu.usability.domain.attribute.AbstractAttribute;
-import ee.ttu.usability.domain.attribute.AlternativeText;
-import ee.ttu.usability.domain.attribute.Contrast;
-import ee.ttu.usability.domain.attribute.Href;
-import ee.ttu.usability.domain.attribute.Html;
-import ee.ttu.usability.domain.attribute.Label;
-import ee.ttu.usability.domain.attribute.Lang;
-import ee.ttu.usability.domain.attribute.OnClick;
-import ee.ttu.usability.domain.attribute.OnKeyPress;
-import ee.ttu.usability.domain.attribute.Title;
 import ee.ttu.usability.domain.element.UsabilityGuideline;
 import ee.ttu.usability.domain.element.navigation.ID;
 import ee.ttu.usability.domain.element.navigation.Navigation;
@@ -94,6 +88,9 @@ public class GuildelineBuilderService {
 	public void fillWithObjectProperty(UsabilityGuideline element, OWLObjectPropertyAssertionAxiomImpl objectProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = null;
 
+		System.out.println("2222222");
+		System.out.println(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm());
+
 		 if (attribute != null) {
 			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
 			 if ("hasUnit".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
@@ -130,12 +127,18 @@ public class GuildelineBuilderService {
 				 element.setUnit(Unit.WORDS_IN_SENTENCE);
 				 printOwlObjectProperty(objectProperty);
 			 } else if ("Pixel".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
-				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
+				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
 				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					 if (element instanceof UIPage) {
-							if (((UIPage) element).getHeight() == null)
-								((UIPage) element).setHeight(new ee.ttu.usability.domain.pageattributes.Height());
-							((UIPage) element).getHeight().setUnit(Unit.PIXCEL);
+							if (element.getHeight() == null)
+								element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
+							element.getHeight().setUnit(Unit.PIXCEL);
+					 }
+				 } else if ("Width".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof Link) {
+						 if (element.getWidth() == null)
+							 element.setWidth(new Width());
+						 element.getWidth().setUnit(Unit.PIXCEL);
 					 }
 				 }
 			 } else if ("MiliSecond".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
@@ -186,6 +189,16 @@ public class GuildelineBuilderService {
 				 }
 			 }
 		 }
+
+		if ("hasPositionType".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			System.out.println(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm());
+			System.out.println(ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject()));
+			if ("Above".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
+				if (element instanceof FormElementLabel) {
+					((FormElementLabel) element).setPositionType(PositionType.ABOVE);
+				}
+			}
+		}
 		 
 		 if ("hasAttribute".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 		     transformToObject(((OWLNamedIndividualImpl) objectProperty.getObject()), element, null);
@@ -268,7 +281,8 @@ public class GuildelineBuilderService {
 				}
 			return;
 		}
-		
+		System.out.println("aaaaaaaaaaaaa");
+		System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 			case "hasContentLength" : 
 				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());	  
@@ -287,16 +301,26 @@ public class GuildelineBuilderService {
 						if (((UIPage) element).getText() == null)
 							((UIPage) element).setText(new Text());
 						((UIPage) element).getText().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+				 } else if ("Width".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 System.out.println("dddddddddddddddddd");
+					 System.out.println(dataProperty.getObject().getLiteral());
+					 if (element instanceof Link) {
+						 if (element.getWidth() == null)
+							 element.setWidth(new Width());
+						 element.getWidth().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+					 }
 				 } else if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
 					 element.setContentLength(new Integer(dataProperty.getObject().getLiteral()));
-				 } 
-				 break;
+				 }
+
+				break;
 			case "hasContrast" :
 				Contrast contrast = new Contrast();
 				contrast.setContrast(new Integer(dataProperty.getObject().getLiteral()));
 				element.setContrast(contrast);
 				break;		
 			case "hasScroll" :
+				System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 				if ("HScroll".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					HorizontalScroll scroll = new HorizontalScroll();
 					scroll.setValue(new Integer(dataProperty.getObject().getLiteral()));
@@ -397,6 +421,15 @@ public class GuildelineBuilderService {
 					html.setValid(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					if (element instanceof UIPage) {
 						((UIPage) element).setHtml(html);
+					}
+				}
+				break;
+			case "isOneDirectional" :
+				if ("Scroll".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Scroll scroll = new Scroll();
+					scroll.setIsOneDirectional(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof UIPage) {
+						((UIPage) element).setScroll(scroll);
 					}
 				}
 				break;

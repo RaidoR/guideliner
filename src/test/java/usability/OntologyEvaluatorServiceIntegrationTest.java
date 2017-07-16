@@ -1,5 +1,7 @@
 package usability;
 
+import ee.ttu.usability.domain.element.form.FormElementLabel;
+import ee.ttu.usability.domain.element.form.PositionType;
 import jevg.ee.ttu.dataproperty.Unit;
 
 import org.junit.*;
@@ -16,7 +18,6 @@ import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.element.link.Multimedia;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
-import org.semanticweb.owlapi.reasoner.NodeSet;
 
 @Ignore
 public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
@@ -46,7 +47,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		// given
 		OWLClass guideline = ontologyRepository
 				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
-		
+
 		// when
 		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
 		
@@ -447,26 +448,71 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getText().getUnit());
 		Assert.assertNotNull(guidelineElement.getText().getContentLength());
 	}
-	
+
+	// TODO implement
 	@Test
-	public void testSmth() {
+	public void test17_01_PlaceLabelsAboveTheInput() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("17-01_PlaceLabelsAboveTheInput");
 
-		System.out.println("eeeeee");
-		ontologyService.getAllWcagUsabilityGuidelines();
+		// when
+		FormElementLabel guidelineElement = (FormElementLabel) ontologyEvaluatorService.fillGuidelines(guideline);
 
-		ontologyService
-				.getAllWcagUsabilityGuidelines()
-				.forEach(
-						t -> {
-							System.out.println("1.1" + t);
-							NodeSet<OWLClass> superClasses = OntologyRepository.reasoner
-									.getSuperClasses(t, true);
-							superClasses.entities().forEach(g -> {
-//								System.out.println("1.2" +g);
-							});
-						});
-
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getPositionType());
+		Assert.assertEquals(PositionType.ABOVE, guidelineElement.getPositionType());
 	}
+
+	// TODO Implement
+	@Test
+	public void test18_01_ScrollIsOneDirectional() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("18-01_ScrollIsOneDirectional");
+
+		// when
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getScroll());
+		Assert.assertEquals(true, guidelineElement.getScroll().getIsOneDirectional());
+	}
+
+	@Test
+	public void test19_01_LinkShouldBeWideEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("19-01_LinkShouldBeWideEnough");
+
+		// when
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getWidth());
+		Assert.assertEquals(new Integer(48), guidelineElement.getWidth().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getWidth().getUnit());
+	}
+	//
+//	@Test
+//	public void testSmth() {
+//
+//		System.out.println("eeeeee");
+//		ontologyService.getAllWcagUsabilityGuidelines();
+//
+//		ontologyService
+//				.getAllWcagUsabilityGuidelines()
+//				.forEach(
+//						t -> {
+//							System.out.println("1.1" + t);
+//							NodeSet<OWLClass> superClasses = OntologyRepository.reasoner
+//									.getSuperClasses(t, true);
+//							superClasses.entities().forEach(g -> {
+////								System.out.println("1.2" +g);
+//							});
+//						});
+//
+//	}
 
 
 }

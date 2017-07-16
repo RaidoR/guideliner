@@ -16,6 +16,11 @@ public class OntologyProcessingServiceImpl implements OntologyProcessingService 
     }
 
     @Override
+    public List<String> findAllCategoriesOfUsabilityGuidelines() {
+        return null;
+    }
+
+    @Override
     public List<UsabilityGuideline> findUsabilityGuidelinesByCategory(String category) {
         return findUsabilityGuidelinesByCategory(category);
     }

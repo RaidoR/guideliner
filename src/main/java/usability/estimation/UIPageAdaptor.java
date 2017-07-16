@@ -158,7 +158,7 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		System.out.println("vertical scrolling");
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
-		
+
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("scroll(10000, 0);");
 		

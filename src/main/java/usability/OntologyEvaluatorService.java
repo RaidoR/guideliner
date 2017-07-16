@@ -1,5 +1,6 @@
 package usability;
 
+import ee.ttu.usability.domain.element.form.FormElementLabel;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -260,8 +261,17 @@ public class OntologyEvaluatorService {
 					// + "type of fille" + someValueOf.getFiller().getClass());
 				}
 				if (g2.getSuperClass() instanceof OWLObjectAllValuesFrom) {
+
 					OWLObjectAllValuesFrom valueOf = (OWLObjectAllValuesFrom) g2
 							.getSuperClass();
+
+					// TODO make more readable
+					if ("hasDeviceType".equalsIgnoreCase(valueOf
+							.getProperty().asOWLObjectProperty().getIRI()
+							.getShortForm())) {
+						continue;
+					}
+
 					return transform(valueOf.getFiller().asOWLClass().getIRI().getShortForm());
 				}
 			}
@@ -291,8 +301,10 @@ public class OntologyEvaluatorService {
 			return new NumberedList();
 		case "Area":
 			return new Area();
+		case "FormElementLabel":
+			return new FormElementLabel();
 		default:
-			return null;
+			throw new RuntimeException("Cannot find the class for " + ontologyElement);
 		}
 	}
 

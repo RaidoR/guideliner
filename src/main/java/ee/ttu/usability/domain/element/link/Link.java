@@ -1,11 +1,8 @@
 package ee.ttu.usability.domain.element.link;
 
-import ee.ttu.usability.domain.attribute.AlternativeText;
+import ee.ttu.usability.domain.attribute.*;
 import lombok.Getter;
 import lombok.Setter;
-import ee.ttu.usability.domain.attribute.Href;
-import ee.ttu.usability.domain.attribute.LinkType;
-import ee.ttu.usability.domain.attribute.Title;
 import ee.ttu.usability.domain.element.UsabilityGuideline;
 
 @Getter
@@ -19,5 +16,7 @@ public class Link extends UsabilityGuideline {
 	private LinkType linkType;
 
 	private AlternativeText alternativeText;
+
+	private Width width;
 
 }

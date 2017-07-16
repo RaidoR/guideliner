@@ -22,7 +22,7 @@ import java.util.List;
 @SpringBootTest(classes = Application.class)
 public class AbstractJenkinsTest {
 
-    protected static final String URL = "http://www.etis.ee";
+    protected static final String URL = "https://www.etis.ee/?lang=ENG";
 
     // Manually config for spring to use Parameterised
     protected TestContextManager testContextManager;
@@ -48,10 +48,11 @@ public class AbstractJenkinsTest {
         List<String> elements = new ArrayList<>();
         for (FailedElement failedElement : result.getFailedElements()) {
             String element =
-                    "Problem: " + (++problemNr) + "\n" +
-                            "Text: " + failedElement.getText() + "\n" +
-                            "Description: " + failedElement.getDescription() + "\n" +
-                            "Type: " + failedElement.getType();
+                    "Element violating guideline nr. : " + (++problemNr) + "\n" +
+                            "Element Text: " + failedElement.getText() + "\n" +
+                            "Element type: " + failedElement.getType() + "\n" +
+                            "Violation reason " + failedElement.getDescription() + "\n";
+
             stringBuilder.append(element + "\n");
         }
 

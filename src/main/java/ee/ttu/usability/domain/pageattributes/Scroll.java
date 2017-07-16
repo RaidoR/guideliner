@@ -6,5 +6,6 @@ import lombok.Data;
 public class Scroll {
 
 	private Integer value;
-	
+
+	private Boolean isOneDirectional;
 }
