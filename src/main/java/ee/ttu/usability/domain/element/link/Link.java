@@ -19,4 +19,6 @@ public class Link extends UsabilityGuideline {
 
 	private Width width;
 
+	private Distance distance;
+
 }

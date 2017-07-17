@@ -2,6 +2,7 @@ package usability;
 
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.PositionType;
+import jevg.ee.ttu.dataproperty.DistanceType;
 import jevg.ee.ttu.dataproperty.Unit;
 
 import org.junit.*;
@@ -479,6 +480,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(true, guidelineElement.getScroll().getIsOneDirectional());
 	}
 
+	// TODO Implement
 	@Test
 	public void test19_01_LinkShouldBeWideEnough() {
 		// given
@@ -493,7 +495,41 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(new Integer(48), guidelineElement.getWidth().getContentLength());
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getWidth().getUnit());
 	}
-	//
+
+	// TODO Implement
+	@Test
+	public void test20_01_LinkShouldBeHeighEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("20-01_LinkShouldBeHeighEnough");
+
+		// when
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHeight());
+		Assert.assertEquals(new Integer(48), guidelineElement.getHeight().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getHeight().getUnit());
+	}
+
+	@Test
+	public void test21_01_DistanceBetweenLinksShouldBeEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
+
+		// when
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getDistance());
+		Assert.assertEquals(new Integer(48), guidelineElement.getDistance().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getDistance().getUnit());
+		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
+	}
+
+
+	// 21-01_DistanceBetweenLinksShouldBeEnough
 //	@Test
 //	public void testSmth() {
 //

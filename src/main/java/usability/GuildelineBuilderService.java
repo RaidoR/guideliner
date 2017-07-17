@@ -6,7 +6,9 @@ import ee.ttu.usability.domain.attribute.*;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.PositionType;
 import ee.ttu.usability.domain.element.link.*;
-import ee.ttu.usability.domain.pageattributes.Scroll;
+import ee.ttu.usability.domain.pageattributes.*;
+import ee.ttu.usability.domain.pageattributes.Height;
+import jevg.ee.ttu.dataproperty.DistanceType;
 import jevg.ee.ttu.dataproperty.UnitAction;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLIndividualAxiom;
@@ -24,8 +26,6 @@ import ee.ttu.usability.domain.page.LayoutType;
 import ee.ttu.usability.domain.page.LoadTime;
 import ee.ttu.usability.domain.page.Text;
 import ee.ttu.usability.domain.page.UIPage;
-import ee.ttu.usability.domain.pageattributes.HorizontalScroll;
-import ee.ttu.usability.domain.pageattributes.VerticalScroll;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
@@ -88,9 +88,6 @@ public class GuildelineBuilderService {
 	public void fillWithObjectProperty(UsabilityGuideline element, OWLObjectPropertyAssertionAxiomImpl objectProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = null;
 
-		System.out.println("2222222");
-		System.out.println(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm());
-
 		 if (attribute != null) {
 			 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
 			 if ("hasUnit".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
@@ -129,7 +126,7 @@ public class GuildelineBuilderService {
 			 } else if ("Pixel".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
 				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof UIPage) {
+					 if (element instanceof UIPage || element instanceof Link) {
 							if (element.getHeight() == null)
 								element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
 							element.getHeight().setUnit(Unit.PIXCEL);
@@ -139,6 +136,12 @@ public class GuildelineBuilderService {
 						 if (element.getWidth() == null)
 							 element.setWidth(new Width());
 						 element.getWidth().setUnit(Unit.PIXCEL);
+					 }
+				 } else if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof Link) {
+						 if (element.getDistance() == null)
+							 element.setDistance(new Distance());
+						 element.getDistance().setUnit(Unit.PIXCEL);
 					 }
 				 }
 			 } else if ("MiliSecond".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
@@ -176,8 +179,20 @@ public class GuildelineBuilderService {
 					
 			 }
 		 }
-		 
-		 if ("hasCase".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+
+		if ("hasDistanceType".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
+			ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
+			if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+				Distance distance = new Distance();
+				distance.setDistanceType(DistanceType.convertToDistanceType(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm()));
+				if (element instanceof Link) {
+					element.setDistance(distance);
+				}
+
+			}
+		}
+
+		if ("hasCase".equals(objectProperty.getProperty().asOWLObjectProperty().getIRI().getShortForm())) {
 			 if ("Bold".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());	 
 				 if ("Text".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
@@ -281,16 +296,19 @@ public class GuildelineBuilderService {
 				}
 			return;
 		}
-		System.out.println("aaaaaaaaaaaaa");
-		System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
-			case "hasContentLength" : 
-				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());	  
+			case "hasContentLength" :
+				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
+				System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					if (element instanceof UIPage) {
-						if (((UIPage) element).getHeight() == null)
-							((UIPage) element).setHeight(new ee.ttu.usability.domain.pageattributes.Height());
-						((UIPage) element).getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+						if (element.getHeight() == null)
+							element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
+						element.getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+					} else if (element instanceof Link) {
+						if (element.getHeight() == null)
+							element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
+						element.getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 					}
 					
 				 } else if ("LoadTime".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
@@ -302,12 +320,16 @@ public class GuildelineBuilderService {
 							((UIPage) element).setText(new Text());
 						((UIPage) element).getText().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 				 } else if ("Width".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 System.out.println("dddddddddddddddddd");
-					 System.out.println(dataProperty.getObject().getLiteral());
 					 if (element instanceof Link) {
 						 if (element.getWidth() == null)
 							 element.setWidth(new Width());
 						 element.getWidth().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
+					 }
+				 } else if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					 if (element instanceof Link) {
+						 if (element.getDistance() == null)
+							 element.setDistance(new Distance());
+						 element.getDistance().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 					 }
 				 } else if ("integer".equals(dataProperty.getObject().getDatatype().getIRI().getShortForm())) {
 					 element.setContentLength(new Integer(dataProperty.getObject().getLiteral()));
