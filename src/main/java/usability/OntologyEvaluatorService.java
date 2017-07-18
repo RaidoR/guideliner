@@ -1,6 +1,7 @@
 package usability;
 
 import ee.ttu.usability.domain.element.form.FormElementLabel;
+import ee.ttu.usability.domain.element.form.Input;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -303,6 +304,8 @@ public class OntologyEvaluatorService {
 			return new Area();
 		case "FormElementLabel":
 			return new FormElementLabel();
+		case "Input":
+			return new Input();
 		default:
 			throw new RuntimeException("Cannot find the class for " + ontologyElement);
 		}

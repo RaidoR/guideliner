@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import ee.ttu.usability.domain.attribute.*;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
+import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.PositionType;
 import ee.ttu.usability.domain.element.link.*;
 import ee.ttu.usability.domain.pageattributes.*;
@@ -452,6 +453,29 @@ public class GuildelineBuilderService {
 					scroll.setIsOneDirectional(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					if (element instanceof UIPage) {
 						((UIPage) element).setScroll(scroll);
+					}
+				}
+				break;
+			case "isSame" :
+				if ("Color".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					Color color = new Color();
+					color.setIsSame(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					if (element instanceof Link || element instanceof Input) {
+						element.setColor(color);
+					}
+				}
+				break;
+			case "isVisited" :
+				if ("Link".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					if (element instanceof Link) {
+						((Link) element).setIsVisited(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					}
+				}
+				break;
+			case "isSelected" :
+				if ("Input".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					if (element instanceof Input) {
+						((Input) element).setIsSelected(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 					}
 				}
 				break;

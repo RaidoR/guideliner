@@ -21,4 +21,8 @@ public class Link extends UsabilityGuideline {
 
 	private Distance distance;
 
+	private Color color;
+
+	private Boolean isVisited;
+
 }
