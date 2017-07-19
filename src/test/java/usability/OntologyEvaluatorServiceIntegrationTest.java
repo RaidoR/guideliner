@@ -465,7 +465,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(PositionType.ABOVE, guidelineElement.getPositionType());
 	}
 
-	// TODO Implement
+
 	@Test
 	public void test18_01_ScrollIsOneDirectional() {
 		// given
@@ -480,7 +480,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(true, guidelineElement.getScroll().getIsOneDirectional());
 	}
 
-	// TODO Implement
 	@Test
 	public void test19_01_LinkShouldBeWideEnough() {
 		// given
@@ -496,7 +495,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getWidth().getUnit());
 	}
 
-	// TODO Implement
+
 	@Test
 	public void test20_01_LinkShouldBeHeighEnough() {
 		// given
@@ -512,6 +511,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getHeight().getUnit());
 	}
 
+	// TODO Implement
 	@Test
 	public void test21_01_DistanceBetweenLinksShouldBeEnough() {
 		// given

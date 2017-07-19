@@ -64,6 +64,9 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getTitle() != null) {
 			return evaluateTitle(page);
 		}
+		if (page.getScroll() != null && page.getScroll().getIsOneDirectional() != null) {
+			return evaluateScroll(page);
+		}
 		return null;
 	}
 
@@ -112,6 +115,31 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		}
 		return setSuccessFlag(result);
 	}
+
+
+	private EvaluationResult evaluateScroll(UIPage page) {
+		System.out.println("evaluateScroll TODO Remove");
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("scroll(10000, 10000);");
+
+		Long scrollY = (Long) executor.executeScript("return window.scrollY;");
+
+		Long scrollX = (Long) executor.executeScript("return window.scrollX;");
+
+		if (!scrollY.equals(new Long(0)) && !scrollX.equals(new Long(0))) {
+			String description = "Both vertical and horizontal scroll exist on the page. Only one should exist.";
+			result.getFailedElements().add(prepareFailedElement("UI Page", "Web Page", description, NO_IMAGE));
+			result.setElementType(ElementType.PAGE);
+			result.setResult(ResultType.FAIL);
+			result.setDescription(description);
+		}
+
+		return setSuccessFlag(result);
+	}
+
 
 	private EvaluationResult evaluateHorizontalScroll(UIPage page) {
 		EvaluationResult result = new EvaluationResult();

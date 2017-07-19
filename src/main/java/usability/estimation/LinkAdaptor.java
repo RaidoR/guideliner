@@ -35,9 +35,18 @@ public class LinkAdaptor extends AbstractAdaptor {
 			return evaluateContentLength(link);
 		} else if (link.getAlternativeText() != null) {
 			return evaluateAlternativeText(link.getAlternativeText());
+		} else if (link.getWidth() != null && link.getWidth().getContentLength() != null) {
+			return evaluateWidth(link);
+		}  else if (link.getHeight() != null && link.getHeight().getContentLength() != null) {
+			return evaluateHeight(link);
+		}  else if (link.getDistance() != null && link.getDistance().getContentLength() != null && link.getDistance().getDistanceType() != null) {
+			return evaluateDistance(link);
 		}
 		return null;
 	}
+
+
+
 
 	private EvaluationResult evaluateAlternativeText(AlternativeText alternativeText) throws IOException {
 		screenshot = screenshoter.makeScreenshot(driver);
@@ -88,9 +97,64 @@ public class LinkAdaptor extends AbstractAdaptor {
 		List<WebElement> allLinks = getAllLinks(driver);
 		return estimator.estimate(allLinks, driver);
 	}
-	
+
+	private EvaluationResult evaluateWidth(Link link) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.LINK);
+
+		List<WebElement> webLinks = getAllLinks(driver);
+		for (WebElement webLink : webLinks) {
+			// for some reason some links are narrow
+			if (webLink.getSize().getWidth() == 0) {
+				continue;
+			}
+
+			if (link.getWidth().getContentLength() > webLink.getSize().getWidth()) {
+				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
+				result.getFailedElements().add(prepareFailedElement(
+						ElementType.LINK.name(), webLink.getText(),"The width of the link is smaller then expected. Expected minimum: "
+								+ link.getWidth().getContentLength() + " actual: " + webLink.getSize().getWidth() , file));
+			}
+		}
+
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateHeight(Link link) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.LINK);
+
+		List<WebElement> webLinks = getAllLinks(driver);
+		for (WebElement webLink : webLinks) {
+			// for some reason some links are narrow
+			if (webLink.getSize().getHeight() == 0) {
+				continue;
+			}
+
+			if (link.getHeight().getContentLength() > webLink.getSize().getHeight()) {
+				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
+				result.getFailedElements().add(prepareFailedElement(
+						ElementType.LINK.name(), webLink.getText(),"The width of the link is smaller then expected. Expected minimum: "
+								+ link.getHeight().getContentLength() + " actual: " + webLink.getSize().getHeight() , file));
+			}
+		}
+
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateDistance(Link link) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.LINK);
+
+
+
+		return setSuccessFlag(result);
+	}
+
+
 	public List<WebElement> getAllLinks(WebDriver driver) {
 		return driver.findElements(By.tagName("a"));
 	}
-	
+
+
 }

@@ -3,6 +3,7 @@ package usability;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
@@ -215,15 +216,17 @@ public class OntologyEvaluatorService {
 
 	public WebDriver initialiseDriverIfNotInitialised(String url) {
 //
-//		 System.setProperty("webdriver.chrome.driver",
-//		 "..\\chrome\\chromedriver.exe");
-//		 return new ChromeDriver();
-		if (this.driver == null) {
-			this.driver =  new FirefoxDriver();
-			driver.get(url);
-		}
-
+		 System.setProperty("webdriver.chrome.driver",
+		 "..\\chrome\\chromedriver.exe");
+		 this.driver = new ChromeDriver();
+		driver.get(url);
 		return driver;
+//		if (this.driver == null) {
+//			this.driver =  new FirefoxDriver();
+//			driver.get(url);
+//		}
+//
+//		return driver;
 	}
 
 	public void initialiseDriverIfNotInitialised(String url, String url2, String url3) {
