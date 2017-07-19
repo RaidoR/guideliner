@@ -1,6 +1,7 @@
 package usability;
 
 import ee.ttu.usability.domain.element.form.FormElementLabel;
+import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.PositionType;
 import jevg.ee.ttu.dataproperty.DistanceType;
 import jevg.ee.ttu.dataproperty.Unit;
@@ -528,8 +529,54 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
 	}
 
+	// TODO implement
+	@Test
+	public void test22_01_UseSameColorSchemaWithinAllLinks() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("22-01_UseSameColorSchemaWithinAllLinks");
 
-	// 21-01_DistanceBetweenLinksShouldBeEnough
+		// when
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getColor());
+		Assert.assertTrue(guidelineElement.getColor().getIsSame());
+	}
+
+	// TODO implement
+	@Test
+	public void test23_01_VisitedLinksShouldHaveAnotherColorSchema() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("23-01_VisitedLinksShouldHaveAnotherColorSchema");
+
+		// when
+		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getColor());
+		Assert.assertFalse(guidelineElement.getColor().getIsSame());
+		Assert.assertTrue(guidelineElement.getIsVisited());
+	}
+
+	@Test
+	public void test24_01_IdentifySelectedInput() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("24-01_IdentifySelectedInput");
+
+		// when
+		Input guidelineElement = (Input) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getColor());
+		Assert.assertFalse(guidelineElement.getColor().getIsSame());
+		Assert.assertTrue(guidelineElement.getIsSelected());
+	}
+
+//
+//  21-01_DistanceBetweenLinksShouldBeEnough
 //	@Test
 //	public void testSmth() {
 //

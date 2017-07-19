@@ -1,11 +1,8 @@
 package ee.ttu.usability.domain.element;
 
+import ee.ttu.usability.domain.attribute.*;
 import jevg.ee.ttu.dataproperty.Unit;
 import lombok.Data;
-import ee.ttu.usability.domain.attribute.Contrast;
-import ee.ttu.usability.domain.attribute.Distance;
-import ee.ttu.usability.domain.attribute.ProhibitedWordType;
-import ee.ttu.usability.domain.attribute.Width;
 import ee.ttu.usability.domain.pageattributes.Height;
 
 @Data
@@ -26,5 +23,7 @@ public class UsabilityGuideline {
 	private Integer contentLength;
 	
 	private String url;
+
+	private Color color;
 
 }
