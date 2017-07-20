@@ -41,6 +41,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 			return evaluateHeight(link);
 		}  else if (link.getDistance() != null && link.getDistance().getContentLength() != null && link.getDistance().getDistanceType() != null) {
 			return evaluateDistance(link);
+		} else if (link.getColor() != null && link.getColor().getIsSame() != null) {
+			return evaluateSameColor(link);
 		}
 		return null;
 	}
@@ -143,6 +145,7 @@ public class LinkAdaptor extends AbstractAdaptor {
 	}
 
 	private EvaluationResult evaluateDistance(Link link) {
+		// todo implement
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
 
@@ -151,6 +154,36 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
+	private EvaluationResult evaluateSameColor(Link link) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.LINK);
+
+		List<WebElement> webLinks = getAllLinks(driver);
+
+		String linkColor = null;
+		for (WebElement webLink : webLinks) {
+			if (webLink.getText() == null || webLink.getText().length() == 0) {
+				continue;
+			}
+			String color = webLink.getCssValue("color");
+
+			System.out.println(linkColor);
+			System.out.println(color);
+
+			if (linkColor == null) {
+				linkColor = color;
+				continue;
+			}
+
+			if (!linkColor.equals(color)) {
+				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
+				result.getFailedElements().add(prepareFailedElement(
+						ElementType.LINK.name(), webLink.getText(),"The link has different color" , file));
+			}
+		}
+
+		return setSuccessFlag(result);
+	}
 
 	public List<WebElement> getAllLinks(WebDriver driver) {
 		return driver.findElements(By.tagName("a"));

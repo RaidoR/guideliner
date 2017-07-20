@@ -529,7 +529,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
 	}
 
-	// TODO implement
 	@Test
 	public void test22_01_UseSameColorSchemaWithinAllLinks() {
 		// given
