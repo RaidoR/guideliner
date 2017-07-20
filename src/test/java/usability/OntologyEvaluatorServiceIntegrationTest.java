@@ -453,6 +453,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getText().getContentLength());
 	}
 
+
 	// TODO implement
 	@Test
 	public void test17_01_PlaceLabelsAboveTheInput() {
@@ -467,7 +468,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getPositionType());
 		Assert.assertEquals(PositionType.ABOVE, guidelineElement.getPositionType());
 	}
-
 
 	@Test
 	public void test18_01_ScrollIsOneDirectional() {
@@ -545,22 +545,23 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertTrue(guidelineElement.getColor().getIsSame());
 	}
 
+	// TODO Not Possible to implement
+//	@Test
+//	public void test23_01_VisitedLinksShouldHaveAnotherColorSchema() {
+//		// given
+//		OWLClass guideline = ontologyRepository.loadClass("23-01_VisitedLinksShouldHaveAnotherColorSchema");
+//
+//		// when
+//		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+//
+//		// then
+//		Assert.assertNotNull(guidelineElement);
+//		Assert.assertNotNull(guidelineElement.getColor());
+//		Assert.assertFalse(guidelineElement.getColor().getIsSame());
+//		Assert.assertTrue(guidelineElement.getIsVisited());
+//	}
+
 	// TODO implement
-	@Test
-	public void test23_01_VisitedLinksShouldHaveAnotherColorSchema() {
-		// given
-		OWLClass guideline = ontologyRepository.loadClass("23-01_VisitedLinksShouldHaveAnotherColorSchema");
-
-		// when
-		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
-
-		// then
-		Assert.assertNotNull(guidelineElement);
-		Assert.assertNotNull(guidelineElement.getColor());
-		Assert.assertFalse(guidelineElement.getColor().getIsSame());
-		Assert.assertTrue(guidelineElement.getIsVisited());
-	}
-
 	@Test
 	public void test24_01_IdentifySelectedInput() {
 		// given

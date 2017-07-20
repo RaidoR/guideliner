@@ -34,7 +34,8 @@ public class OneTestExample {
         ontologyEvaluatorService.initialiseDriverIfNotInitialised(URL);
     }
 
-    protected static final String URL = "https://www.etis.ee/?lang=ENG";
+//    protected static final String URL = "https://www.etis.ee/?lang=ENG";
+    protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
 //    protected static final String URL = "https://www.eesti.ee/et/index.html";
 
     // Manually config for spring to use Parameterised
@@ -75,7 +76,7 @@ public class OneTestExample {
     public void testWcagGuidelines() {
         // given
         OWLClass guideline = ontologyRepository
-                .loadClass("23-01_VisitedLinksShouldHaveAnotherColorSchema");
+                .loadClass("17-01_PlaceLabelsAboveTheInput");
 
         // when
         EvaluationResult result = ontologyEvaluatorService.evaluate(guideline, null, false);

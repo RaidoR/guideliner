@@ -2,9 +2,8 @@ package usability.estimation;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import jevg.ee.ttu.dataproperty.Unit;
@@ -166,30 +165,51 @@ public class LinkAdaptor extends AbstractAdaptor {
 		List<WebElement> webLinks = getAllLinks(driver);
 
 		String linkColor = null;
+
+
+
+		Map<String, Integer> linkColors = new HashMap();
+
 		for (WebElement webLink : webLinks) {
 			if (webLink.getText() == null || webLink.getText().length() == 0) {
 				continue;
 			}
 			String color = webLink.getCssValue("color");
 
-			System.out.println(linkColor);
-			System.out.println(color);
-
-			if (linkColor == null) {
-				linkColor = color;
-				continue;
+			Integer countOfElements = linkColors.get(color);
+			if (countOfElements == null) {
+				countOfElements = 1;
 			}
+			linkColors.put(color, ++countOfElements);
+		}
 
-			if (!linkColor.equals(color)) {
-				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
-				result.getFailedElements().add(prepareFailedElement(
-						ElementType.LINK.name(), webLink.getText(),"The link has different color" , file));
+//		Map<String, Integer> results = linkColors.entrySet().stream()
+//				.sorted(Map.Entry.comparingByValue(Comparator.naturalOrder()))
+//				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+//						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+		Map.Entry<String, Integer> min = Collections.min(linkColors.entrySet(),
+				Comparator.comparingDouble(Map.Entry::getValue));
+
+		if (min.getValue() < 3) {
+			for (WebElement webLink : webLinks) {
+				if (webLink.getText() == null || webLink.getText().length() == 0) {
+					continue;
+				}
+				String color = webLink.getCssValue("color");
+
+				if (color.equals(min.getKey())) {
+					File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
+					result.getFailedElements().add(prepareFailedElement(
+							ElementType.LINK.name(), webLink.getText(), "The link has different color then other links", file));
+				}
 			}
 		}
 
 		return setSuccessFlag(result);
 	}
 
+	// TODO remove
 	private EvaluationResult evaluateVisitedColorScheme(Link link) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
@@ -209,44 +229,57 @@ public class LinkAdaptor extends AbstractAdaptor {
 				countOfElements = 1;
 			}
 			linkColors.put(color, ++countOfElements);
-//			if (linkColor == null) {
-//				linkColor = color;
-//				continue;
-//			}
-//
-//			if (!linkColor.equals(color)) {
-//				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
-//				result.getFailedElements().add(prepareFailedElement(
-//						ElementType.LINK.name(), webLink.getText(),"The link has different color" , file));
-//			}
 		}
+
+		driver.navigate().refresh();
 
 		String mostlyUsedColor = linkColors.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
 		System.out.println("Mostly used colot");
 		System.out.println(mostlyUsedColor);
 		System.out.println(linkColors.get(mostlyUsedColor));
 
-		webLinks = getAllLinks(driver);
+		int numberOfTrials = 0;
+		int processed = 0;
 
-		for (WebElement webLink : webLinks) {
-			if (webLink.getText() == null || webLink.getText().length() == 0) {
-				continue;
-			}
-			String color = webLink.getCssValue("color");
-			if (color.equals(mostlyUsedColor)) {
-				System.out.println("dddddddddd");
-				System.out.println(webLink.getText());
-				try {
-					webLink.click();
-					driver.navigate().back();
-				} catch (Exception ex) {
-					ex.printStackTrace();
+		List<String> allVisitedLinkTexts = new ArrayList<>();
+		while (numberOfTrials < 5) {
+			webLinks = getAllLinks(driver);
+			int numberOfProcessed = 0;
+			for (WebElement webLink : webLinks) {
+				if (webLink.getText() == null || webLink.getText().length() == 0) {
+					continue;
 				}
+				String color = webLink.getCssValue("color");
+				if (color.equals(mostlyUsedColor)) {
+					System.out.println("---------------------");
+					System.out.println(webLink.getText());
+					System.out.println(numberOfProcessed);
+					System.out.println(numberOfTrials);
+					numberOfProcessed++;
+					if (numberOfProcessed < numberOfTrials) {
+						continue;
+					}
+					try {
+						allVisitedLinkTexts.add(webLink.getText());
+						webLink.click();
+						driver.navigate().back();
+						numberOfTrials++;
+						break;
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						numberOfTrials++;
+					}
+				}
+			}
 
+			for (String visitedLink : allVisitedLinkTexts) {
+				String color = driver.findElement(By.linkText(visitedLink)).getCssValue("color");
+				System.out.println(visitedLink);
+				System.out.println(color);
 
-//				break;
 			}
 		}
+
 
 
 		return setSuccessFlag(result);
