@@ -2,12 +2,15 @@ package usability.estimation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ee.ttu.usability.domain.attribute.AlternativeText;
 import jevg.ee.ttu.dataproperty.Unit;
 import jevg.ee.ttu.dataproperty.UnitAction;
 import lombok.extern.slf4j.Slf4j;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -41,6 +44,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 			return evaluateHeight(link);
 		}  else if (link.getDistance() != null && link.getDistance().getContentLength() != null && link.getDistance().getDistanceType() != null) {
 			return evaluateDistance(link);
+		} else if (link.getColor() != null && link.getColor().getIsSame() != null && link.getIsVisited() != null) {
+			return evaluateVisitedColorScheme(link);
 		} else if (link.getColor() != null && link.getColor().getIsSame() != null) {
 			return evaluateSameColor(link);
 		}
@@ -181,6 +186,68 @@ public class LinkAdaptor extends AbstractAdaptor {
 						ElementType.LINK.name(), webLink.getText(),"The link has different color" , file));
 			}
 		}
+
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateVisitedColorScheme(Link link) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.LINK);
+
+		List<WebElement> webLinks = getAllLinks(driver);
+
+		Map<String, Integer> linkColors = new HashMap();
+
+		for (WebElement webLink : webLinks) {
+			if (webLink.getText() == null || webLink.getText().length() == 0) {
+				continue;
+			}
+			String color = webLink.getCssValue("color");
+
+			Integer countOfElements = linkColors.get(color);
+			if (countOfElements == null) {
+				countOfElements = 1;
+			}
+			linkColors.put(color, ++countOfElements);
+//			if (linkColor == null) {
+//				linkColor = color;
+//				continue;
+//			}
+//
+//			if (!linkColor.equals(color)) {
+//				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
+//				result.getFailedElements().add(prepareFailedElement(
+//						ElementType.LINK.name(), webLink.getText(),"The link has different color" , file));
+//			}
+		}
+
+		String mostlyUsedColor = linkColors.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+		System.out.println("Mostly used colot");
+		System.out.println(mostlyUsedColor);
+		System.out.println(linkColors.get(mostlyUsedColor));
+
+		webLinks = getAllLinks(driver);
+
+		for (WebElement webLink : webLinks) {
+			if (webLink.getText() == null || webLink.getText().length() == 0) {
+				continue;
+			}
+			String color = webLink.getCssValue("color");
+			if (color.equals(mostlyUsedColor)) {
+				System.out.println("dddddddddd");
+				System.out.println(webLink.getText());
+				try {
+					webLink.click();
+					driver.navigate().back();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+
+//				break;
+			}
+		}
+
 
 		return setSuccessFlag(result);
 	}
