@@ -3,6 +3,8 @@ package usability;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.PositionType;
+import ee.ttu.usability.domain.element.form.Radio;
+import ee.ttu.usability.domain.page.LayoutType;
 import jevg.ee.ttu.dataproperty.DistanceType;
 import jevg.ee.ttu.dataproperty.Unit;
 
@@ -574,8 +576,55 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertTrue(guidelineElement.getIsSelected());
 	}
 
+	// TODO implement
+	@Test
+	public void test25_01_ViewportShouldBeConfigured() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("25-01_ViewportShouldBeConfigured");
+
+		// when
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHtml());
+		Assert.assertNotNull(guidelineElement.getHtml().getViewport());
+		Assert.assertTrue(guidelineElement.getHtml().getViewport().getIsValued());
+	}
+
+	//TODO Implement
+	@Test
+	public void test26_01_DoNotUseIncompatiblePlugins() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("26-01_DoNotUseIncompatiblePlugins");
+
+		// when
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHtml());
+		Assert.assertNotNull(guidelineElement.getHtml().getFlash());
+		Assert.assertTrue(guidelineElement.getHtml().getFlash().getIsValued());
+	}
+
+	//TODO Implement
+	@Test
+	public void test27_01_RadioButtonsShouldBeVerticallyStacked() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("27-01_RadioButtonsShouldBeVerticallyStacked");
+
+		// when
+		Radio guidelineElement = (Radio) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getLayout());
+		Assert.assertEquals(LayoutType.VERTICAL, guidelineElement.getLayout().getLayoutType());
+	}
+
 //
-//  21-01_DistanceBetweenLinksShouldBeEnough
+//
 //	@Test
 //	public void testSmth() {
 //

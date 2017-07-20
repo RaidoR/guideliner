@@ -11,7 +11,9 @@ public class Html extends AbstractAttribute {
 	private Lang lang;
 	
 	private AlternativeText alternativeText;
-	
-	
-	
+
+	private Viewport viewport;
+
+	private Flash flash;
+
 }

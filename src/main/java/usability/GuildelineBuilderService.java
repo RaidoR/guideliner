@@ -6,6 +6,7 @@ import ee.ttu.usability.domain.attribute.*;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.PositionType;
+import ee.ttu.usability.domain.element.form.Radio;
 import ee.ttu.usability.domain.element.link.*;
 import ee.ttu.usability.domain.pageattributes.*;
 import ee.ttu.usability.domain.pageattributes.Height;
@@ -176,8 +177,9 @@ public class GuildelineBuilderService {
 					layout.setLayoutType(LayoutType.convertToLayoutType(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm()));
 					if (element instanceof UIPage) {
 						((UIPage) element).setLayout(layout);
+					} else if (element instanceof Radio) {
+						((Radio) element).setLayout(layout);
 					}
-					
 			 }
 		 }
 
@@ -274,7 +276,6 @@ public class GuildelineBuilderService {
 
 	public void fillWithDataProperty(UsabilityGuideline element, OWLDataPropertyAssertionAxiomImpl dataProperty, AbstractAttribute attribute) {
 		Optional<OWLClassExpression> ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
-
 		if (attribute != null) {
 			switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 				case "isValued" :
@@ -283,6 +284,18 @@ public class GuildelineBuilderService {
 						lang.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
 						if (attribute instanceof Html) {
 							((Html) attribute).setLang(lang);
+						}
+					} else if ("Viewport".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						Viewport viewport = new Viewport();
+						viewport.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+						if (attribute instanceof Html) {
+							((Html) attribute).setViewport(viewport);
+						}
+					} else if ("Flash".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+						Flash flash = new Flash();
+						flash.setIsValued(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+						if (attribute instanceof Html) {
+							((Html) attribute).setFlash(flash);
 						}
 					}
 					break;
