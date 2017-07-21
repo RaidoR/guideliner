@@ -25,14 +25,20 @@ public class Screenshoter {
 
 	public BufferedImage makeScreenshot(WebDriver driver)
 			throws IOException {
-		File screenshot = ((TakesScreenshot) driver)
-				.getScreenshotAs(OutputType.FILE);
+		try {
+			File screenshot = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.FILE);
+			BufferedImage image = ImageIO.read(screenshot);
+			return image;
+		} catch (Exception ex) {
+			return null;
+		}
 //		FileUtils
 //				.copyFile(
 //						screenshot,
 //						new File(
 //								"C:\\Users\\jevgeni.marenkov\\Desktop\\Programmes\\screenshot.jpg"));
-		return ImageIO.read(screenshot);
+//		return ImageIO.read(screenshot);
 	}
 
 	public File takeScreenshot(BufferedImage screenshot, WebElement element, WebDriver driver) {
@@ -48,7 +54,7 @@ public class Screenshoter {
 			return null;
 		}
 	}
-	
+
 	public File save2(WebElement element) {
 		try {
 			BufferedImage dest = ImageIO.read(element.getScreenshotAs(OutputType.FILE));

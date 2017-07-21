@@ -34,8 +34,11 @@ public class OneTestExample {
         ontologyEvaluatorService.initialiseDriverIfNotInitialised(URL);
     }
 
-//    protected static final String URL = "https://www.etis.ee/?lang=ENG";
-    protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
+    protected static final String URL = "https://www.etis.ee/?lang=ENG";
+
+    // With Form
+//    protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
+
 //    protected static final String URL = "https://www.eesti.ee/et/index.html";
 
     // Manually config for spring to use Parameterised
@@ -72,6 +75,7 @@ public class OneTestExample {
 
         return stringBuilder.toString();
     }
+
     @Test
     public void testWcagGuidelines() {
         // given

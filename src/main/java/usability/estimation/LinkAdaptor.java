@@ -104,7 +104,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return estimator.estimate(allLinks, driver);
 	}
 
-	private EvaluationResult evaluateWidth(Link link) {
+	private EvaluationResult evaluateWidth(Link link) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
 
@@ -126,7 +127,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
-	private EvaluationResult evaluateHeight(Link link) {
+	private EvaluationResult evaluateHeight(Link link) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
 
@@ -158,7 +160,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
-	private EvaluationResult evaluateSameColor(Link link) {
+	private EvaluationResult evaluateSameColor(Link link) throws IOException {
+		screenshot = screenshoter.makeScreenshot(driver);
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
 

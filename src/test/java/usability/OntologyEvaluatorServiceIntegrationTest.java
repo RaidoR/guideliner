@@ -454,7 +454,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	}
 
 
-	// TODO implement
 	@Test
 	public void test17_01_PlaceLabelsAboveTheInput() {
 		// given

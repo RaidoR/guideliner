@@ -16,7 +16,8 @@ public enum ElementType {
 	// sub elemetn types
 	TEXT_INPUT,
 	SELECT_INPUT,
-	IMAGE
+	IMAGE,
+	FORMELEMENTLABEL
 	
 	;
 }
