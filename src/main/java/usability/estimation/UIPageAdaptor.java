@@ -8,14 +8,12 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ee.ttu.usability.domain.attribute.Flash;
+import ee.ttu.usability.domain.attribute.Viewport;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import deprecated.HtmlValidator;
 import usability.estimation.result.ElementType;
@@ -315,10 +313,18 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		if (page.getHtml().getAlternativeText() != null) {
 			return evaluateAtlernativeText(page.getHtml().getAlternativeText());
 		}
+
+		if (page.getHtml().getViewport() != null) {
+			return evaluateViewport(page.getHtml().getViewport());
+		}
+
+		if (page.getHtml().getFlash() != null) {
+			return evaluateFlash(page.getHtml().getFlash());
+		}
 		HtmlValidator validator = new HtmlValidator();
 		return validator.test(driver.getPageSource());
 	}
-	
+
 	private EvaluationResult evaluateAtlernativeText(AlternativeText alternativeText) {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
@@ -384,6 +390,39 @@ public class UIPageAdaptor extends AbstractAdaptor {
 	    
 		result.getFailedElements().add(prepareFailedElement("UI Page", "", "Link is not found: " + page.getHref().getValue(), NO_IMAGE));
 	       
+		return setSuccessFlag(result);
+	}
+
+
+	private EvaluationResult evaluateViewport(Viewport viewport) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+		if (viewport.getIsValued()) {
+			try {
+				WebElement viewportElement = driver.findElement(By.xpath("//meta[@name='viewport']"));
+				if (StringUtils.isNotEmpty(viewportElement.getText())) {
+					result.getFailedElements()
+							.add(prepareFailedElement(ElementType.PAGE.name(), "", "Viewport is empty.", NO_IMAGE));
+				}
+			} catch (NoSuchElementException ex) {
+				result.getFailedElements()
+						.add(prepareFailedElement(ElementType.PAGE.name(), "", "Viewport is not defined.", NO_IMAGE));
+			}
+		}
+		return setSuccessFlag(result);
+	}
+
+	private EvaluationResult evaluateFlash(Flash flash) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+
+		if (driver.getPageSource().contains("embedSWF")) {
+			result.getFailedElements()
+					.add(prepareFailedElement(ElementType.PAGE.name(), "", "Flash is not allowed for mobile device..", NO_IMAGE));
+		}
+
 		return setSuccessFlag(result);
 	}
 

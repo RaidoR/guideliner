@@ -13,6 +13,7 @@ public enum ElementType {
 	NAVIGATION,
 	BUTTON,
 	NUMBERED_LIST,
+	INPUT,
 	// sub elemetn types
 	TEXT_INPUT,
 	SELECT_INPUT,

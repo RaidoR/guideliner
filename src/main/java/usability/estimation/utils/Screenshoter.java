@@ -31,6 +31,7 @@ public class Screenshoter {
 			BufferedImage image = ImageIO.read(screenshot);
 			return image;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
 //		FileUtils

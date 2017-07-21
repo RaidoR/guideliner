@@ -560,7 +560,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 //		Assert.assertTrue(guidelineElement.getIsVisited());
 //	}
 
-	// TODO implement
 	@Test
 	public void test24_01_IdentifySelectedInput() {
 		// given
@@ -576,7 +575,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertTrue(guidelineElement.getIsSelected());
 	}
 
-	// TODO implement
 	@Test
 	public void test25_01_ViewportShouldBeConfigured() {
 		// given
@@ -592,7 +590,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertTrue(guidelineElement.getHtml().getViewport().getIsValued());
 	}
 
-	//TODO Implement
 	@Test
 	public void test26_01_DoNotUseIncompatiblePlugins() {
 		// given

@@ -204,6 +204,7 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
+
 		if (guidelineElement instanceof  FormElementLabel) {
 			try {
 				FormElementLabelAdaptor adaptor = new FormElementLabelAdaptor();
@@ -213,7 +214,18 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
-	//	driver.close();
+
+		if (guidelineElement instanceof  Input) {
+			try {
+				InputAdaptor adaptor = new InputAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Input) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		//	driver.close();
 		return null;
 	}
 
