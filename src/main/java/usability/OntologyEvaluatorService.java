@@ -225,6 +225,15 @@ public class OntologyEvaluatorService {
 			}
 		}
 
+		if (guidelineElement instanceof  Radio) {
+			try {
+				RadioAdaptor adaptor = new RadioAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((Radio) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 		//	driver.close();
 		return null;
 	}

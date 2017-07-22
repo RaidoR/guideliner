@@ -605,7 +605,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertTrue(guidelineElement.getHtml().getFlash().getIsValued());
 	}
 
-	//TODO Implement
 	@Test
 	public void test27_01_RadioButtonsShouldBeVerticallyStacked() {
 		// given

@@ -26,6 +26,8 @@ import ee.ttu.usability.domain.element.link.Link;
 import ee.ttu.usability.domain.page.UIPage;
 import usability.estimation.utils.Screenshoter;
 
+import javax.swing.text.html.parser.Entity;
+
 @Slf4j
 @Service("LinkAdaptor")
 public class LinkAdaptor extends AbstractAdaptor {
@@ -150,14 +152,96 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
+	class TopButton {
+		public Integer top;
+		public Integer buttom;
+		public Integer left;
+		public Integer right;
+	}
+
 	private EvaluationResult evaluateDistance(Link link) {
 		// todo implement
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.LINK);
 
+		List<WebElement> links = getAllLinks(driver);
 
+		List<WebElement> linkColors = new ArrayList<>();
+
+//		System.out.println("Size" + links.size());
+
+		Map<String, TopButton> topButtomCoordinates = new HashMap<>();
+
+		for (WebElement existingElement : links) {
+			if (StringUtils.isEmpty(existingElement.getText())) {
+				continue;
+			}
+			TopButton topButton = new TopButton();
+			topButton.top = existingElement.getLocation().getY();
+			topButton.buttom = existingElement.getLocation().getY() +  existingElement.getSize().getHeight();
+			topButton.left = existingElement.getLocation().getX();
+			topButton.right = existingElement.getLocation().getX() + existingElement.getSize().getWidth();
+			topButtomCoordinates.put(existingElement.getText(), topButton);
+		}
+		for (WebElement element : links) {
+			if (StringUtils.isEmpty(element.getText())) {
+				continue;
+			}
+			String errorMessage = isLinkWithBadLocation(element, topButtomCoordinates, link.getDistance().getContentLength());
+			if (errorMessage != null) {
+//				System.out.println("---------------------------------");
+//				System.out.println(element.getText());
+//				System.out.println("---------------------------------");
+				File file = screenshoter.takeScreenshot(screenshot, element, driver);
+				result.getFailedElements().add(prepareFailedElement(
+						ElementType.LINK.name(), element.getText(),errorMessage, file));
+			}
+		}
+
+		// find all links
+		// iterate over all links and finf if there are another link close to it
 
 		return setSuccessFlag(result);
+	}
+
+	private String isLinkWithBadLocation(WebElement element, Map<String, TopButton> elements, Integer distanceBetween) {
+		for (Map.Entry<String, TopButton> entry : elements.entrySet()) {
+			// top
+			Integer top = element.getLocation().getY();
+			Integer button = element.getLocation().getY() + element.getSize().getHeight();
+
+			Integer distanceY;
+			if (entry.getValue().top > top) {
+				distanceY = entry.getValue().top - button;
+			} else {
+				continue;
+			}
+
+			Integer left = element.getLocation().getX();
+			Integer right = element.getLocation().getX() + element.getSize().getWidth();
+			Integer distanceX;
+
+			if (entry.getValue().left > left) {
+				distanceX = entry.getValue().left - right;
+			} else {
+				distanceX = left - entry.getValue().right;
+			}
+
+//			System.out.println(element.getText() + "--top" + top + "--butto" + button);
+//			System.out.println(entry.getKey() + "--top" + entry.getValue().top + "--butto" + entry.getValue().buttom);
+
+			if (distanceY < 0) distanceY = distanceY * (-1);
+
+			if ((distanceY != 0 && distanceY < distanceBetween) && (distanceX != 0 && distanceX < distanceBetween)) {
+//				System.out.println("--------" + entry.getValue().top);
+//				System.out.println("Distance from top " + distanceY);
+//				System.out.println(element.getText() + "-->" + entry.getKey());
+//				System.out.println("--------" + element.getLocation().getY());
+//				System.out.println("AAAAAAAAAAAAAA" + distanceX);
+				return "Element: with text " + element.getText() + " is very close to " + entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	private EvaluationResult evaluateSameColor(Link link) throws IOException {
@@ -237,9 +321,9 @@ public class LinkAdaptor extends AbstractAdaptor {
 		driver.navigate().refresh();
 
 		String mostlyUsedColor = linkColors.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-		System.out.println("Mostly used colot");
-		System.out.println(mostlyUsedColor);
-		System.out.println(linkColors.get(mostlyUsedColor));
+//		System.out.println("Mostly used colot");
+//		System.out.println(mostlyUsedColor);
+//		System.out.println(linkColors.get(mostlyUsedColor));
 
 		int numberOfTrials = 0;
 		int processed = 0;
@@ -277,8 +361,8 @@ public class LinkAdaptor extends AbstractAdaptor {
 
 			for (String visitedLink : allVisitedLinkTexts) {
 				String color = driver.findElement(By.linkText(visitedLink)).getCssValue("color");
-				System.out.println(visitedLink);
-				System.out.println(color);
+//				System.out.println(visitedLink);
+//				System.out.println(color);
 
 			}
 		}

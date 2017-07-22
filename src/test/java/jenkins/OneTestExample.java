@@ -40,10 +40,10 @@ public class OneTestExample {
 
     // With Form
 //    protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
-    protected static final String URL = "https://www.miniclip.com/games/en/";
+//    protected static final String URL = "https://www.miniclip.com/games/en/";
 
 
-//    protected static final String URL = "http://www.rh.ee/";
+    protected static final String URL = "http://www.rh.ee/";
 
 //    protected static final String URL = "https://www.eesti.ee/et/index.html";
 
@@ -86,7 +86,7 @@ public class OneTestExample {
     public void testWcagGuidelines() {
         // given
         OWLClass guideline = ontologyRepository
-                .loadClass("26-01_DoNotUseIncompatiblePlugins");
+                .loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
 
         // when
         EvaluationResult result = ontologyEvaluatorService.evaluate(guideline, null, false);

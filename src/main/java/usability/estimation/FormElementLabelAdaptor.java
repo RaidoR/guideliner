@@ -35,7 +35,6 @@ public class FormElementLabelAdaptor extends AbstractAdaptor {
 
         for (WebElement label : driver.findElements(By.cssSelector("*"))) {
             if ("label".equals(label.getTagName())) {
-                System.out.println(label.getText() + " -- " + label.getLocation().getY());
                 labelsWithCoordinates.put(label.getLocation().getY(), label);
             }
         }
