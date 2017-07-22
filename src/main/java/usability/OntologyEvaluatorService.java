@@ -316,34 +316,34 @@ public class OntologyEvaluatorService {
 	
 	private UsabilityGuideline transform(String ontologyElement) {
 		switch (ontologyElement) {
-		case "UIPage":
-			return new UIPage();
-		case "Link":
-			return new Link();
-		case "Paragraph":
-			return new Paragraph();
-		case "Form":
-			return new Form();
-		case "Graphic":
-			return new Graphic();
-		case "Nav":
-			return new Navigation();
-		case "MultimediaContent":
-			return new Multimedia();
-		case "Button":
-			return new Button();
-		case "NumberedList":
-			return new NumberedList();
-		case "Area":
-			return new Area();
-		case "FormElementLabel":
-			return new FormElementLabel();
-		case "Input":
-			return new Input();
-		case "Radio":
-			return new Radio();
-		default:
-			throw new RuntimeException("Cannot find the class for " + ontologyElement);
+			case "UIPage":
+				return new UIPage();
+			case "Link":
+				return new Link();
+			case "Paragraph":
+				return new Paragraph();
+			case "Form":
+				return new Form();
+			case "Graphic":
+				return new Graphic();
+			case "Nav":
+				return new Navigation();
+			case "MultimediaContent":
+				return new Multimedia();
+			case "Button":
+				return new Button();
+			case "NumberedList":
+				return new NumberedList();
+			case "Area":
+				return new Area();
+			case "FormElementLabel":
+				return new FormElementLabel();
+			case "Input":
+				return new Input();
+			case "Radio":
+				return new Radio();
+			default:
+				throw new RuntimeException("Cannot find the class for " + ontologyElement);
 		}
 	}
 

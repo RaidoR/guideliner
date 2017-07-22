@@ -128,19 +128,19 @@ public class GuildelineBuilderService {
 			 } else if ("Pixel".equals(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm())) {
 				 ent = ontologyRepository.getEntityTypeOfIndividual(objectProperty.getSubject());
 				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof UIPage || element instanceof Link) {
+					 if (element instanceof UIPage || element instanceof Link || element instanceof Button) {
 							if (element.getHeight() == null)
 								element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
 							element.getHeight().setUnit(Unit.PIXCEL);
 					 }
 				 } else if ("Width".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof Link) {
+					 if (element instanceof Link || element instanceof Button) {
 						 if (element.getWidth() == null)
 							 element.setWidth(new Width());
 						 element.getWidth().setUnit(Unit.PIXCEL);
 					 }
 				 } else if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof Link) {
+					 if (element instanceof Link || element instanceof Button) {
 						 if (element.getDistance() == null)
 							 element.setDistance(new Distance());
 						 element.getDistance().setUnit(Unit.PIXCEL);
@@ -188,7 +188,7 @@ public class GuildelineBuilderService {
 			if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 				Distance distance = new Distance();
 				distance.setDistanceType(DistanceType.convertToDistanceType(((OWLNamedIndividualImpl) objectProperty.getObject()).getIRI().getShortForm()));
-				if (element instanceof Link) {
+				if (element instanceof Link || element instanceof Button) {
 					element.setDistance(distance);
 				}
 
@@ -313,13 +313,9 @@ public class GuildelineBuilderService {
 		switch (dataProperty.getProperty().asOWLDataProperty().getIRI().getShortForm()) {
 			case "hasContentLength" :
 				 ent = ontologyRepository.getEntityTypeOfIndividual(dataProperty.getSubject());
-				System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
+				 System.out.println(((OWLClassImpl) ent.get()).getIRI().getShortForm());
 				 if ("Height".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					if (element instanceof UIPage) {
-						if (element.getHeight() == null)
-							element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
-						element.getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
-					} else if (element instanceof Link) {
+					if (element instanceof UIPage || element instanceof Link || element instanceof Button) {
 						if (element.getHeight() == null)
 							element.setHeight(new ee.ttu.usability.domain.pageattributes.Height());
 						element.getHeight().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
@@ -334,13 +330,13 @@ public class GuildelineBuilderService {
 							((UIPage) element).setText(new Text());
 						((UIPage) element).getText().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 				 } else if ("Width".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof Link) {
+					 if (element instanceof Link || element instanceof Button) {
 						 if (element.getWidth() == null)
 							 element.setWidth(new Width());
 						 element.getWidth().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
 					 }
 				 } else if ("Distance".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
-					 if (element instanceof Link) {
+					 if (element instanceof Link || element instanceof Button) {
 						 if (element.getDistance() == null)
 							 element.setDistance(new Distance());
 						 element.getDistance().setContentLength(new Integer(dataProperty.getObject().getLiteral()));
@@ -473,7 +469,7 @@ public class GuildelineBuilderService {
 				if ("Color".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					Color color = new Color();
 					color.setIsSame(Boolean.valueOf(dataProperty.getObject().getLiteral()));
-					if (element instanceof Link || element instanceof Input) {
+					if (element instanceof Link || element instanceof Input || element instanceof Button) {
 						element.setColor(color);
 					}
 				}

@@ -513,7 +513,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getHeight().getUnit());
 	}
 
-	// TODO Implement
 	@Test
 	public void test21_01_DistanceBetweenLinksShouldBeEnough() {
 		// given
@@ -543,22 +542,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getColor());
 		Assert.assertTrue(guidelineElement.getColor().getIsSame());
 	}
-
-	// TODO Not Possible to implement
-//	@Test
-//	public void test23_01_VisitedLinksShouldHaveAnotherColorSchema() {
-//		// given
-//		OWLClass guideline = ontologyRepository.loadClass("23-01_VisitedLinksShouldHaveAnotherColorSchema");
-//
-//		// when
-//		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
-//
-//		// then
-//		Assert.assertNotNull(guidelineElement);
-//		Assert.assertNotNull(guidelineElement.getColor());
-//		Assert.assertFalse(guidelineElement.getColor().getIsSame());
-//		Assert.assertTrue(guidelineElement.getIsVisited());
-//	}
 
 	@Test
 	public void test24_01_IdentifySelectedInput() {
@@ -617,7 +600,75 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement);
 		Assert.assertNotNull(guidelineElement.getLayout());
 		Assert.assertEquals(LayoutType.VERTICAL, guidelineElement.getLayout().getLayoutType());
+		Assert.assertEquals(LayoutType.VERTICAL, guidelineElement.getLayout().getLayoutType());
 	}
+
+
+	// TODO implement
+	@Test
+	public void test28_01_ButtonShouldBeWideEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("28-01_ButtonShouldBeWideEnough");
+
+		// when
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getWidth());
+		Assert.assertEquals(new Integer(48), guidelineElement.getWidth().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getWidth().getUnit());
+	}
+
+	// TODO implement
+	@Test
+	public void test29_01_ButtonShouldBeHeighEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("29-01_ButtonShouldBeHeighEnough");
+
+		// when
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getHeight());
+		Assert.assertEquals(new Integer(48), guidelineElement.getHeight().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getHeight().getUnit());
+	}
+
+	// TODO implement
+	@Test
+	public void test30_01_DistanceBetweenButtonsShouldBeEnough() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("30-01_DistanceBetweenButtonsShouldBeEnough");
+
+		// when
+		Button guidelineElement = (Button) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getDistance());
+		Assert.assertEquals(new Integer(48), guidelineElement.getDistance().getContentLength());
+		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getDistance().getUnit());
+		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
+	}
+
+//	@Test
+//	public void test21_01_DistanceBetweenLinksShouldBeEnough() {
+//		// given
+//		OWLClass guideline = ontologyRepository.loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
+//
+//		// when
+//		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
+//
+//		// then
+//		Assert.assertNotNull(guidelineElement);
+//		Assert.assertNotNull(guidelineElement.getDistance());
+//		Assert.assertEquals(new Integer(48), guidelineElement.getDistance().getContentLength());
+//		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getDistance().getUnit());
+//		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
+//	}
+
 
 //
 //
