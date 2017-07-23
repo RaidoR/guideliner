@@ -86,7 +86,7 @@ public class OneTestExample {
     public void testWcagGuidelines() {
         // given
         OWLClass guideline = ontologyRepository
-                .loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
+                .loadClass("29-01_ButtonShouldBeHeighEnough");
 
         // when
         EvaluationResult result = ontologyEvaluatorService.evaluate(guideline, null, false);

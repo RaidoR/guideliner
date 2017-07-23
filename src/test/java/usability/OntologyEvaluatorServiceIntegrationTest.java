@@ -1,9 +1,6 @@
 package usability;
 
-import ee.ttu.usability.domain.element.form.FormElementLabel;
-import ee.ttu.usability.domain.element.form.Input;
-import ee.ttu.usability.domain.element.form.PositionType;
-import ee.ttu.usability.domain.element.form.Radio;
+import ee.ttu.usability.domain.element.form.*;
 import ee.ttu.usability.domain.page.LayoutType;
 import jevg.ee.ttu.dataproperty.DistanceType;
 import jevg.ee.ttu.dataproperty.Unit;
@@ -603,8 +600,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(LayoutType.VERTICAL, guidelineElement.getLayout().getLayoutType());
 	}
 
-
-	// TODO implement
 	@Test
 	public void test28_01_ButtonShouldBeWideEnough() {
 		// given
@@ -620,7 +615,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getWidth().getUnit());
 	}
 
-	// TODO implement
 	@Test
 	public void test29_01_ButtonShouldBeHeighEnough() {
 		// given
@@ -653,25 +647,37 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
 	}
 
-//	@Test
-//	public void test21_01_DistanceBetweenLinksShouldBeEnough() {
-//		// given
-//		OWLClass guideline = ontologyRepository.loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
-//
-//		// when
-//		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
-//
-//		// then
-//		Assert.assertNotNull(guidelineElement);
-//		Assert.assertNotNull(guidelineElement.getDistance());
-//		Assert.assertEquals(new Integer(48), guidelineElement.getDistance().getContentLength());
-//		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getDistance().getUnit());
-//		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
-//	}
+	// TODO implement
+	@Test
+	public void test31_01_CheckMinimumNumberOfInputs() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("31-01_CheckMinimumNumberOfInputs");
+
+		// when
+		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getMaxNumberOfInputs());
+		Assert.assertEquals(new Integer(5), guidelineElement.getMaxNumberOfInputs());
+	}
+
+	// TODO implement
+	@Test
+	public void test32_01_CheckButtonsShouldBeVerticallyStacked() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("32-01_CheckButtonsShouldBeVerticallyStacked");
+
+		// when
+		CheckBox guidelineElement = (CheckBox) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getLayout());
+		Assert.assertEquals(LayoutType.VERTICAL, guidelineElement.getLayout().getLayoutType());
+	}
 
 
-//
-//
 //	@Test
 //	public void testSmth() {
 //
@@ -686,11 +692,10 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 //							NodeSet<OWLClass> superClasses = OntologyRepository.reasoner
 //									.getSuperClasses(t, true);
 //							superClasses.entities().forEach(g -> {
-////								System.out.println("1.2" +g);
+//								System.out.println("1.2" +g);
 //							});
 //						});
 //
 //	}
-
 
 }

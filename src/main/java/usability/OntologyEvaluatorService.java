@@ -1,5 +1,6 @@
 package usability;
 
+import ee.ttu.usability.domain.element.form.CheckBox;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.Radio;
@@ -342,6 +343,8 @@ public class OntologyEvaluatorService {
 				return new Input();
 			case "Radio":
 				return new Radio();
+			case "CheckBox":
+				return new CheckBox();
 			default:
 				throw new RuntimeException("Cannot find the class for " + ontologyElement);
 		}

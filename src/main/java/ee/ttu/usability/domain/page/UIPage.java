@@ -32,6 +32,7 @@ public class UIPage extends UsabilityGuideline {
     private Href href;
     
     private Title title;
-    
+
+    private Integer maxNumberOfInputs;
     
 }

@@ -3,10 +3,7 @@ package usability;
 import java.util.Optional;
 
 import ee.ttu.usability.domain.attribute.*;
-import ee.ttu.usability.domain.element.form.FormElementLabel;
-import ee.ttu.usability.domain.element.form.Input;
-import ee.ttu.usability.domain.element.form.PositionType;
-import ee.ttu.usability.domain.element.form.Radio;
+import ee.ttu.usability.domain.element.form.*;
 import ee.ttu.usability.domain.element.link.*;
 import ee.ttu.usability.domain.pageattributes.*;
 import ee.ttu.usability.domain.pageattributes.Height;
@@ -179,6 +176,8 @@ public class GuildelineBuilderService {
 						((UIPage) element).setLayout(layout);
 					} else if (element instanceof Radio) {
 						((Radio) element).setLayout(layout);
+					} else if (element instanceof CheckBox) {
+						((CheckBox) element).setLayout(layout);
 					}
 			 }
 		 }
@@ -485,6 +484,13 @@ public class GuildelineBuilderService {
 				if ("Input".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
 					if (element instanceof Input) {
 						((Input) element).setIsSelected(Boolean.valueOf(dataProperty.getObject().getLiteral()));
+					}
+				}
+				break;
+			case "hasMaxNumberOfInput" :
+				if ("UIPage".equals(((OWLClassImpl) ent.get()).getIRI().getShortForm())) {
+					if (element instanceof UIPage) {
+						((UIPage) element).setMaxNumberOfInputs(new Integer(dataProperty.getObject().getLiteral()));
 					}
 				}
 				break;
