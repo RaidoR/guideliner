@@ -152,13 +152,6 @@ public class LinkAdaptor extends AbstractAdaptor {
 		return setSuccessFlag(result);
 	}
 
-	class TopButton {
-		public Integer top;
-		public Integer buttom;
-		public Integer left;
-		public Integer right;
-	}
-
 	private EvaluationResult evaluateDistance(Link link) {
 		// todo implement
 		EvaluationResult result = new EvaluationResult();
