@@ -2,6 +2,7 @@ package usability.estimation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +65,9 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		}
 		if (page.getScroll() != null && page.getScroll().getIsOneDirectional() != null) {
 			return evaluateScroll(page);
+		}
+		if (page.getMaxNumberOfInputs() != null) {
+			return evaluateMaximumNumberOfInputs(page);
 		}
 		return null;
 	}
@@ -450,5 +454,26 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		
 		return setSuccessFlag(result);
 	}
+
+	private EvaluationResult evaluateMaximumNumberOfInputs(UIPage page) {
+		EvaluationResult result = new EvaluationResult();
+		result.setElementType(ElementType.PAGE);
+		result.setResult(ResultType.SUCCESS);
+
+		List<WebElement> input = getInputs(driver);
+		if (input.size() > page.getMaxNumberOfInputs()) {
+			result.getFailedElements().add(prepareFailedElement("UI Page", "", "The expected amount of inputs exceeded. Actual number: " + input.size() + " Expected number:" + page.getMaxNumberOfInputs(), NO_IMAGE));
+		}
+
+		return setSuccessFlag(result);
+	}
+
+	public List<WebElement> getInputs(WebDriver driver) {
+		List<WebElement> elements = new ArrayList<>();
+		elements.addAll(driver.findElements(By.xpath("//input[@type='text']")));
+		return elements;
+	}
+
+
 
 }

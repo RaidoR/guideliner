@@ -630,7 +630,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(Unit.PIXCEL, guidelineElement.getHeight().getUnit());
 	}
 
-	// TODO implement
 	@Test
 	public void test30_01_DistanceBetweenButtonsShouldBeEnough() {
 		// given

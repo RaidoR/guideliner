@@ -207,7 +207,6 @@ public class LinkAdaptor extends AbstractAdaptor {
 
 		for (Map.Entry<String, TopButton> entry : elements.entrySet()) {
 			// top
-
 			Integer distanceY;
 
 			if (entry.getValue().top > top) {
