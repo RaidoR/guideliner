@@ -169,11 +169,14 @@ public class ButtonAdaptor extends AbstractAdaptor {
 			Integer distanceY;
 			if (entry.getValue().top > top) {
 				distanceY = entry.getValue().top - button;
+			} else if (entry.getValue().top == top) {
+				distanceY = 0;
 			} else {
-				distanceY = entry.getValue().top - button;
-				// TODO back to continue
-				//continue;
+				continue;
 			}
+
+			System.out.println("top" + entry.getValue().top);
+
 
 			Integer left = element.getLocation().getX();
 			Integer right = element.getLocation().getX() + element.getSize().getWidth();
@@ -187,10 +190,8 @@ public class ButtonAdaptor extends AbstractAdaptor {
 
 			System.out.println("________________________________________________");
 			System.out.println(element.getAttribute("outerHTML"));
+			System.out.println("top" + top);
 			System.out.println(entry.getKey());
-			System.out.println("DistaceX:" + distanceX);
-			System.out.println("DistaceY:" + distanceY);
-			System.out.println("________________________________________________");
 
 //			System.out.println(element.getText() + "--top" + top + "--butto" + button);
 //			System.out.println(entry.getKey() + "--top" + entry.getValue().top + "--butto" + entry.getValue().buttom);
@@ -198,11 +199,11 @@ public class ButtonAdaptor extends AbstractAdaptor {
 			if (distanceY < 0) distanceY = distanceY * (-1);
 
 			if ((distanceY != 0 && distanceY < distanceBetween) && (distanceX != 0 && distanceX < distanceBetween)) {
-//				System.out.println("--------" + entry.getValue().top);
-//				System.out.println("Distance from top " + distanceY);
-//				System.out.println(element.getText() + "-->" + entry.getKey());
-//				System.out.println("--------" + element.getLocation().getY());
-//				System.out.println("AAAAAAAAAAAAAA" + distanceX);
+				System.out.println("--------" + entry.getValue().top);
+				System.out.println("Distance from top " + distanceY);
+				System.out.println(element.getText() + "-->" + entry.getKey());
+				System.out.println("--------" + element.getLocation().getY());
+				System.out.println("AAAAAAAAAAAAAA" + distanceX);
 				return "Element: with text " + element.getText() + " is very close to " + entry.getKey();
 			}
 		}

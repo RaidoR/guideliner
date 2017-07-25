@@ -51,7 +51,7 @@ public class Screenshoter {
 			ImageIO.write(dest, "png", screenshotOfElement);
 			return screenshotOfElement;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 	}
