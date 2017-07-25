@@ -34,7 +34,7 @@ public class OneTestExample {
         ontologyEvaluatorService.initialiseDriverIfNotInitialised(URL);
     }
 
-    //   protected static final String URL = "https://www.etis.ee/?lang=ENG";
+       protected static final String URL = "https://www.etis.ee/?lang=ENG";
 //    protected static final String URL =
 //        "https://www.eesti.ee/portaal/portaal.sisene?level=30&loc=%2Fest%2Fminuasjad";
 
@@ -44,7 +44,7 @@ public class OneTestExample {
 
 
     // protected static final String URL = "http://www.rh.ee/";
-    protected static final String URL = "https://www.etis.ee/Portal/Publications/Index";
+//    protected static final String URL = "https://www.etis.ee/Portal/Publications/Index";
 
     // protected static final String URL = "https://www.eesti.ee/et/index.html";
 
@@ -87,7 +87,7 @@ public class OneTestExample {
     public void testWcagGuidelines() {
         // given
         OWLClass guideline = ontologyRepository
-                .loadClass("30-01_DistanceBetweenButtonsShouldBeEnough");
+                .loadClass("21-01_DistanceBetweenLinksShouldBeEnough");
 
         // when
         EvaluationResult result = ontologyEvaluatorService.evaluate(guideline, null, false);

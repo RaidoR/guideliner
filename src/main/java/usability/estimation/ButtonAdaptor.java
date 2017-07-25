@@ -161,22 +161,21 @@ public class ButtonAdaptor extends AbstractAdaptor {
 	}
 
 	private String isLinkWithBadLocation(WebElement element, Map<String, TopButton> elements, Integer distanceBetween) {
+		Integer top = element.getLocation().getY();
+		Integer button = element.getLocation().getY() + element.getSize().getHeight();
+
 		for (Map.Entry<String, TopButton> entry : elements.entrySet()) {
 			// top
-			Integer top = element.getLocation().getY();
-			Integer button = element.getLocation().getY() + element.getSize().getHeight();
 
 			Integer distanceY;
+
 			if (entry.getValue().top > top) {
 				distanceY = entry.getValue().top - button;
-			} else if (entry.getValue().top == top) {
+			} else if (entry.getValue().top.equals(top)) {
 				distanceY = 0;
 			} else {
 				continue;
 			}
-
-			System.out.println("top" + entry.getValue().top);
-
 
 			Integer left = element.getLocation().getX();
 			Integer right = element.getLocation().getX() + element.getSize().getWidth();
@@ -184,27 +183,25 @@ public class ButtonAdaptor extends AbstractAdaptor {
 
 			if (entry.getValue().left > left) {
 				distanceX = entry.getValue().left - right;
+			} else if (entry.getValue().left.equals(left)) {
+				distanceX = 0;
 			} else {
-				distanceX = left - entry.getValue().right;
+				continue;
 			}
 
-			System.out.println("________________________________________________");
-			System.out.println(element.getAttribute("outerHTML"));
-			System.out.println("top" + top);
-			System.out.println(entry.getKey());
-
-//			System.out.println(element.getText() + "--top" + top + "--butto" + button);
-//			System.out.println(entry.getKey() + "--top" + entry.getValue().top + "--butto" + entry.getValue().buttom);
+			if (distanceX.equals(0) && distanceY.equals(0)) {
+				continue;
+			}
 
 			if (distanceY < 0) distanceY = distanceY * (-1);
 
-			if ((distanceY != 0 && distanceY < distanceBetween) && (distanceX != 0 && distanceX < distanceBetween)) {
-				System.out.println("--------" + entry.getValue().top);
-				System.out.println("Distance from top " + distanceY);
-				System.out.println(element.getText() + "-->" + entry.getKey());
-				System.out.println("--------" + element.getLocation().getY());
-				System.out.println("AAAAAAAAAAAAAA" + distanceX);
-				return "Element: with text " + element.getText() + " is very close to " + entry.getKey();
+			if ((distanceY != 0 && distanceY < distanceBetween) || (distanceX != 0 && distanceX < distanceBetween)) {
+//				System.out.println("--------" + entry.getValue().top);
+//				System.out.println("Distance from top " + distanceY);
+//				System.out.println(element.getText() + "-->" + entry.getKey());
+//				System.out.println("--------" + element.getLocation().getY());
+//				System.out.println("AAAAAAAAAAAAAA" + distanceX);
+				return "Element: with html " + element.getAttribute("outerHTML") + " is very close to " + entry.getKey();
 			}
 		}
 		return null;
