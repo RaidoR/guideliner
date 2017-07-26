@@ -235,6 +235,16 @@ public class OntologyEvaluatorService {
 				ex.printStackTrace();
 			}
 		}
+
+		if (guidelineElement instanceof  CheckBox) {
+			try {
+				CheckButtonAdaptor adaptor = new CheckButtonAdaptor();
+				adaptor.setDriver(driver);
+				return adaptor.execute((CheckBox) guidelineElement);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 		//	driver.close();
 		return null;
 	}

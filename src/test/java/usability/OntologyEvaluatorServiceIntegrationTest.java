@@ -646,7 +646,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(DistanceType.CLICKABLEELEMENT, guidelineElement.getDistance().getDistanceType());
 	}
 
-	// TODO implement
 	@Test
 	public void test31_01_CheckMinimumNumberOfInputs() {
 		// given
@@ -661,7 +660,6 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertEquals(new Integer(5), guidelineElement.getMaxNumberOfInputs());
 	}
 
-	// TODO implement
 	@Test
 	public void test32_01_CheckButtonsShouldBeVerticallyStacked() {
 		// given
