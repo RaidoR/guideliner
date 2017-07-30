@@ -14,11 +14,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestContextManager;
 import usability.OntologyEvaluatorService;
 import usability.OntologyRepository;
+import usability.OntologyService;
 import usability.configuration.Application;
+import usability.earl.EarlGuideline;
 import usability.estimation.result.EvaluationResult;
 import usability.estimation.result.FailedElement;
+import usability.estimation.result.Guideline;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest(classes = Application.class)
@@ -35,13 +39,13 @@ public class OneTestExample {
     }
 
 //    protected static final String URL = "https://www.etis.ee/?lang=ENG";
-    protected static final String URL = "https://www.etis.ee/Portal/Publications/Index?searchType=detailed"; // TODO checkbox
+//    protected static final String URL = "https://www.etis.ee/Portal/Publications/Index?searchType=detailed"; // TODO checkbox
 //    protected static final String URL =
 //        "https://www.eesti.ee/portaal/portaal.sisene?level=30&loc=%2Fest%2Fminuasjad";
 
     // With Form
 //     protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
-//     protected static final String URL = "https://www.w3schools.com/html/html_forms.asp";
+     protected static final String URL = "https://www.w3schools.com/html/html_forms.asp";
     // protected static final String URL = "https://www.miniclip.com/games/en/";
 
 
@@ -60,6 +64,9 @@ public class OneTestExample {
 
     @Autowired
     protected OntologyRepository ontologyRepository;
+
+    @Autowired
+    protected OntologyService ontologyService;
 
 
     protected void assertEvaluationResult(EvaluationResult result) {
@@ -97,7 +104,13 @@ public class OneTestExample {
         EvaluationResult result = ontologyEvaluatorService.evaluate(guideline, null, false);
 
         //then
-        assertEvaluationResult(result);
+        Guideline g = ontologyService.createGuideline(guideline);
+        result.setGuideline(g);
+
+        System.out.println(result);
+        String guideline1 = EarlGuideline.generateEarlResult(Arrays.asList(result), "www.test.ee");
+        System.out.println(guideline1);
+//        assertEvaluationResult(result);
     }
 
 }
