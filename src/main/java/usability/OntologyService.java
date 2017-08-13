@@ -47,6 +47,33 @@ public class OntologyService {
 	public List<Guideline> findUsabilityGuidelinesByCategory(String category) {
 		List<Guideline> guidelines = new ArrayList<>();
 
+		if (category.equals("AllGuidelines")) {
+			OntologyRepository.reasoner.getSubClasses(ontology.loadClass("WcagGuideline"))
+					.entities()
+					.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
+					.forEach(c -> {
+						guidelines.add(createGuideline(c));
+					});
+
+			OntologyRepository.reasoner.getSubClasses(ontology.loadClass("UsabilityGuideline"))
+					.entities()
+					.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
+					.forEach(c -> {
+						guidelines.add(createGuideline(c));
+					});
+
+			OntologyRepository.reasoner.getSubClasses(ontology.loadClass("MobileUsabilityGuideline"))
+					.entities()
+					.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
+					.forEach(c -> {
+						guidelines.add(createGuideline(c));
+					});
+
+
+
+			return guidelines;
+		}
+
 		OntologyRepository.reasoner.getSubClasses(ontology.loadClass(category))
 				.entities()
 				.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))

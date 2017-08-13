@@ -4,6 +4,7 @@ package usability.estimation;
 import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.link.Link;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,7 +45,7 @@ public class FormElementLabelAdaptor extends AbstractAdaptor {
                     || !input.getAttribute("type").equals("hidden"))) {
                 WebElement labelWithSameCoordinate = getElementByY(input.getLocation().getY(), labelsWithCoordinates);
                 System.out.println("input" + " -- " + input.getAttribute("name") + " -- " + input.getLocation().getY() + " label with coord" + (labelWithSameCoordinate != null ? labelWithSameCoordinate.getText() : null));
-                if (labelWithSameCoordinate != null) {
+                if (labelWithSameCoordinate != null && StringUtils.isNotEmpty(labelWithSameCoordinate.getText())) {
                     File file = screenshoter.takeScreenshot(screenshot, labelWithSameCoordinate, driver);
                     result.getFailedElements().add(prepareFailedElement("Label", labelWithSameCoordinate.getText(), "Label should be above input.", file));
                 }

@@ -40,12 +40,13 @@ public class OneTestExample {
 
 //    protected static final String URL = "https://www.etis.ee/?lang=ENG";
 //    protected static final String URL = "https://www.etis.ee/Portal/Publications/Index?searchType=detailed"; // TODO checkbox
-//    protected static final String URL =
-//        "https://www.eesti.ee/portaal/portaal.sisene?level=30&loc=%2Fest%2Fminuasjad";
+    protected static final String URL =
+        "https://www.eesti.ee/portaal/portaal.sisene?level=30&loc=%2Fest%2Fminuasjad";
 
     // With Form
 //     protected static final String URL = "https://www.etis.ee/Portal/Persons/Index?searchType=detailed";
-     protected static final String URL = "https://www.w3schools.com/html/html_forms.asp";
+//     protected static final String URL = "https://www.w3schools.com/html/html_forms.asp";
+//     protected static final String URL = "https://riigikantselei.ee/en";
     // protected static final String URL = "https://www.miniclip.com/games/en/";
 
 

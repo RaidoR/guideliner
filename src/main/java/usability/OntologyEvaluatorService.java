@@ -5,9 +5,13 @@ import ee.ttu.usability.domain.element.form.FormElementLabel;
 import ee.ttu.usability.domain.element.form.Input;
 import ee.ttu.usability.domain.element.form.Radio;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -32,10 +36,7 @@ import ee.ttu.usability.domain.element.link.NumberedList;
 import ee.ttu.usability.domain.element.navigation.Navigation;
 import ee.ttu.usability.domain.page.UIPage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -64,6 +65,8 @@ public class OntologyEvaluatorService {
 		if (driver == null) {
 			driver = initialiseDriver();
 		}
+
+
 
 		driver.get(url);
 
@@ -250,11 +253,21 @@ public class OntologyEvaluatorService {
 	}
 
 	private WebDriver initialiseDriver() {
-//
-//		 System.setProperty("webdriver.chrome.driver",
+		// TODO add some logic
+//		FirefoxProfile ffprofile = new FirefoxProfile();
+//		ffprofile.setPreference("general.useragent.override", "iPhone");
+//		driver = new FirefoxDriver(ffprofile);
+//		driver.manage().window().setSize(new Dimension(400,800));
+
+//				 System.setProperty("webdriver.chrome.driver",
 //		 "..\\chrome\\chromedriver.exe");
-//		 return new ChromeDriver();
-	  return new FirefoxDriver();
+//		WebDriver driver = new ChromeDriver();
+//
+
+
+		driver = new FirefoxDriver();
+
+		return driver;
 	}
 
 	public WebDriver initialiseDriverIfNotInitialised(String url) {

@@ -9,4 +9,6 @@ public class UsabilityEvaluationParameter {
 
     public static String FULL_SCREEN;
 
+    public static String MOBILE_SCREEN;
+
 }
