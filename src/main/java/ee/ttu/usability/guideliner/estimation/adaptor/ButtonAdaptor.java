@@ -141,6 +141,11 @@ public class ButtonAdaptor extends AbstractAdaptor {
 			if (element.getSize().getHeight() == 0 && element.getSize().getWidth() == 0) {
 				continue;
 			}
+
+			if (element.getSize().getHeight() > 40 && element.getSize().getWidth() > 40) {
+				continue;
+			}
+			// if element size
 			String errorMessage = isLinkWithBadLocation(element, topButtomCoordinates, link.getDistance().getContentLength());
 			if (errorMessage != null) {
 //				System.out.println("---------------------------------");

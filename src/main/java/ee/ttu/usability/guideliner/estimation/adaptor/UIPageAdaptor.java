@@ -384,26 +384,20 @@ public class UIPageAdaptor extends AbstractAdaptor {
 		EvaluationResult result = new EvaluationResult();
 		result.setElementType(ElementType.PAGE);
 		result.setResult(ResultType.SUCCESS);
-		
+
 		List<WebElement> list=driver.findElements(By.xpath("//*[@href or @src]"));
 
 		for (WebElement e : list) {
 			String link = e.getAttribute("href");
 			if (null == link)
 				link = e.getAttribute("src");
-			if (link.equals(page.getHref().getValue())) {
-				return result;
+			if (driver.getCurrentUrl().equals(link.equals(page.getHref().getValue()))) {
+				result.getFailedElements().add(prepareFailedElement("UI Page", "",
+						"Page contains link to itself.", NO_IMAGE));
 			}
 		}
-
-
-		if (true) return result;
-	    
-		result.getFailedElements().add(prepareFailedElement("UI Page", "", "Link is not found: " + page.getHref().getValue(), NO_IMAGE));
-	       
 		return setSuccessFlag(result);
 	}
-
 
 	private EvaluationResult evaluateViewport(Viewport viewport) {
 		EvaluationResult result = new EvaluationResult();

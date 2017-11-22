@@ -135,6 +135,10 @@ public class LinkAdaptor extends AbstractAdaptor {
 				continue;
 			}
 
+			if (webLink.getSize().getHeight() > 40 && webLink.getSize().getWidth() > 40) {
+				continue;
+			}
+
 			if (link.getHeight().getContentLength() > webLink.getSize().getHeight()) {
 				File file = screenshoter.takeScreenshot(screenshot, webLink, driver);
 				result.getFailedElements().add(prepareFailedElement(

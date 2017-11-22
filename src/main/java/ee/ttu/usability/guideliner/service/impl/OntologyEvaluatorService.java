@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -33,8 +34,13 @@ import ee.ttu.usability.guideliner.domain.element.link.Link;
 import ee.ttu.usability.guideliner.domain.element.link.Multimedia;
 import ee.ttu.usability.guideliner.domain.element.link.NumberedList;
 
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -62,34 +68,39 @@ public class OntologyEvaluatorService {
 	}
 
 	public List<EvaluationResult>  evaluate(String category, String url) {
-		if (driver == null) {
-			driver = initialiseDriver();
+		List<EvaluationResult> results = new ArrayList<>();
+
+		if ("MobileUsabilityGuideline".equals(category)) {
+			this.initializeForMobile();
+		} else {
+			this.initialiseDriver();
 		}
 
-
+		log.info("Opening URL " + url);
 
 		driver.get(url);
 
 		try {
-			TimeUnit.SECONDS.sleep(10);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
-			//Handle exception
+			e.printStackTrace();
 		}
 
-		List<EvaluationResult> results = new ArrayList<>();
-
-
+		log.info("Starting evaluation: " + url);
+		final AtomicInteger i = new AtomicInteger(1);
 		OntologyRepository.reasoner.getSubClasses(ontologyRepository.loadClass(category))
 				.entities()
 				.filter(c -> !c.getIRI().getShortForm().equals("Nothing"))
 				.forEach(c -> {
-					log.info("Starting evaluating guideline: " + c.getIRI().getIRIString());
+					i.addAndGet(1);
+					LocalDateTime startTime = LocalDateTime.now();
+					log.info("Starting evaluating guideline - "+i+": " + c.getIRI().getIRIString());
 					EvaluationResult result = evaluate(c, url);
 					if (result != null) {
 						result.setGuideline(ontologyService.createGuideline(c));
 						results.add(result);
 					}
-					log.info("Finishing evaluating guideline: " + c.getIRI().getIRIString());
+					log.info("Finishing evaluating guideline: " + c.getIRI().getIRIString() + ". Evaluation took:" + startTime.until(LocalDateTime.now(), ChronoUnit.SECONDS));
 				});
 		Collections.sort(results, Comparator.comparing(o -> o.getResult().name()));
 		return results;
@@ -107,10 +118,9 @@ public class OntologyEvaluatorService {
 		if (driver == null) {
 			driver = initialiseDriver();
 		}
+
 		// get guideline
 		UsabilityGuideline guidelineElement = fillGuidelines(guideline);
-
-//		WebDriver driver = initialiseDriver();
 
 		if (openUrl) {
 			driver.get(url);
@@ -252,7 +262,7 @@ public class OntologyEvaluatorService {
 		return null;
 	}
 
-	private WebDriver initialiseDriver() {
+	public WebDriver initialiseDriver() {
 		// TODO add some logic
 //		FirefoxProfile ffprofile = new FirefoxProfile();
 //		ffprofile.setPreference("general.useragent.override", "iPhone");
@@ -269,6 +279,14 @@ public class OntologyEvaluatorService {
 		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 
+		return driver;
+	}
+
+	public WebDriver initializeForMobile() {
+		FirefoxProfile ffprofile = new FirefoxProfile();
+		ffprofile.setPreference("general.useragent.override", "iPhone");
+		driver = new FirefoxDriver(ffprofile);
+		driver.manage().window().setSize(new Dimension(400,800));
 		return driver;
 	}
 

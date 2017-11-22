@@ -1,6 +1,7 @@
 package ee.ttu.usability.guideliner;
 
 import ee.ttu.usability.guideliner.domain.element.form.*;
+import ee.ttu.usability.guideliner.domain.element.link.*;
 import ee.ttu.usability.guideliner.domain.page.LayoutType;
 import ee.ttu.usability.guideliner.domain.dataproperty.DistanceType;
 import ee.ttu.usability.guideliner.domain.dataproperty.Unit;
@@ -11,12 +12,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import core.AbstractTest;
 import ee.ttu.usability.guideliner.domain.element.content.Paragraph;
-import ee.ttu.usability.guideliner.domain.element.link.Area;
-import ee.ttu.usability.guideliner.domain.element.link.Button;
-import ee.ttu.usability.guideliner.domain.element.link.Form;
-import ee.ttu.usability.guideliner.domain.element.link.Graphic;
-import ee.ttu.usability.guideliner.domain.element.link.Link;
-import ee.ttu.usability.guideliner.domain.element.link.Multimedia;
 import ee.ttu.usability.guideliner.domain.element.navigation.Navigation;
 import ee.ttu.usability.guideliner.domain.page.UIPage;
 
@@ -26,13 +21,13 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	@BeforeClass
 	public static void setUp() throws OWLOntologyCreationException {
 		setUpClasses();
-	} 
+	}
 
 	@Test
 	public void testThatAnnotationsAreExtractedSuccessfullyFromGuidelines() {
 		// given
 		OWLClass guideline = ontologyRepository
-				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
+				.loadClass("03-03_LinksShouldHaveProperContrastRate");
 
 		// when
 		String comment = ontologyRepository.getAnnotationValueByAnnotationName(guideline, "comment");
@@ -47,7 +42,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	public void testThatConstructionWorksForRule03_03() {
 		// given
 		OWLClass guideline = ontologyRepository
-				.loadClass("03-03_DoNotUseColorAloneToConveyInformation");
+				.loadClass("03-03_LinksShouldHaveProperContrastRate");
 
 		// when
 		Link guidelineElement = (Link) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -117,7 +112,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	public void testThatConstructionWorksForRule03_02() {
 		// given
 		OWLClass guideline = ontologyRepository
-				.loadClass("03-02_DesignFormsUsingAssistiveTechnologies");
+				.loadClass("03-02_FormInputsShouldHaveLabels");
 		
 		// when
 		Form guidelineElement = (Form) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -162,7 +157,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	public void testThatConstructionWorksForRule16_05() {
 		// given
 		OWLClass guideline = ontologyRepository
-				.loadClass("16-05_MinimizeTheNumberOfClicksOrPages");
+				.loadClass("16-05_NavigationShouldBeVisibleWithoutScrolling");
 		
 		// when
 		Navigation guidelineElement = (Navigation) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -221,7 +216,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule07_08() {
 		// given
-		OWLClass guideline = ontologyRepository.loadClass("07-08_KeepNavigationOnlyPagesShort");
+		OWLClass guideline = ontologyRepository.loadClass("07-08_VerticalScrollingIsNotAllowed");
 		
 		// when
 		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -248,7 +243,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule04_04() {
 		// given
-		OWLClass guideline = ontologyRepository.loadClass("04-04_DesignForUserTypicalConnectionSpeed");
+		OWLClass guideline = ontologyRepository.loadClass("04-04_PageShouldBeLoadedQuickly");
 		
 		// when
 		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -263,7 +258,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	@Test
 	public void testThatConstructionWorksForRule05_03() {
 		// given
-		OWLClass guideline = ontologyRepository.loadClass("05-03_CreatePositiveFirstImpressionOfYourSite");
+		OWLClass guideline = ontologyRepository.loadClass("05-03_DoNotUsedProhibitedGeneralPurposeWords");
 		
 		// when
 		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -273,11 +268,25 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 		Assert.assertNotNull(guidelineElement.getProhibitedWords());
 		Assert.assertNotNull(guidelineElement.getProhibitedWords().getValue());
 	}
-	
+
+	@Test
+	public void testThatConstructionWorksForRule05_06() {
+		// given
+		OWLClass guideline = ontologyRepository.loadClass("05-06_EnsureThatNumberedListsContainMoreThenOneElement");
+
+		// when
+		NumberedList guidelineElement = (NumberedList) ontologyEvaluatorService.fillGuidelines(guideline);
+
+		// then
+		Assert.assertNotNull(guidelineElement);
+		Assert.assertNotNull(guidelineElement.getContentLength());
+		Assert.assertNotNull(guidelineElement.getUnit());
+	}
+
 	@Test
 	public void testThatConstructionWorksForRule08_04() {
 		// given
-		OWLClass guideline = ontologyRepository.loadClass("08-04_UsePagingRatherThanScrolling");
+		OWLClass guideline = ontologyRepository.loadClass("08-04_NumberOfWordsInParagraphShouldBeLimited");
 		
 		// when
 		Paragraph guidelineElement = (Paragraph) ontologyEvaluatorService.fillGuidelines(guideline);
@@ -335,7 +344,7 @@ public class OntologyEvaluatorServiceIntegrationTest extends AbstractTest {
 	@Test
 	public void test3wcag_8_15_CheckThatPageHasLinkToFrontPage() {
 		// given
-		OWLClass guideline = ontologyRepository.loadClass("3wcag-8-15_CheckThatPageHasLinkToFrontPage");
+		OWLClass guideline = ontologyRepository.loadClass("3wcag-8-15_CheckThatPageDoesNotHaveLinkToItself");
 		
 		// when
 		UIPage guidelineElement = (UIPage) ontologyEvaluatorService.fillGuidelines(guideline);
