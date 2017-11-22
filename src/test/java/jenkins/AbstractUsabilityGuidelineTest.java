@@ -3,9 +3,9 @@ package jenkins;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import usability.OntologyEvaluatorService;
-import usability.estimation.result.EvaluationResult;
-import usability.estimation.result.FailedElement;
+import ee.ttu.usability.guideliner.service.impl.OntologyEvaluatorService;
+import ee.ttu.usability.guideliner.estimation.result.EvaluationResult;
+import ee.ttu.usability.guideliner.estimation.result.FailedElement;
 
 import java.util.ArrayList;
 import java.util.List;

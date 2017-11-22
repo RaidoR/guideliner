@@ -1,10 +1,10 @@
 package core;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import usability.GuildelineBuilderService;
-import usability.OntologyEvaluatorService;
-import usability.OntologyRepository;
-import usability.OntologyService;
+import ee.ttu.usability.guideliner.service.impl.GuildelineBuilderService;
+import ee.ttu.usability.guideliner.service.impl.OntologyEvaluatorService;
+import ee.ttu.usability.guideliner.repository.OntologyRepository;
+import ee.ttu.usability.guideliner.service.impl.OntologyService;
 
 public class AbstractTest {
 
