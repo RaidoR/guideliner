@@ -3,7 +3,7 @@ package ee.ttu.usability.guideliner;
 
 import ee.ttu.usability.guideliner.service.impl.OntologyEvaluatorService;
 import ee.ttu.usability.guideliner.estimation.result.ResultType;
-import ee.ttu.usability.guideliner.estimation.utils.Screenshoter;
+import ee.ttu.usability.guideliner.util.Screenshoter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;

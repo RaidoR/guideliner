@@ -1,7 +1,7 @@
 package ee.ttu.usability.guideliner.rest;
 
 import org.springframework.web.bind.annotation.*;
-import ee.ttu.usability.guideliner.estimation.utils.Configuration;
+import ee.ttu.usability.guideliner.util.Configuration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
