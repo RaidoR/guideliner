@@ -1,6 +1,7 @@
 package ee.ttu.usability.guideliner.repository;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,14 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.search.EntitySearcher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
 import uk.ac.manchester.cs.jfact.JFactFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImplString;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author jevgeni.marenkov
@@ -37,7 +42,8 @@ public class OntologyRepository {
 
 	//TODO move to file or give as a parameter
 	//private static String ontologyFile = "C:\\Users\\jevgeni.marenkov\\Desktop\\yli\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
-	private static String ontologyFile = "..\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+//	private static String ontologyFile = "..\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
+	public static String ontologyFile = "classpath:usability-guidelines-ontology_v1.1.owl";
 
 	//private static String ontologyFile = "C:\\Users\\jevge\\university\\ontology\\project\\protege-ontology\\usability-guidelines-ontology_v1.1.owl";
 	//private static String ontologyFile2 = "C:\\Users\\jevge\\university\\ontology\\files\\conference\\usability-guidelines-ontology_v1.1.owl";
@@ -45,20 +51,34 @@ public class OntologyRepository {
 	public static OWLOntology ontology;
 	public static OWLReasoner reasoner;
 
-	public OntologyRepository() throws OWLOntologyCreationException {
-		this.initialise();
+
+	private ResourceLoader resourceLoader;
+
+	@Autowired
+	public OntologyRepository(ResourceLoader resourceLoader) throws OWLOntologyCreationException {
+		this.resourceLoader = resourceLoader;
 	}
-	public static void initialise() throws OWLOntologyCreationException {
+
+	@PostConstruct
+	public void initialise() throws OWLOntologyCreationException {
 		reloadOntology();
 		initialiseReasoner();
 	}
 	
-	public static void reloadOntology() throws OWLOntologyCreationException {
-		OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-		ontology = ontologyManager.loadOntologyFromOntologyDocument(new File(ontologyFile));
+	public void reloadOntology() throws OWLOntologyCreationException {
+		try {
+			OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+			System.out.println(resourceLoader);
+			System.out.println(resourceLoader.getResource(ontologyFile));
+			System.out.println();
+			ontology = ontologyManager.loadOntologyFromOntologyDocument(resourceLoader.getResource(ontologyFile).getInputStream());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 	
-	public static void initialiseReasoner() {
+	public void initialiseReasoner() {
         OWLReasonerFactory reasonerFactory = new JFactFactory();
         ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
         OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
