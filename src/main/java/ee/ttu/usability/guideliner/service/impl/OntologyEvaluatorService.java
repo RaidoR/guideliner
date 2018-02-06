@@ -16,6 +16,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -276,26 +278,34 @@ public class OntologyEvaluatorService {
 
 
 		// desctop
-		driver = new FirefoxDriver();
+//		driver = new FirefoxDriver();
+		System.out.print( "initialiseDriver" );
+		driver = new HtmlUnitDriver(  );
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 
 		return driver;
 	}
 
 	public WebDriver initializeForMobile() {
-		FirefoxProfile ffprofile = new FirefoxProfile();
-		ffprofile.setPreference("general.useragent.override", "iPhone");
-		driver = new FirefoxDriver(ffprofile);
+		System.out.print( "initializeForMobile" );
+//		FirefoxProfile ffprofile = new FirefoxProfile();
+//		ffprofile.setPreference("general.useragent.override", "iPhone");
+//		driver = new FirefoxDriver(ffprofile);
+		DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+		capabilities.setCapability("general.useragent.override", "iPhone");
+		driver = new HtmlUnitDriver(capabilities);
 		driver.manage().window().setSize(new Dimension(400,800));
 		return driver;
 	}
 
 	public WebDriver initialiseDriverIfNotInitialised(String url) {
+		System.out.print( "initialiseDriverIfNotInitialised" );
 //
 		if (this.driver != null) {
 			return this.driver;
 		}
-		driver = new FirefoxDriver();
+		driver = new HtmlUnitDriver();
+//		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 		driver.get(url);
 		return driver;

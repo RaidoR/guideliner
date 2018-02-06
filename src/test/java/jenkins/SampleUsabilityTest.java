@@ -18,6 +18,7 @@ public class SampleUsabilityTest extends AbstractUsabilityTest {
             this.testContextManager.prepareTestInstance(this);
         }
         ontologyEvaluatorService.initialiseDriverIfNotInitialised(URL);
+        System.out.print( "input url: " + URL );
     }
 
     @After

@@ -20,7 +20,9 @@ import java.util.List;
 @SpringBootTest(classes = GuidelinerStarter.class)
 public class AbstractUsabilityTest {
 
-    protected static final String URL = "https://www.etis.ee/?lang=ENG";
+//    protected static final String URL = "https://www.etis.ee/?lang=ENG";
+//    protected static final String URL = "https://www.google.com";
+    protected static final String URL = System.getProperty("url");
 
     // Manually config for spring to use Parameterised
     protected TestContextManager testContextManager;
