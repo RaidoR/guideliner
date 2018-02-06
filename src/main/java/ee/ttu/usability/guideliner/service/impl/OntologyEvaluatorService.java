@@ -13,10 +13,12 @@ import ee.ttu.usability.guideliner.domain.page.UIPage;
 import ee.ttu.usability.guideliner.estimation.result.EvaluationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
@@ -279,7 +281,6 @@ public class OntologyEvaluatorService {
 
 		// desctop
 //		driver = new FirefoxDriver();
-		System.out.print( "initialiseDriver" );
 		driver = new HtmlUnitDriver( true );
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 
@@ -287,19 +288,21 @@ public class OntologyEvaluatorService {
 	}
 
 	public WebDriver initializeForMobile() {
-		System.out.print( "initializeForMobile" );
 //		FirefoxProfile ffprofile = new FirefoxProfile();
 //		ffprofile.setPreference("general.useragent.override", "iPhone");
 //		driver = new FirefoxDriver(ffprofile);
-		DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
-		capabilities.setCapability("general.useragent.override", "iPhone");
-		driver = new HtmlUnitDriver(capabilities);
+
+//		DesiredCapabilities capabilities = DesiredCapabilities.iphone();
+		DesiredCapabilities capabilities = new DesiredCapabilities(  );
+		capabilities.setBrowserName( "iPhone" );
+		capabilities.setVersion( "" );
+		capabilities.setPlatform( Platform.ANY );
+		driver = new HtmlUnitDriver( capabilities );
 		driver.manage().window().setSize(new Dimension(400,800));
 		return driver;
 	}
 
 	public WebDriver initialiseDriverIfNotInitialised(String url) {
-		System.out.print( "initialiseDriverIfNotInitialised" );
 //
 		if (this.driver != null) {
 			return this.driver;
