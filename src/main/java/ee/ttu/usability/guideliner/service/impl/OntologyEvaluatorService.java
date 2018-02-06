@@ -280,7 +280,7 @@ public class OntologyEvaluatorService {
 		// desctop
 //		driver = new FirefoxDriver();
 		System.out.print( "initialiseDriver" );
-		driver = new HtmlUnitDriver(  );
+		driver = new HtmlUnitDriver( true );
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 
 		return driver;
@@ -304,7 +304,7 @@ public class OntologyEvaluatorService {
 		if (this.driver != null) {
 			return this.driver;
 		}
-		driver = new HtmlUnitDriver();
+		driver = new HtmlUnitDriver(true);
 //		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
 		driver.get(url);
